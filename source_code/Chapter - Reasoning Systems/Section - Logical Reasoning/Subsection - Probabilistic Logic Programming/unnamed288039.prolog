@@ -1,0 +1,1 @@
+stressed(X) :- high_workload(X), personal_issues(X).
