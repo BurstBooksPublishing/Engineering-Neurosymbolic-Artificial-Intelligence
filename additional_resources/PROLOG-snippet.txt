@@ -1,0 +1,1069 @@
+Chapter 1: Foundations of Modern Artificial Intelligence
+Section 1: The Three Waves of AI
+Item 1: First Wave: Rule-Based Systems
+[First Wave: Rule-Based Systems] \begin{verbatim}
+
+
+% Define a simple rule-based system in PROLOG
+% Rule 1: If X is a bird and X can fly, then X is a flying bird.
+flying_bird(X) :- bird(X), can_fly(X).
+
+% Rule 2: If X is a penguin, then X is a bird.
+bird(penguin).
+
+% Rule 3: Penguins cannot fly.
+can_fly(penguin) :- fail.
+
+% Query: Is a penguin a flying bird?
+% Expected result: false.
+?- flying_bird(penguin).
+\end{verbatim}
+Section 2: The Limitations of Current AI Systems
+Item 1: The Symbol Grounding Problem
+[The Symbol Grounding Problem] \begin{verbatim}
+
+
+% Define a simple symbolic representation of objects
+symbol(apple).
+symbol(banana).
+symbol(cherry).
+
+% Define sensory data (e.g., color, shape) that could ground symbols
+sensory_data(apple, red, round).
+sensory_data(banana, yellow, curved).
+sensory_data(cherry, red, round).
+
+% Rule to ground a symbol based on sensory data
+ground_symbol(Symbol, Color, Shape) :-
+    symbol(Symbol), % Check if the symbol exists
+    sensory_data(Symbol, Color, Shape). % Match sensory data to the symbol
+
+% Example query: Ground the symbol 'apple' using sensory data
+% ?- ground_symbol(apple, red, round).
+% This should return true, as the sensory data matches the symbol.
+
+% Example query: Ground the symbol 'banana' using sensory data
+% ?- ground_symbol(banana, yellow, curved).
+% This should return true, as the sensory data matches the symbol.
+
+% Example query: Attempt to ground a symbol with mismatched sensory data
+% ?- ground_symbol(cherry, green, round).
+% This should return false, as the sensory data does not match the symbol.
+\end{verbatim}
+Section 3: Understanding Intelligence
+Item 1: The Role of Prior Knowledge
+[The Role of Prior Knowledge] \begin{verbatim}
+
+
+% Define prior knowledge as facts and rules
+% Fact: Prior knowledge about objects and their properties
+object(apple).
+object(banana).
+property(apple, color(red)).
+property(banana, color(yellow)).
+
+% Rule: If an object is red, it is likely an apple
+is_apple(X) :- object(X), property(X, color(red)).
+
+% Rule: If an object is yellow, it is likely a banana
+is_banana(X) :- object(X), property(X, color(yellow)).
+
+% Query: Use prior knowledge to infer the type of object
+% Example: Check if an object is an apple
+% ?- is_apple(apple).
+% Result: true
+
+% Example: Check if an object is a banana
+% ?- is_banana(banana).
+% Result: true
+
+% Example: Check if an object is an apple (when it's not)
+% ?- is_apple(banana).
+% Result: false
+\end{verbatim}
+Chapter 2: Mathematical Foundations
+Section 1: Logic and Reasoning
+Item 1: Propositional and First-Order Logic
+[Propositional and First-Order Logic] \begin{verbatim}
+
+
+% Define facts and rules in PROLOG to illustrate propositional and first-order logic
+% Propositional logic example: Simple facts
+sunny. % It is sunny
+warm.  % It is warm
+
+% Rule: If it is sunny and warm, then it is a good day
+good_day :- sunny, warm.
+
+% First-order logic example: Define relationships between entities
+% Facts: Define individuals and their properties
+person(john). % John is a person
+person(sara). % Sara is a person
+likes(john, sara). % John likes Sara
+likes(sara, john). % Sara likes John
+
+% Rule: If X likes Y and Y likes X, then they are friends
+friends(X, Y) :- likes(X, Y), likes(Y, X).
+
+% Query examples
+% ?- good_day. % Checks if it is a good day
+% ?- friends(john, sara). % Checks if John and Sara are friends
+\end{verbatim}
+Item 2: Probabilistic Logic
+[Probabilistic Logic] \begin{verbatim}
+
+
+% Define probabilistic facts with their associated probabilities
+% Fact: It rains with a probability of 0.3
+prob(rains, 0.3).
+
+% Fact: The grass is wet with a probability of 0.8 if it rains
+prob(wet_grass, 0.8) :- prob(rains, P), P > 0.
+
+% Fact: The grass is wet with a probability of 0.1 if it does not rain
+prob(wet_grass, 0.1) :- \+ prob(rains, _).
+
+% Rule: Calculate the probability of the grass being wet
+% This combines the probabilities of wet grass given rain and no rain
+prob_wet_grass(P) :-
+    prob(rains, P_rain),
+    prob(wet_grass, P_wet_given_rain),
+    prob(wet_grass, P_wet_given_no_rain),
+    P_no_rain is 1 - P_rain,
+    P is (P_rain * P_wet_given_rain) + (P_no_rain * P_wet_given_no_rain).
+
+% Query: What is the probability that the grass is wet?
+% This will compute the overall probability based on the defined rules
+?- prob_wet_grass(P).
+\end{verbatim}
+Item 3: Modal and Temporal Logic
+[Modal and Temporal Logic] \begin{verbatim}
+
+
+% Define modal operators for necessity and possibility
+:- op(500, xfy, []). % Necessity operator: []P
+:- op(500, xfy, <>). % Possibility operator: <>P
+
+% Define temporal operators for "next" and "until"
+:- op(600, xfy, next). % Next operator: next(P)
+:- op(700, xfy, until). % Until operator: P until Q
+
+% Example knowledge base for modal and temporal logic
+% Facts and rules are defined using modal and temporal operators
+
+% Necessity: All birds can fly ([]fly(bird))
+fly(bird) :- []fly(bird).
+
+% Possibility: It is possible that a penguin can fly (<>fly(penguin))
+possible_fly(penguin) :- <>fly(penguin).
+
+% Temporal: It will rain next (next(rain))
+next_rain :- next(rain).
+
+% Temporal: It will rain until it stops (rain until stop)
+rain_until_stop :- rain until stop.
+
+% Rule: If it is necessary that P, then P is true
+P :- []P.
+
+% Rule: If it is possible that P, then P might be true
+possible(P) :- <>P.
+
+% Rule: If next(P) is true, then P will be true in the next state
+next_state(P) :- next(P).
+
+% Rule: If P until Q is true, then P holds until Q becomes true
+holds_until(P, Q) :- P until Q.
+
+% Example query: Check if it is possible for a penguin to fly
+% ?- possible_fly(penguin).
+\end{verbatim}
+Section 2: Optimization
+Item 1: Constraint Satisfaction
+[Constraint Satisfaction] \begin{verbatim}
+
+
+% Define the domain for variables
+domain([red, green, blue]).
+
+% Define the variables and their domains
+variables([X, Y, Z]) :-
+    domain(D),
+    X in D,
+    Y in D,
+    Z in D.
+
+% Define the constraints
+constraints(X, Y, Z) :-
+    X #\= Y,  % X and Y must have different colors
+    Y #\= Z,  % Y and Z must have different colors
+    X #\= Z.  % X and Z must have different colors
+
+% Solve the constraint satisfaction problem
+solve(X, Y, Z) :-
+    variables([X, Y, Z]),
+    constraints(X, Y, Z),
+    labeling([], [X, Y, Z]).  % Find a valid assignment of colors
+
+% Example query to find a solution
+% ?- solve(X, Y, Z).
+\end{verbatim}
+Chapter 3: Knowledge Representation
+Section 1: Symbolic Knowledge
+Item 1: Ontologies and Knowledge Graphs
+[Ontologies and Knowledge Graphs] \begin{verbatim}
+
+
+% Define classes and their relationships in the ontology
+class('Neuron').          % Neuron is a class
+class('Synapse').         % Synapse is a class
+subclass('Synapse', 'Neuron').  % Synapse is a subclass of Neuron
+
+% Define properties (relationships) between classes
+property('connects', 'Synapse', 'Neuron').  % Synapse connects Neuron
+property('hasWeight', 'Synapse', float).    % Synapse has a weight (float)
+
+% Define instances of classes
+instance('Neuron1', 'Neuron').  % Neuron1 is an instance of Neuron
+instance('Synapse1', 'Synapse'). % Synapse1 is an instance of Synapse
+
+% Assert facts about instances
+fact('connects', 'Synapse1', 'Neuron1').  % Synapse1 connects Neuron1
+fact('hasWeight', 'Synapse1', 0.75).      % Synapse1 has a weight of 0.75
+
+% Query the knowledge graph
+% Check if Synapse1 connects Neuron1
+?- fact('connects', 'Synapse1', 'Neuron1').  % Returns true
+
+% Retrieve the weight of Synapse1
+?- fact('hasWeight', 'Synapse1', Weight).    % Weight = 0.75
+\end{verbatim}
+Item 2: Frame Systems and Scripts
+[Frame Systems and Scripts] \begin{verbatim}
+
+
+% Define a frame for a "Restaurant" with slots
+frame(restaurant, [
+    name: _,          % Name of the restaurant
+    cuisine: _,       % Type of cuisine served
+    location: _,      % Location of the restaurant
+    rating: _,        % Average rating
+    menu: _           % List of menu items
+]).
+
+% Define a script for "Dining at a Restaurant"
+script(dining_at_restaurant, [
+    enter_restaurant, % Step 1: Enter the restaurant
+    choose_table,     % Step 2: Choose a table
+    order_food,       % Step 3: Order food
+    eat_food,         % Step 4: Eat the food
+    pay_bill,         % Step 5: Pay the bill
+    leave_restaurant  % Step 6: Leave the restaurant
+]).
+
+% Example instance of a restaurant frame
+instance(restaurant, italian_restaurant, [
+    name: 'La Trattoria',
+    cuisine: italian,
+    location: downtown,
+    rating: 4.5,
+    menu: [pizza, pasta, risotto]
+]).
+
+% Example execution of the dining script
+execute_script(dining_at_restaurant, [
+    enter_restaurant,
+    choose_table,
+    order_food(pizza),
+    eat_food,
+    pay_bill,
+    leave_restaurant
+]).
+\end{verbatim}
+Section 2: Hybrid Knowledge Structures
+Item 1: Tensorized Logic
+[Tensorized Logic] \begin{verbatim}
+
+
+% Define tensorized logic predicates
+% tensor/3 represents a tensor with dimensions (X, Y, Z)
+tensor(X, Y, Z) :- 
+    between(1, 3, X),  % X ranges from 1 to 3
+    between(1, 3, Y),  % Y ranges from 1 to 3
+    between(1, 3, Z).  % Z ranges from 1 to 3
+
+% Example: Check if a tensor element (X, Y, Z) satisfies a condition
+check_tensor_element(X, Y, Z) :-
+    tensor(X, Y, Z),  % Ensure (X, Y, Z) is a valid tensor element
+    (X + Y + Z) > 5.  % Condition: sum of indices > 5
+
+% Query: Find all tensor elements where the sum of indices > 5
+% ?- check_tensor_element(X, Y, Z).
+\end{verbatim}
+Chapter 4: Learning Mechanisms
+Section 1: Symbolic Learning
+Item 1: Inductive Logic Programming
+[Inductive Logic Programming] \begin{verbatim}
+
+
+% Define background knowledge (facts and rules)
+parent(john, mary). % John is the parent of Mary
+parent(john, tom).  % John is the parent of Tom
+parent(mary, ann).  % Mary is the parent of Ann
+parent(mary, bob).  % Mary is the parent of Bob
+
+% Define a target predicate to learn (grandparent relationship)
+grandparent(X, Y) :- parent(X, Z), parent(Z, Y).
+
+% Example of inductive learning: generalize from examples
+% Positive examples
+grandparent(john, ann). % John is the grandparent of Ann
+grandparent(john, bob). % John is the grandparent of Bob
+
+% Negative examples (counterexamples)
+\+ grandparent(john, mary). % John is not the grandparent of Mary
+\+ grandparent(john, tom).  % John is not the grandparent of Tom
+
+% Inductive logic programming: learn the grandparent rule
+% The system infers the rule: grandparent(X, Y) :- parent(X, Z), parent(Z, Y).
+\end{verbatim}
+Item 2: Explanation-Based Learning
+[Explanation-Based Learning] \begin{verbatim}
+
+
+% Explanation-Based Learning (EBL) in Prolog
+% This example demonstrates how EBL can be used to learn rules from examples.
+
+% Define a knowledge base with background knowledge
+% Background knowledge: facts and rules about the domain
+parent(john, mary). % John is the parent of Mary
+parent(mary, ann).  % Mary is the parent of Ann
+parent(ann, bob).   % Ann is the parent of Bob
+
+% Define a target concept to learn: grandparent(X, Y)
+% X is the grandparent of Y if X is the parent of Z and Z is the parent of Y
+grandparent(X, Y) :- parent(X, Z), parent(Z, Y).
+
+% Example of learning from an explanation
+% Given an example: grandparent(john, ann)
+% The system explains why this is true:
+% 1. parent(john, mary) is true.
+% 2. parent(mary, ann) is true.
+% Therefore, grandparent(john, ann) is true.
+
+% The learned rule is generalized and added to the knowledge base
+% This rule can now be used to infer new facts
+% For example, grandparent(john, bob) can be inferred using the learned rule.
+
+% Query the learned rule
+?- grandparent(john, bob).
+% Output: true
+\end{verbatim}
+Item 3: Analogical Reasoning
+[Analogical Reasoning] \begin{verbatim}
+
+
+% Define the base domain (source) and target domain (target)
+% Source domain: Animal kingdom
+% Target domain: Human society
+
+% Source domain facts
+animal(lion).
+animal(eagle).
+animal(shark).
+
+% Target domain facts
+human(king).
+human(leader).
+human(warrior).
+
+% Analogical mapping between source and target domains
+analogy(lion, king).  % Lion is to king as...
+analogy(eagle, leader).  % Eagle is to leader as...
+analogy(shark, warrior).  % Shark is to warrior as...
+
+% Rule to infer analogical relationships
+% If X is analogous to Y, and X has property P, then Y has property P.
+analogical_inference(X, Y, P) :-
+    analogy(X, Y),
+    has_property(X, P),
+    assertz(has_property(Y, P)).
+
+% Properties in the source domain
+has_property(lion, strong).
+has_property(eagle, visionary).
+has_property(shark, aggressive).
+
+% Query to infer properties in the target domain
+% Example: What properties does the king have?
+% ?- analogical_inference(lion, king, P).
+\end{verbatim}
+Chapter 5: Reasoning Systems
+Section 1: Logical Reasoning
+Item 1: Automated Theorem Proving
+[Automated Theorem Proving] \begin{verbatim}
+
+
+% Define facts and rules for a simple logical system
+% Fact: All humans are mortal.
+mortal(X) :- human(X).
+
+% Fact: Socrates is a human.
+human(socrates).
+
+% Query: Is Socrates mortal?
+% This will return true if the theorem is proven.
+?- mortal(socrates).
+
+% Define a rule for implication in logical reasoning
+% If A implies B, and A is true, then B is true.
+implies(A, B) :- A, B.
+
+% Example of a theorem to prove: If it's raining, then the ground is wet.
+% Fact: It is raining.
+raining.
+
+% Rule: If it's raining, then the ground is wet.
+wet(ground) :- raining.
+
+% Query: Is the ground wet?
+% This will return true if the theorem is proven.
+?- wet(ground).
+
+% Define a rule for conjunction in logical reasoning
+% If both A and B are true, then A ∧ B is true.
+and(A, B) :- A, B.
+
+% Example of a theorem to prove: It is raining and the ground is wet.
+% Query: Is it raining and the ground wet?
+% This will return true if the theorem is proven.
+?- and(raining, wet(ground)).
+
+% Define a rule for disjunction in logical reasoning
+% If either A or B is true, then A ∨ B is true.
+or(A, _) :- A.
+or(_, B) :- B.
+
+% Example of a theorem to prove: It is either raining or sunny.
+% Fact: It is not sunny.
+\+ sunny.
+
+% Query: Is it either raining or sunny?
+% This will return true if the theorem is proven.
+?- or(raining, sunny).
+
+% Define a rule for negation in logical reasoning
+% If A is not true, then ¬A is true.
+not(A) :- \+ A.
+
+% Example of a theorem to prove: It is not sunny.
+% Query: Is it not sunny?
+% This will return true if the theorem is proven.
+?- not(sunny).
+\end{verbatim}
+Item 2: Answer Set Programming
+[Answer Set Programming] \begin{verbatim}
+
+
+% Define facts and rules for a simple logical reasoning example
+% Facts: Define basic truths about the world
+bird(tweety).  % Tweety is a bird
+bird(polly).   % Polly is a bird
+penguin(polly). % Polly is a penguin
+
+% Rules: Define logical relationships
+% Rule 1: All birds can fly, except penguins
+can_fly(X) :- bird(X), not penguin(X).
+
+% Rule 2: Penguins cannot fly
+cannot_fly(X) :- penguin(X).
+
+% Query: Check if a specific bird can fly
+% Example query: can_fly(tweety).  % Returns true
+% Example query: can_fly(polly).   % Returns false
+\end{verbatim}
+Item 3: Probabilistic Logic Programming
+[Probabilistic Logic Programming] \begin{verbatim}
+
+
+% Import the ProbLog library for probabilistic logic programming
+:- use_module(library(problog)).
+
+% Define probabilistic facts
+0.7::burglary. % Probability of a burglary occurring
+0.2::earthquake. % Probability of an earthquake occurring
+
+% Define deterministic rules
+alarm :- burglary. % Alarm triggers if there is a burglary
+alarm :- earthquake. % Alarm triggers if there is an earthquake
+
+% Define a query to compute the probability of the alarm ringing
+query(alarm). % Query the probability of the alarm event
+
+% Define a query to compute the probability of both burglary and alarm
+query(burglary, alarm). % Query the joint probability of burglary and alarm
+
+% Define a query to compute the probability of alarm given burglary
+query(alarm | burglary). % Query the conditional probability of alarm given burglary
+\end{verbatim}
+Section 2: Hybrid Reasoning
+Item 1: Neural-Symbolic Theorem Proving
+[Neural-Symbolic Theorem Proving] \begin{verbatim}
+
+
+% Define facts and rules in a symbolic manner
+% Fact: All humans are mortal.
+mortal(X) :- human(X).
+
+% Fact: Socrates is a human.
+human(socrates).
+
+% Neural-Symbolic Integration: Use a neural network to predict symbolic facts
+% Assume a neural network predicts whether X is a philosopher
+% Here, we simulate the neural network's output as a symbolic fact
+philosopher(X) :- neural_prediction(X, philosopher).
+
+% Simulated neural network prediction for Socrates
+neural_prediction(socrates, philosopher).
+
+% Theorem: Is Socrates mortal?
+% Query the system to prove the theorem
+?- mortal(socrates).
+
+% Expected output: true
+% Explanation: 
+% 1. mortal(socrates) is true because human(socrates) is true.
+% 2. human(socrates) is a given fact.
+% 3. The neural network also confirms Socrates is a philosopher, 
+%    though this is not directly used in the theorem proof.
+\end{verbatim}
+Item 2: Probabilistic Soft Logic
+[Probabilistic Soft Logic] \begin{verbatim}
+
+
+% Define probabilistic soft logic rules and facts
+% Rule 1: If A is true, then B is likely true with a certain weight
+rule(0.8, b(X)) :- a(X).  % Weight 0.8 indicates the strength of the rule
+
+% Rule 2: If C is true, then D is likely true with a certain weight
+rule(0.7, d(X)) :- c(X).  % Weight 0.7 indicates the strength of the rule
+
+% Fact 1: A is true for entity 'entity1'
+a(entity1).  % A is true for 'entity1'
+
+% Fact 2: C is true for entity 'entity2'
+c(entity2).  % C is true for 'entity2'
+
+% Query: Check if B is true for 'entity1' and D is true for 'entity2'
+% The result will be probabilistic based on the weights of the rules
+?- b(entity1), d(entity2).
+\end{verbatim}
+Chapter 6: Symbolic Systems Engineering
+Section 1: Knowledge Engineering
+Item 1: Ontology Design Patterns
+[Ontology Design Patterns] \begin{verbatim}
+
+
+% Define a base class for neurons
+neuron(X) :- 
+    type(X, neuron). % X is of type neuron
+
+% Define a subclass for sensory neurons
+sensory_neuron(X) :- 
+    neuron(X), 
+    type(X, sensory). % X is a sensory neuron
+
+% Define a subclass for motor neurons
+motor_neuron(X) :- 
+    neuron(X), 
+    type(X, motor). % X is a motor neuron
+
+% Define a relationship between neurons and synapses
+connected(X, Y) :- 
+    synapse(S), 
+    connects(S, X, Y). % S connects neuron X to neuron Y
+
+% Define a pattern for a simple reflex arc
+reflex_arc(Sensory, Motor) :- 
+    sensory_neuron(Sensory), 
+    motor_neuron(Motor), 
+    connected(Sensory, Motor). % Sensory neuron connects to motor neuron
+
+% Example facts
+type(n1, neuron). 
+type(n1, sensory). 
+type(n2, neuron). 
+type(n2, motor). 
+synapse(s1). 
+connects(s1, n1, n2). 
+
+% Query to check if a reflex arc exists between n1 and n2
+?- reflex_arc(n1, n2).
+\end{verbatim}
+Item 2: Reasoning Engine Design
+[Reasoning Engine Design] \begin{verbatim}
+
+
+% Define facts representing symbolic knowledge
+% Example: Facts about animals and their characteristics
+animal(dog). % A dog is an animal
+animal(cat). % A cat is an animal
+has_fur(dog). % A dog has fur
+has_fur(cat). % A cat has fur
+can_bark(dog). % A dog can bark
+can_meow(cat). % A cat can meow
+
+% Define rules for reasoning
+% Example: Rule to determine if an animal is a pet
+is_pet(X) :- animal(X), has_fur(X). % An animal with fur is a pet
+
+% Example: Rule to determine if an animal makes a specific sound
+makes_sound(X, bark) :- can_bark(X). % An animal that can bark makes a barking sound
+makes_sound(X, meow) :- can_meow(X). % An animal that can meow makes a meowing sound
+
+% Query examples
+% Example: Check if a dog is a pet
+% ?- is_pet(dog). % Expected output: true
+
+% Example: Check what sound a cat makes
+% ?- makes_sound(cat, Sound). % Expected output: Sound = meow
+\end{verbatim}
+Section 2: Logic Programming
+Item 1: Modern Prolog Systems
+[Modern Prolog Systems] \begin{verbatim}
+
+
+% Define a simple neuro-symbolic rule to classify emotions based on input features
+% Input: Features (e.g., facial expressions, tone of voice)
+% Output: Emotion classification (e.g., happy, sad, angry)
+
+% Facts representing input features
+feature(facial_expression, smiling).
+feature(tone_of_voice, cheerful).
+
+% Rules to infer emotions based on features
+emotion(happy) :-
+    feature(facial_expression, smiling),
+    feature(tone_of_voice, cheerful).
+
+emotion(sad) :-
+    feature(facial_expression, frowning),
+    feature(tone_of_voice, low).
+
+emotion(angry) :-
+    feature(facial_expression, scowling),
+    feature(tone_of_voice, loud).
+
+% Query to determine the emotion based on observed features
+% Example query: ?- emotion(X).
+% This will unify X with the inferred emotion based on the facts.
+
+% Additional rule to handle uncertainty using probabilistic reasoning
+% This is a placeholder for more advanced neuro-symbolic integration
+emotion(uncertain) :-
+    \+ feature(facial_expression, _),
+    \+ feature(tone_of_voice, _).
+
+% End of Prolog program
+\end{verbatim}
+Item 2: Answer Set Programming
+[Answer Set Programming] \begin{verbatim}
+
+
+% Define facts and rules for a simple knowledge base
+% Facts: Define some basic truths
+bird(sparrow).
+bird(penguin).
+bird(eagle).
+
+% Rules: Define logical relationships
+can_fly(X) :- bird(X), not flightless(X). % A bird can fly if it is not flightless
+flightless(penguin). % Penguins are flightless
+
+% Query: Check if a specific bird can fly
+% Example query: can_fly(sparrow)?
+% This will return true since sparrows are not flightless
+
+% Example query: can_fly(penguin)?
+% This will return false since penguins are flightless
+
+% Example query: can_fly(eagle)?
+% This will return true since eagles are not flightless
+\end{verbatim}
+Item 3: Constraint Logic Programming
+[Constraint Logic Programming] \begin{verbatim}
+
+
+% Define a simple constraint logic programming example in PROLOG
+% This example solves a basic scheduling problem using constraints.
+
+:- use_module(library(clpfd)). % Import the CLP(FD) library for finite domain constraints
+
+% Define the scheduling problem with tasks and their durations
+schedule(Tasks) :-
+    Tasks = [task(1, 5), task(2, 3), task(3, 4)], % List of tasks with IDs and durations
+    StartTimes = [S1, S2, S3], % Start times for each task
+    EndTimes = [E1, E2, E3], % End times for each task
+    MaxTime #= 10, % Maximum allowed time for the schedule
+
+    % Define constraints for each task
+    task_constraints(Tasks, StartTimes, EndTimes),
+
+    % Ensure no overlapping tasks
+    disjoint2([task(S1, 5, E1), task(S2, 3, E2), task(S3, 4, E3)]),
+
+    % Ensure all tasks finish within the maximum time
+    EndTimes ins 0..MaxTime,
+
+    % Find a valid schedule
+    labeling([], StartTimes).
+
+% Define constraints for each task
+task_constraints([], [], []).
+task_constraints([task(_, Duration) | Tasks], [Start | StartTimes], [End | EndTimes]) :-
+    End #= Start + Duration, % End time is start time plus duration
+    task_constraints(Tasks, StartTimes, EndTimes).
+
+% Example query to find a valid schedule
+% ?- schedule(Tasks).
+\end{verbatim}
+Section 3: Verification and Validation
+Item 1: Formal Methods
+[Formal Methods] \begin{verbatim}
+
+
+% Define a simple formal method to verify a neural network's output
+% against a symbolic rule in Neuro-Symbolic AI.
+
+% Predicate to check if the neural network output satisfies the symbolic rule
+verify_output(NeuralOutput, SymbolicRule) :-
+    % Step 1: Extract the relevant features from the neural output
+    extract_features(NeuralOutput, Features),
+    
+    % Step 2: Apply the symbolic rule to the extracted features
+    apply_symbolic_rule(Features, SymbolicRule, Result),
+    
+    % Step 3: Check if the result satisfies the rule
+    satisfies_rule(Result).
+
+% Predicate to extract features from the neural output
+extract_features(NeuralOutput, Features) :-
+    % Example: Extract the top 3 predictions from the neural output
+    take_top_predictions(NeuralOutput, 3, Features).
+
+% Predicate to apply the symbolic rule to the features
+apply_symbolic_rule(Features, SymbolicRule, Result) :-
+    % Example: Check if all features satisfy the symbolic rule
+    maplist(SymbolicRule, Features, Result).
+
+% Predicate to check if all results satisfy the rule
+satisfies_rule(Result) :-
+    % Example: Ensure all results are true
+    forall(member(R, Result), R == true).
+
+% Example symbolic rule: Check if a feature is greater than a threshold
+symbolic_rule(Feature, Result) :-
+    threshold(Threshold),
+    Result = (Feature > Threshold).
+
+% Example threshold value
+threshold(0.5).
+
+% Example neural output (list of predictions)
+neural_output([0.7, 0.4, 0.9, 0.2]).
+
+% Example usage:
+% ?- neural_output(Output), verify_output(Output, symbolic_rule).
+\end{verbatim}
+Chapter 7: Neural-Symbolic Integration
+Section 1: Integration Patterns
+Item 1: Neural Predicates
+[Neural Predicates] \begin{verbatim}
+
+
+% Define a neural predicate that represents a neural network's output
+% This predicate takes an input and returns a probability distribution
+neural_predicate(Input, Output) :-
+    % Simulate a neural network computation
+    neural_network(Input, Output).
+
+% Example neural network computation
+% This could be replaced with an actual neural network model
+neural_network(Input, Output) :-
+    % Placeholder for neural network logic
+    % For simplicity, assume Output is a probability distribution
+    Output = [0.7, 0.2, 0.1]. % Example output probabilities
+
+% Example usage of the neural predicate
+% Query the neural predicate with a specific input
+example_usage :-
+    Input = [1, 0, 1], % Example input vector
+    neural_predicate(Input, Output),
+    write('Output probabilities: '), write(Output), nl.
+
+% Integration with symbolic reasoning
+% Combine neural predicates with symbolic rules
+symbolic_integration(Input, Result) :-
+    neural_predicate(Input, Output),
+    % Apply symbolic reasoning based on neural output
+    (   Output = [P1, P2, P3],
+        P1 > 0.5 -> Result = 'Class A'
+    ;   P2 > 0.5 -> Result = 'Class B'
+    ;   P3 > 0.5 -> Result = 'Class C'
+    ;   Result = 'Unknown'
+    ).
+
+% Example of symbolic integration
+example_integration :-
+    Input = [1, 0, 1], % Example input vector
+    symbolic_integration(Input, Result),
+    write('Classification result: '), write(Result), nl.
+\end{verbatim}
+Section 2: Learning and Reasoning Loop
+Item 1: Symbolic Reasoning to Neural Control
+[Symbolic Reasoning to Neural Control] \begin{verbatim}
+
+
+% Define symbolic rules for decision-making
+% Rule 1: If the environment is safe, take action A
+action(A) :- safe(Environment), 
+             perform_action(A, Environment).
+
+% Rule 2: If the environment is unsafe, take action B
+action(B) :- unsafe(Environment), 
+             perform_action(B, Environment).
+
+% Neural control integration
+% Use neural network to classify environment state
+classify_environment(Environment, safe) :- 
+    neural_network_output(Environment, safe).
+
+classify_environment(Environment, unsafe) :- 
+    neural_network_output(Environment, unsafe).
+
+% Perform action based on classification
+perform_action(Action, Environment) :- 
+    classify_environment(Environment, State), 
+    action(Action).
+
+% Example neural network output (simulated)
+neural_network_output(Environment, safe) :- 
+    Environment = [low_risk, stable_conditions].
+
+neural_network_output(Environment, unsafe) :- 
+    Environment = [high_risk, unstable_conditions].
+
+% Example query: What action to take in a given environment?
+% ?- action(Action), Environment = [low_risk, stable_conditions].
+\end{verbatim}
+Chapter 8: Practical Implementation
+Section 1: Development Workflow
+Item 1: Knowledge Engineering
+[Knowledge Engineering] \begin{verbatim}
+
+
+% Define a simple knowledge base for Neuro-Symbolic AI
+% Predicate to represent a neuron and its activation state
+neuron(neuron1, active).
+neuron(neuron2, inactive).
+
+% Predicate to represent a symbolic rule
+% If neuron1 is active, then neuron2 should be active
+rule(neuron1, neuron2) :-
+    neuron(neuron1, active),
+    neuron(neuron2, inactive),
+    retract(neuron(neuron2, inactive)),
+    assertz(neuron(neuron2, active)).
+
+% Predicate to check if a neuron is active
+is_active(Neuron) :-
+    neuron(Neuron, active).
+
+% Example query to apply the rule and check the result
+% ?- rule(neuron1, neuron2), is_active(neuron2).
+\end{verbatim}
+Section 2: Deployment Considerations
+Item 1: Error Handling
+[Error Handling] \begin{verbatim}
+
+
+% Define a predicate to handle errors in neuro-symbolic AI systems
+handle_error(ErrorType, Input, Output) :-
+    % Check if the error type is known
+    known_error(ErrorType),
+    % Apply error-specific handling logic
+    handle_specific_error(ErrorType, Input, Output).
+
+% Predicate to check if the error type is known
+known_error(division_by_zero).
+known_error(invalid_input).
+known_error(memory_overflow).
+
+% Predicate to handle specific errors
+handle_specific_error(division_by_zero, _, Output) :-
+    % Handle division by zero error
+    Output = 'Error: Division by zero detected.'.
+
+handle_specific_error(invalid_input, Input, Output) :-
+    % Handle invalid input error
+    format(atom(Output), 'Error: Invalid input detected: ~w', [Input]).
+
+handle_specific_error(memory_overflow, _, Output) :-
+    % Handle memory overflow error
+    Output = 'Error: Memory overflow detected.'.
+
+% Example usage
+% handle_error(division_by_zero, _, Result).
+% Result = 'Error: Division by zero detected.'
+\end{verbatim}
+Chapter 9: Evaluation and Benchmarking
+Section 1: Evaluation Metrics
+Item 1: Reasoning Correctness
+[Reasoning Correctness] \begin{verbatim}
+
+
+% Define facts representing symbolic knowledge
+% Example: Facts about animals and their classifications
+animal(dog). % A dog is an animal
+animal(cat). % A cat is an animal
+mammal(dog). % A dog is a mammal
+mammal(cat). % A cat is a mammal
+
+% Define rules for reasoning correctness
+% Example: Rule to check if an animal is a mammal
+is_mammal(X) :- mammal(X). % X is a mammal if it is classified as a mammal
+
+% Example: Rule to check if an animal is correctly classified
+correct_classification(X) :- 
+    animal(X), % X is an animal
+    is_mammal(X). % X is correctly classified as a mammal
+
+% Query to verify reasoning correctness
+% Example: Check if a dog is correctly classified
+?- correct_classification(dog). % Expected output: true
+
+% Example: Check if a bird is correctly classified (should fail)
+?- correct_classification(bird). % Expected output: false
+\end{verbatim}
+Section 2: Benchmark Suites
+Item 1: Reasoning Tasks
+[Reasoning Tasks] \begin{verbatim}
+
+
+% Define facts about neuro-symbolic AI tasks
+task(classification). % Task: Classify data into categories
+task(reasoning).      % Task: Perform logical reasoning
+task(planning).       % Task: Create action plans
+task(learning).       % Task: Learn from data
+
+% Define benchmark suites for evaluation
+benchmark_suite(neuro_symbolic_benchmark, [classification, reasoning, planning, learning]).
+
+% Example query: Check if a task is part of the neuro-symbolic benchmark
+% Query: ?- member(Task, [classification, reasoning, planning, learning]), benchmark_suite(neuro_symbolic_benchmark, Tasks), member(Task, Tasks).
+% This checks if a specific task is included in the benchmark suite.
+
+% Rule to evaluate a task's inclusion in a benchmark suite
+evaluate_task(Task, Suite) :-
+    benchmark_suite(Suite, Tasks), % Retrieve tasks in the suite
+    member(Task, Tasks).           % Check if the task is a member
+
+% Example usage:
+% ?- evaluate_task(reasoning, neuro_symbolic_benchmark).
+% This will return true if 'reasoning' is part of the neuro-symbolic benchmark.
+\end{verbatim}
+Chapter 10: Safety and Reliability
+Section 1: Formal Verification
+Item 1: Property Verification
+[Property Verification] \begin{verbatim}
+
+
+% Define a simple neural network model
+neural_network(input, output) :-
+    % Layer 1: Input to hidden layer
+    hidden_layer(input, hidden),
+    % Layer 2: Hidden layer to output
+    output_layer(hidden, output).
+
+% Define the hidden layer transformation
+hidden_layer(input, hidden) :-
+    % Apply weights and biases to input
+    matrix_multiply(input, weights1, weighted_input),
+    matrix_add(weighted_input, biases1, hidden_input),
+    % Apply activation function (e.g., ReLU)
+    relu(hidden_input, hidden).
+
+% Define the output layer transformation
+output_layer(hidden, output) :-
+    % Apply weights and biases to hidden layer
+    matrix_multiply(hidden, weights2, weighted_hidden),
+    matrix_add(weighted_hidden, biases2, output_input),
+    % Apply activation function (e.g., softmax)
+    softmax(output_input, output).
+
+% Property Verification: Check if the output is within expected bounds
+verify_property(output) :-
+    % Ensure output values are between 0 and 1
+    forall(member(Value, output), between(0, 1, Value)).
+
+% Example usage
+?- neural_network([0.5, 0.3], Output), verify_property(Output).
+\end{verbatim}
+Section 2: Ethical Considerations
+Item 1: Transparency
+[Transparency] \begin{verbatim}
+
+
+% Define a rule to check if a decision is transparent
+% based on the explainability of the reasoning process.
+is_transparent(Decision) :-
+    explainable(Decision, Explanation),  % Check if the decision has an explanation
+    clear(Explanation),                  % Ensure the explanation is clear
+    accessible(Explanation).             % Ensure the explanation is accessible
+
+% Define a rule to check if an explanation is clear.
+clear(Explanation) :-
+    simple_language(Explanation),        % Explanation uses simple language
+    logical_structure(Explanation).      % Explanation has a logical structure
+
+% Define a rule to check if an explanation is accessible.
+accessible(Explanation) :-
+    available_to_all(Explanation),       % Explanation is available to all stakeholders
+    understandable(Explanation).         % Explanation is understandable by stakeholders
+
+% Example facts for testing the transparency of a decision.
+explainable(decision1, explanation1).    % Decision 1 has an explanation
+simple_language(explanation1).           % Explanation 1 uses simple language
+logical_structure(explanation1).         % Explanation 1 has a logical structure
+available_to_all(explanation1).          % Explanation 1 is available to all
+understandable(explanation1).            % Explanation 1 is understandable
+
+% Query to check if decision1 is transparent.
+% ?- is_transparent(decision1).
+\end{verbatim}
+Chapter 11: Future Directions
+Section 1: Research Frontiers
+Item 1: Scalable Reasoning
+[Scalable Reasoning] \begin{verbatim}
+
+
+% Define facts representing knowledge about objects and their properties
+object(apple). % An apple is an object
+object(banana). % A banana is an object
+color(apple, red). % The color of an apple is red
+color(banana, yellow). % The color of a banana is yellow
+
+% Define rules for reasoning about object properties
+is_fruit(X) :- object(X), color(X, _). % X is a fruit if it is an object and has a color
+
+% Query to check if an object is a fruit
+% ?- is_fruit(apple). % This will return true
+% ?- is_fruit(banana). % This will return true
+
+% Define a rule for scalable reasoning using recursion
+list_fruits([]). % Base case: an empty list has no fruits
+list_fruits([H|T]) :- is_fruit(H), list_fruits(T). % Recursive case: check if the head is a fruit and proceed with the tail
+
+% Query to list all fruits in a given list
+% ?- list_fruits([apple, banana, carrot]). % This will return true for apple and banana, false for carrot
+\end{verbatim}
