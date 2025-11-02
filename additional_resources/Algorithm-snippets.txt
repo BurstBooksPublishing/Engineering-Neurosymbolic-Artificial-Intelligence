@@ -1,0 +1,1503 @@
+Chapter 1: Mathematical Foundations
+Section 1: Logic and Reasoning
+Item 1: Propositional and First-Order Logic
+
+[Propositional and First-Order Logic]
+
+\begin{algorithm}
+\caption{Neuro-Symbolic Reasoning with Propositional and First-Order Logic}
+\label{alg:neuro_symbolic_logic}
+\begin{algorithmic}[1]
+\REQUIRE Knowledge base $KB$ (set of logical formulas), Neural network model $M$, Input data $D$
+\ENSURE Inferred logical conclusions $C$
+
+\STATE \textbf{Step 1: Preprocess Input Data}
+\STATE $D' \gets \text{Preprocess}(D)$ \COMMENT{Transform raw data into symbolic representations}
+
+\STATE \textbf{Step 2: Neural Network Inference}
+\STATE $P \gets M(D')$ \COMMENT{Use neural network to generate probabilistic predictions}
+
+\STATE \textbf{Step 3: Symbolic Reasoning}
+\FOR{each prediction $p_i \in P$}
+    \IF{$p_i$ satisfies logical constraints in $KB$}
+        \STATE $C \gets C \cup \{\text{Infer}(p_i, KB)\}$ \COMMENT{Apply logical inference}
+    \ENDIF
+\ENDFOR
+
+\STATE \textbf{Step 4: Output Results}
+\RETURN $C$ \COMMENT{Return inferred logical conclusions}
+\end{algorithmic}
+\end{algorithm}
+Item 2: Probabilistic Logic
+
+\begin{algorithm}
+\caption{Probabilistic Logic in Neuro-Symbolic AI}\label{alg:prob_logic}
+\begin{algorithmic}[1]
+\REQUIRE Knowledge base $KB$ (logical rules), Evidence $E$ (observed data), Probabilistic model $P$ (e.g., Bayesian network)
+\ENSURE Posterior probabilities for logical queries $Q$
+
+\STATE Initialize probabilistic model $P$ with prior probabilities for all variables in $KB$.
+\STATE Incorporate evidence $E$ into $P$ by updating the probabilities of observed variables.
+\FOR{each logical rule $R \in KB$}
+    \STATE Convert $R$ into a probabilistic constraint using $P$.
+    \STATE Update $P$ to satisfy the constraint while maintaining consistency.
+\ENDFOR
+\FOR{each query $Q$}
+    \STATE Compute the posterior probability $P(Q \mid E)$ using probabilistic inference on $P$.
+    \STATE Output $P(Q \mid E)$.
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+Item 3: Modal and Temporal Logic
+
+[Modal and Temporal Logic]
+
+\begin{algorithm}
+\caption{Neuro-Symbolic Integration of Modal and Temporal Logic}
+\label{alg:modal_temporal_logic}
+\begin{algorithmic}[1]
+\REQUIRE Knowledge base \( KB \), Neural network model \( NN \), Input data \( D \)
+\ENSURE Output \( O \) with integrated symbolic and neural reasoning
+
+\STATE Initialize \( KB \) with modal and temporal logic rules
+\STATE Train \( NN \) on \( D \) to learn patterns and features
+\FOR{each input \( d \in D \)}
+    \STATE Extract symbolic features \( S \) from \( d \) using \( KB \)
+    \STATE Generate neural predictions \( P \) from \( d \) using \( NN \)
+    \STATE Combine \( S \) and \( P \) using a fusion function \( F(S, P) \)
+    \IF{\( F(S, P) \) satisfies modal and temporal constraints in \( KB \)}
+        \STATE Add \( F(S, P) \) to \( O \)
+    \ELSE
+        \STATE Refine \( NN \) using feedback from \( KB \)
+    \ENDIF
+\ENDFOR
+\RETURN \( O \)
+\end{algorithmic}
+\end{algorithm}
+Section 2: Statistical Learning Theory
+Item 1: PAC Learning
+```latex \begin{algorithm} \caption{PAC Learning in Neuro-Symbolic AI}\label{alg:pac_learning} \begin{algorithmic}[1] \REQUIRE A hypothesis class $\mathcal{H}$, a distribution $\mathcal{D}$ over input space $\mathcal{X}$, a target concept $c: \mathcal{X} \to \{0,1\}$, accuracy parameter $\epsilon > 0$, confidence parameter $\delta > 0$. \ENSURE A hypothesis $h \in \mathcal{H}$ such that with probability at least $1-\delta$, $P_{x \sim \mathcal{D}}[h(x) \neq c(x)] \leq \epsilon$. \STATE Initialize $S \gets \emptyset$ \COMMENT{Initialize an empty training set} \STATE $m \gets \frac{1}{\epsilon} \left( \log|\mathcal{H}| + \log\frac{1}{\delta} \right)$ \COMMENT{Compute the required sample size} \FOR{$i = 1$ to $m$} \STATE $x_i \sim \mathcal{D}$ \COMMENT{Sample an input from the distribution} \STATE $y_i \gets c(x_i)$ \COMMENT{Obtain the true label from the target concept} \STATE $S \gets S \cup \{(x_i, y_i)\}$ \COMMENT{Add the labeled example to the training set} \ENDFOR \STATE $h \gets \argmin_{h' \in \mathcal{H}} \sum_{(x_i, y_i) \in S} \mathbb{I}[h'(x_i) \neq y_i]$ \COMMENT{Find the hypothesis with minimal training error} \RETURN $h$ \COMMENT{Return the learned hypothesis} \end{algorithmic} \end{algorithm} ```
+
+Item 2: VC Dimension and Generalization
+
+\begin{algorithm}
+\caption{VC Dimension and Generalization in Neuro-Symbolic AI}
+\label{alg:vc_dimension_generalization}
+\begin{algorithmic}[1]
+\REQUIRE Dataset \( D = \{(x_1, y_1), (x_2, y_2), \dots, (x_n, y_n)\} \), Hypothesis class \( \mathcal{H} \), Confidence parameter \( \delta \), VC dimension \( d \)
+\ENSURE Generalization error bound \( \epsilon \)
+
+\STATE \textbf{Step 1: Compute VC Dimension}
+\STATE Calculate the VC dimension \( d \) of the hypothesis class \( \mathcal{H} \).
+
+\STATE \textbf{Step 2: Compute Empirical Risk}
+\FOR{each hypothesis \( h \in \mathcal{H} \)}
+    \STATE Compute the empirical risk \( \hat{R}(h) = \frac{1}{n} \sum_{i=1}^{n} \mathbb{I}(h(x_i) \neq y_i) \)
+\ENDFOR
+
+\STATE \textbf{Step 3: Compute Generalization Error Bound}
+\STATE Compute the generalization error bound \( \epsilon \) using the formula:
+\[
+\epsilon = \sqrt{\frac{d \left( \log \frac{2n}{d} + 1 \right) - \log \frac{\delta}{4}}{n}}
+\]
+
+\STATE \textbf{Step 4: Validate Generalization}
+\IF{\( \hat{R}(h) + \epsilon \leq \text{tolerance} \)}
+    \STATE Hypothesis \( h \) generalizes well.
+\ELSE
+    \STATE Hypothesis \( h \) does not generalize well.
+\ENDIF
+
+\STATE \textbf{Step 5: Output}
+\STATE Return the generalization error bound \( \epsilon \).
+\end{algorithmic}
+\end{algorithm}
+Item 3: Information Theory in Learning
+```latex \begin{algorithm} \caption{Information Theory in Learning} \label{alg:info_theory_learning} \begin{algorithmic}[1] \REQUIRE Dataset $\mathcal{D} = \{(x_1, y_1), (x_2, y_2), \dots, (x_n, y_n)\}$, where $x_i \in \mathcal{X}$ and $y_i \in \mathcal{Y}$. \REQUIRE Model $f_\theta: \mathcal{X} \rightarrow \mathcal{Y}$ with parameters $\theta$. \REQUIRE Loss function $\mathcal{L}(f_\theta(x), y)$. \REQUIRE Entropy function $H(\cdot)$, Mutual Information $I(\cdot; \cdot)$. \ENSURE Optimized model parameters $\theta^*$. \STATE Initialize $\theta$ randomly. \STATE Compute initial entropy $H(Y)$ of the labels $y_i$. \FOR{each epoch $t = 1$ to $T$} \FOR{each batch $(x_b, y_b) \in \mathcal{D}$} \STATE Compute predictions $\hat{y}_b = f_\theta(x_b)$. \STATE Compute loss $\mathcal{L}(\hat{y}_b, y_b)$. \STATE Compute mutual information $I(X_b; Y_b)$ between input $X_b$ and labels $Y_b$. \STATE Update $\theta$ using gradient descent: $\theta \leftarrow \theta - \eta \nabla_\theta \mathcal{L}(\hat{y}_b, y_b)$. \ENDFOR \STATE Compute updated entropy $H(Y)$ of the labels $y_i$. \IF{$H(Y)$ decreases significantly} \STATE Break loop (early stopping). \ENDIF \ENDFOR \RETURN Optimized parameters $\theta^*$. \end{algorithmic} \end{algorithm} ```
+
+Section 3: Optimization
+Item 1: Gradient-Based Methods
+```latex \begin{algorithm} \caption{Gradient-Based Optimization in Neuro-Symbolic AI} \label{alg:gradient_based} \begin{algorithmic}[1] \REQUIRE Objective function $f(\mathbf{x})$, initial parameters $\mathbf{x}_0$, learning rate $\eta$, convergence threshold $\epsilon$ \ENSURE Optimized parameters $\mathbf{x}^*$ \STATE Initialize $\mathbf{x} \gets \mathbf{x}_0$ \STATE Compute initial gradient $\nabla f(\mathbf{x})$ \WHILE{$\|\nabla f(\mathbf{x})\| > \epsilon$} \STATE Update parameters: $\mathbf{x} \gets \mathbf{x} - \eta \nabla f(\mathbf{x})$ \STATE Compute new gradient: $\nabla f(\mathbf{x})$ \ENDWHILE \STATE $\mathbf{x}^* \gets \mathbf{x}$ \RETURN $\mathbf{x}^*$ \end{algorithmic} \end{algorithm} ```
+
+Item 2: Discrete Optimization
+
+\begin{algorithm}
+\caption{Discrete Optimization in Neuro-Symbolic AI}
+\label{alg:discrete_optimization}
+\begin{algorithmic}[1]
+\Require A set of discrete variables $X = \{x_1, x_2, \dots, x_n\}$, a cost function $f(X)$, and constraints $C(X)$.
+\Ensure An optimal assignment of variables $X^*$ that minimizes $f(X)$ while satisfying $C(X)$.
+
+\State Initialize $X$ with a feasible assignment.
+\State Compute the initial cost $f(X)$.
+\State Set $X^* \gets X$ and $f^* \gets f(X)$.
+
+\While{not converged}
+    \For{each variable $x_i \in X$}
+        \State Evaluate all possible discrete values for $x_i$.
+        \For{each possible value $v$ of $x_i$}
+            \State Temporarily assign $x_i \gets v$.
+            \If{$C(X)$ is satisfied}
+                \State Compute the new cost $f(X)$.
+                \If{$f(X) < f^*$}
+                    \State Update $X^* \gets X$ and $f^* \gets f(X)$.
+                \EndIf
+            \EndIf
+        \EndFor
+        \State Assign $x_i$ to the value that minimizes $f(X)$ while satisfying $C(X)$.
+    \EndFor
+    \State Check for convergence (e.g., no improvement in $f^*$ for a fixed number of iterations).
+\EndWhile
+
+\State \Return $X^*$.
+\end{algorithmic}
+\end{algorithm}
+Item 3: Constraint Satisfaction
+
+\begin{algorithm}
+\caption{Constraint Satisfaction in Neuro-Symbolic AI}
+\label{alg:constraint_satisfaction}
+\begin{algorithmic}[1]
+\REQUIRE A set of variables $X = \{x_1, x_2, \dots, x_n\}$
+\REQUIRE A set of domains $D = \{D_1, D_2, \dots, D_n\}$, where $D_i$ is the domain of $x_i$
+\REQUIRE A set of constraints $C = \{C_1, C_2, \dots, C_m\}$
+\ENSURE A solution that satisfies all constraints or a message indicating no solution exists
+
+\STATE Initialize an empty assignment $A = \{\}$
+\STATE Initialize a queue $Q$ with all variables in $X$
+\WHILE{$Q$ is not empty}
+    \STATE Dequeue a variable $x_i$ from $Q$
+    \FOR{each value $v \in D_i$}
+        \STATE Assign $x_i = v$ in $A$
+        \IF{all constraints in $C$ involving $x_i$ are satisfied}
+            \STATE Enqueue all variables connected to $x_i$ by constraints in $C$ to $Q$
+            \STATE Break
+        \ELSE
+            \STATE Remove $x_i = v$ from $A$
+        \ENDIF
+    \ENDFOR
+    \IF{no valid assignment for $x_i$ is found}
+        \STATE \textbf{return} "No solution exists"
+    \ENDIF
+\ENDWHILE
+\STATE \textbf{return} $A$ as the solution
+\end{algorithmic}
+\end{algorithm}
+Chapter 2: Knowledge Representation
+Section 1: Symbolic Knowledge
+Item 1: Ontologies and Knowledge Graphs
+
+\begin{algorithm}
+\caption{Ontologies and Knowledge Graphs in Neuro-Symbolic AI}
+\label{alg:ontologies_knowledge_graphs}
+\begin{algorithmic}[1]
+\REQUIRE Knowledge base $KB$, Neural model $M$, Query $Q$
+\ENSURE Answer $A$ to the query $Q$ using Neuro-Symbolic reasoning
+
+\STATE \textbf{Step 1:} Extract symbolic knowledge from $KB$ into an ontology $O$.
+\STATE \textbf{Step 2:} Construct a knowledge graph $KG$ from $O$ where nodes represent entities and edges represent relationships.
+\STATE \textbf{Step 3:} Train neural model $M$ to map natural language queries to symbolic representations using $KG$.
+\STATE \textbf{Step 4:} Parse query $Q$ into a symbolic representation $S$ using $M$.
+\STATE \textbf{Step 5:} Match $S$ against $KG$ to retrieve relevant entities and relationships.
+\STATE \textbf{Step 6:} Perform logical reasoning on $KG$ to infer new knowledge based on $S$.
+\STATE \textbf{Step 7:} Generate answer $A$ by translating the inferred knowledge back into natural language using $M$.
+\STATE \textbf{Step 8:} Return $A$ as the final output.
+\end{algorithmic}
+\end{algorithm}
+Item 2: Semantic Networks
+
+\begin{algorithm}
+\caption{Semantic Networks in Neuro-Symbolic AI}\label{alg:semantic_networks}
+\begin{algorithmic}[1]
+\REQUIRE Knowledge base $KB$, set of entities $E$, set of relations $R$
+\ENSURE Semantic network $SN$ representing symbolic knowledge
+
+\STATE Initialize $SN$ as an empty graph
+\FOR{each entity $e \in E$}
+    \STATE Add node $e$ to $SN$
+\ENDFOR
+\FOR{each relation $r \in R$}
+    \STATE Parse $r$ to extract subject $s$, predicate $p$, and object $o$
+    \IF{$s \in E$ and $o \in E$}
+        \STATE Add edge $(s, p, o)$ to $SN$
+    \ENDIF
+\ENDFOR
+\STATE Return $SN$
+\end{algorithmic}
+\end{algorithm}
+Item 3: Frame Systems and Scripts
+
+\begin{algorithm}
+\caption{Frame Systems and Scripts in Neuro-Symbolic AI}
+\label{alg:frame_systems_scripts}
+\begin{algorithmic}[1]
+\REQUIRE Knowledge base $KB$, input query $Q$, frame system $FS$, script $S$
+\ENSURE Output $O$ representing the result of the query
+
+\STATE Initialize $O \gets \emptyset$
+\STATE Parse $Q$ to extract relevant entities and relationships
+\FOR{each entity $e$ in $Q$}
+    \IF{$e$ is represented in $FS$}
+        \STATE Retrieve frame $F$ from $FS$ corresponding to $e$
+        \STATE Extract attributes and relationships from $F$
+        \STATE Add extracted information to $O$
+    \ENDIF
+\ENDFOR
+
+\FOR{each relationship $r$ in $Q$}
+    \IF{$r$ is represented in $S$}
+        \STATE Retrieve script $Sc$ from $S$ corresponding to $r$
+        \STATE Execute $Sc$ to infer additional knowledge
+        \STATE Add inferred knowledge to $O$
+    \ENDIF
+\ENDFOR
+
+\STATE Return $O$
+\end{algorithmic}
+\end{algorithm}
+Section 2: Neural Knowledge
+Item 1: Distributed Representations
+```latex \begin{algorithm} \caption{Distributed Representations in Neuro-Symbolic AI} \label{alg:distributed_representations} \begin{algorithmic}[1] \REQUIRE Knowledge base $K$, Neural network $N$, Input data $X$ \ENSURE Distributed representation $R$ \STATE Initialize neural network $N$ with pre-trained weights (if available) \STATE Encode symbolic knowledge from $K$ into a continuous vector space using $N$ \FOR{each input $x_i \in X$} \STATE Map $x_i$ to a distributed representation $r_i$ using $N$ \IF{$r_i$ is not consistent with $K$} \STATE Refine $r_i$ by minimizing a loss function that aligns $r_i$ with $K$ \ENDIF \STATE Append $r_i$ to $R$ \ENDFOR \RETURN $R$ \end{algorithmic} \end{algorithm} ```
+
+Item 2: Embedding Spaces
+
+\begin{algorithm}
+\caption{Embedding Spaces in Neuro-Symbolic AI}\label{alg:embedding_spaces}
+\begin{algorithmic}[1]
+\REQUIRE Knowledge graph $G = (V, E)$, where $V$ is a set of entities and $E$ is a set of relations.
+\ENSURE Embedding space $\mathcal{E}$ where entities and relations are represented as vectors.
+
+\STATE Initialize embedding dimensions $d_e$ for entities and $d_r$ for relations.
+\STATE Randomly initialize entity embeddings $\mathbf{e}_v \in \mathbb{R}^{d_e}$ for each $v \in V$.
+\STATE Randomly initialize relation embeddings $\mathbf{r}_e \in \mathbb{R}^{d_r}$ for each $e \in E$.
+
+\FOR{each training epoch}
+    \FOR{each triple $(h, r, t) \in G$}
+        \STATE Compute the score function $f(\mathbf{e}_h, \mathbf{r}_r, \mathbf{e}_t)$.
+        \STATE Compute the loss $\mathcal{L}$ using a suitable loss function (e.g., margin-based loss).
+        \STATE Update embeddings $\mathbf{e}_h$, $\mathbf{r}_r$, and $\mathbf{e}_t$ using gradient descent.
+    \ENDFOR
+\ENDFOR
+
+\STATE Return the learned embedding space $\mathcal{E}$.
+\end{algorithmic}
+\end{algorithm}
+Section 3: Hybrid Knowledge Structures
+Item 1: Tensorized Logic
+
+\begin{algorithm}
+\caption{Tensorized Logic in Neuro-Symbolic AI}
+\label{alg:tensorized_logic}
+\begin{algorithmic}[1]
+\REQUIRE Knowledge base $\mathcal{K}$, Neural network model $\mathcal{M}$, Input data $\mathcal{D}$
+\ENSURE Hybrid knowledge representation $\mathcal{H}$
+
+\STATE Initialize tensor representations for symbolic knowledge in $\mathcal{K}$
+\FOR{each symbolic rule $r \in \mathcal{K}$}
+    \STATE Convert $r$ into a tensor representation $T_r$ using embedding techniques
+    \STATE Store $T_r$ in a tensor knowledge base $\mathcal{T}$
+\ENDFOR
+
+\FOR{each data point $d \in \mathcal{D}$}
+    \STATE Process $d$ through $\mathcal{M}$ to obtain neural features $F_d$
+    \STATE Retrieve relevant tensorized rules $T_{r_d}$ from $\mathcal{T}$ based on $F_d$
+    \STATE Combine $F_d$ and $T_{r_d}$ using a fusion function $\mathcal{F}$ to produce hybrid representation $H_d$
+    \STATE Add $H_d$ to $\mathcal{H}$
+\ENDFOR
+
+\RETURN $\mathcal{H}$
+\end{algorithmic}
+\end{algorithm}
+Item 2: Neural-Symbolic Integration Patterns
+```latex \begin{algorithm} \caption{Neural-Symbolic Integration Patterns} \label{alg:neural_symbolic_integration} \begin{algorithmic}[1] \REQUIRE Neural network model $N$, symbolic knowledge base $K$, input data $X$ \ENSURE Integrated output $Y$ \STATE Initialize neural network $N$ with pre-trained weights \STATE Load symbolic knowledge base $K$ into memory \FOR{each input $x_i \in X$} \STATE Compute neural output $y_i^{neural} \gets N(x_i)$ \STATE Query symbolic knowledge base $K$ with $x_i$ to obtain $y_i^{symbolic}$ \IF{$y_i^{neural}$ and $y_i^{symbolic}$ are consistent} \STATE $y_i \gets y_i^{neural}$ \ELSE \STATE Resolve inconsistency using predefined rules or heuristics \STATE $y_i \gets \text{resolved output}$ \ENDIF \STATE Append $y_i$ to output list $Y$ \ENDFOR \RETURN $Y$ \end{algorithmic} \end{algorithm} ```
+
+Chapter 3: Physics Understanding and Emulation
+Section 1: Fundamentals of Physics in AI
+Item 1: Physics-Based Simulations in AI
+```latex \begin{algorithm} \caption{Physics-Based Simulations in Neuro-Symbolic AI} \label{alg:physics_sim} \begin{algorithmic}[1] \REQUIRE Physical system parameters $P$, initial state $S_0$, time step $\Delta t$, simulation duration $T$ \ENSURE Simulated states $S(t)$ for $t \in [0, T]$ \STATE Initialize $S \gets S_0$ \COMMENT{Set initial state} \STATE $t \gets 0$ \COMMENT{Initialize time} \WHILE{$t < T$} \STATE Compute forces $F \gets \text{CalculateForces}(S, P)$ \COMMENT{Compute forces acting on the system} \STATE Update velocities $V \gets \text{UpdateVelocities}(S, F, \Delta t)$ \COMMENT{Update velocities based on forces} \STATE Update positions $S \gets \text{UpdatePositions}(S, V, \Delta t)$ \COMMENT{Update positions based on velocities} \STATE $t \gets t + \Delta t$ \COMMENT{Increment time} \STATE Store $S(t) \gets S$ \COMMENT{Record state at time $t$} \ENDWHILE \RETURN $S(t)$ \COMMENT{Return simulated states over time} \end{algorithmic} \end{algorithm} ```
+
+Item 2: Symbolic Representation of Physical Laws
+
+\begin{algorithm}
+\caption{Symbolic Representation of Physical Laws in Neuro-Symbolic AI}
+\label{alg:symbolic_physics}
+\begin{algorithmic}[1]
+\REQUIRE Physical system description $S$, set of physical laws $L$, neural model $M$
+\ENSURE Symbolic representation $R$ of physical laws in $S$
+
+\STATE Initialize $R \gets \emptyset$
+\FOR{each law $l \in L$}
+    \STATE Extract symbolic components $C \gets \text{ExtractComponents}(l)$
+    \STATE Validate components $C$ using neural model $M$
+    \IF{$\text{Validate}(C, M)$}
+        \STATE Add $C$ to $R$
+    \ENDIF
+\ENDFOR
+\STATE Return $R$
+\end{algorithmic}
+\end{algorithm}
+Item 3: Learning Physical Dynamics with Neural Networks
+
+\begin{algorithm}
+\caption{Learning Physical Dynamics with Neural Networks}
+\label{alg:learning_physics}
+\begin{algorithmic}[1]
+\REQUIRE Dataset $\mathcal{D} = \{(\mathbf{x}_i, \mathbf{y}_i)\}_{i=1}^N$, where $\mathbf{x}_i$ represents initial states and $\mathbf{y}_i$ represents corresponding physical dynamics.
+\ENSURE Trained neural network model $f_\theta$ capable of predicting physical dynamics.
+
+\STATE Initialize neural network parameters $\theta$ randomly.
+\FOR{each epoch $t = 1$ to $T$}
+    \FOR{each batch $\mathcal{B} \subset \mathcal{D}$}
+        \STATE Extract initial states $\mathbf{x}_i$ and target dynamics $\mathbf{y}_i$ from $\mathcal{B}$.
+        \STATE Compute predicted dynamics $\hat{\mathbf{y}}_i = f_\theta(\mathbf{x}_i)$.
+        \STATE Calculate loss $\mathcal{L}(\theta) = \frac{1}{|\mathcal{B}|} \sum_{(\mathbf{x}_i, \mathbf{y}_i) \in \mathcal{B}} \|\mathbf{y}_i - \hat{\mathbf{y}}_i\|_2^2$.
+        \STATE Update parameters $\theta \leftarrow \theta - \eta \nabla_\theta \mathcal{L}(\theta)$, where $\eta$ is the learning rate.
+    \ENDFOR
+\ENDFOR
+\RETURN Trained model $f_\theta$.
+\end{algorithmic}
+\end{algorithm}
+Section 2: Hybrid Models for Physical Reasoning
+Item 1: Physics-Informed Neural Networks (PINNs)
+
+\begin{algorithm}
+\caption{Physics-Informed Neural Networks (PINNs) for Hybrid Models in Physical Reasoning}
+\label{alg:pinns}
+\begin{algorithmic}[1]
+\REQUIRE 
+    \Statex $D_{\text{data}}$: Dataset of observed physical data $\{(x_i, u_i)\}_{i=1}^N$
+    \Statex $f(u, x; \theta)$: Physics-based PDE residual function
+    \Statex $\mathcal{L}_{\text{data}}$: Data loss function (e.g., mean squared error)
+    \Statex $\mathcal{L}_{\text{physics}}$: Physics loss function (e.g., PDE residual)
+    \Statex $\theta$: Neural network parameters
+    \Statex $\lambda$: Weighting factor for physics loss
+\ENSURE 
+    \Statex $\theta^*$: Optimized neural network parameters
+
+\STATE Initialize neural network parameters $\theta$ randomly
+\FOR{epoch $= 1$ to $T$}
+    \FOR{each batch $\{(x_i, u_i)\}_{i=1}^B$ in $D_{\text{data}}$}
+        \STATE Compute predicted outputs $\hat{u}_i = \text{NN}(x_i; \theta)$
+        \STATE Compute data loss $\mathcal{L}_{\text{data}} = \frac{1}{B} \sum_{i=1}^B (u_i - \hat{u}_i)^2$
+        \STATE Compute physics loss $\mathcal{L}_{\text{physics}} = \frac{1}{B} \sum_{i=1}^B f(\hat{u}_i, x_i; \theta)^2$
+        \STATE Compute total loss $\mathcal{L} = \mathcal{L}_{\text{data}} + \lambda \mathcal{L}_{\text{physics}}$
+        \STATE Update $\theta$ using gradient descent: $\theta \leftarrow \theta - \eta \nabla_\theta \mathcal{L}$
+    \ENDFOR
+\ENDFOR
+\RETURN $\theta^*$
+\end{algorithmic}
+\end{algorithm}
+Item 2: Differentiable Physics Engines
+
+\subsection*{[Differentiable Physics Engines]}
+
+\begin{algorithm}
+\caption{Differentiable Physics Engine for Neuro-Symbolic AI}
+\label{alg:diff_physics_engine}
+\begin{algorithmic}[1]
+\REQUIRE Input: Initial state $s_0$, physical parameters $\theta$, time steps $T$, neural network $f_\phi$
+\ENSURE Output: Predicted states $s_1, s_2, \dots, s_T$
+
+\STATE Initialize state $s \gets s_0$
+\FOR{$t = 1$ to $T$}
+    \STATE Compute physical dynamics: $s_{phys} \gets \text{PhysicsModel}(s, \theta)$
+    \STATE Compute neural correction: $s_{nn} \gets f_\phi(s)$
+    \STATE Combine predictions: $s \gets s_{phys} + s_{nn}$
+    \STATE Store predicted state: $s_t \gets s$
+\ENDFOR
+\RETURN Predicted states $s_1, s_2, \dots, s_T$
+\end{algorithmic}
+\end{algorithm}
+Chapter 4: Learning Mechanisms
+Section 1: Statistical Learning
+Item 1: Supervised Learning Theory
+
+\begin{algorithm}
+\caption{Supervised Learning in Neuro-Symbolic AI}
+\label{alg:supervised_learning}
+\begin{algorithmic}[1]
+\REQUIRE Dataset \( D = \{(x_1, y_1), (x_2, y_2), \dots, (x_n, y_n)\} \), where \( x_i \) is the input and \( y_i \) is the corresponding label.
+\REQUIRE Neural network model \( f_\theta \) with parameters \( \theta \).
+\REQUIRE Symbolic reasoning module \( R \).
+\REQUIRE Loss function \( \mathcal{L} \).
+\REQUIRE Learning rate \( \eta \).
+\ENSURE Trained model \( f_\theta \) with optimized parameters \( \theta \).
+
+\STATE Initialize parameters \( \theta \) randomly.
+\FOR{each epoch}
+    \FOR{each batch \( B \subseteq D \)}
+        \STATE Compute predictions: \( \hat{y}_i = f_\theta(x_i) \) for all \( (x_i, y_i) \in B \).
+        \STATE Apply symbolic reasoning: \( \hat{y}_i' = R(\hat{y}_i) \) for all \( \hat{y}_i \).
+        \STATE Compute loss: \( \mathcal{L} = \frac{1}{|B|} \sum_{(x_i, y_i) \in B} \mathcal{L}(y_i, \hat{y}_i') \).
+        \STATE Compute gradients: \( \nabla_\theta \mathcal{L} \).
+        \STATE Update parameters: \( \theta \leftarrow \theta - \eta \nabla_\theta \mathcal{L} \).
+    \ENDFOR
+\ENDFOR
+\RETURN Trained model \( f_\theta \).
+\end{algorithmic}
+\end{algorithm}
+Item 2: Few-Shot and Zero-Shot Learning
+```latex \begin{algorithm} \caption{Few-Shot and Zero-Shot Learning in Neuro-Symbolic AI} \label{alg:few_zero_shot} \begin{algorithmic}[1] \REQUIRE \State $D_{train}$: Training dataset with limited labeled examples (few-shot) or no labeled examples (zero-shot). \State $D_{test}$: Test dataset for evaluation. \State $M_{symbolic}$: Predefined symbolic knowledge base. \State $M_{neural}$: Pretrained neural network model. \ENSURE \State $Predictions$: Predicted labels for $D_{test}$. \STATE \textbf{Step 1: Initialize} \State Load $M_{symbolic}$ and $M_{neural}$. \State Extract features from $D_{train}$ using $M_{neural}$. \STATE \textbf{Step 2: Few-Shot Learning} \IF{$D_{train}$ has labeled examples} \State Fine-tune $M_{neural}$ on $D_{train}$ using gradient descent. \State Update $M_{symbolic}$ with learned representations from $M_{neural}$. \ENDIF \STATE \textbf{Step 3: Zero-Shot Learning} \IF{$D_{train}$ has no labeled examples} \State Use $M_{symbolic}$ to infer relationships between unseen classes. \State Map inferred relationships to $M_{neural}$'s feature space. \ENDIF \STATE \textbf{Step 4: Inference} \State Extract features from $D_{test}$ using $M_{neural}$. \State Use $M_{symbolic}$ to predict labels for $D_{test}$ based on learned or inferred relationships. \STATE \textbf{Step 5: Output} \State Return $Predictions$ for $D_{test}$. \end{algorithmic} \end{algorithm} ```
+
+Section 2: Symbolic Learning
+Item 1: Inductive Logic Programming
+
+[Inductive Logic Programming]
+
+\begin{algorithm}
+\caption{Inductive Logic Programming in Neuro-Symbolic AI}
+\label{alg:ilp}
+\begin{algorithmic}[1]
+\REQUIRE Background knowledge $B$, positive examples $E^+$, negative examples $E^-$
+\ENSURE Hypothesis $H$ consistent with $B$, $E^+$, and $E^-$
+
+\STATE Initialize hypothesis $H \gets \emptyset$
+\WHILE{not all positive examples are covered or no improvement}
+    \FOR{each positive example $e \in E^+$ not covered by $H$}
+        \STATE Generate candidate clauses $C$ using $B$ and $e$
+        \FOR{each candidate clause $c \in C$}
+            \IF{$c$ does not cover any negative examples $E^-$}
+                \STATE Add $c$ to $H$
+                \STATE Break
+            \ENDIF
+        \ENDFOR
+    \ENDFOR
+    \IF{no new clauses added to $H$}
+        \STATE Break
+    \ENDIF
+\ENDWHILE
+\RETURN $H$
+\end{algorithmic}
+\end{algorithm}
+Item 2: Explanation-Based Learning
+
+[Explanation-Based Learning]
+
+\begin{algorithm}
+\caption{Explanation-Based Learning in Neuro-Symbolic AI}
+\label{alg:ebl}
+\begin{algorithmic}[1]
+\REQUIRE A set of training examples $E$, a domain theory $T$, and a target concept $C$.
+\ENSURE A generalized rule $R$ that explains the target concept $C$ using the domain theory $T$.
+
+\STATE \textbf{Input:} Training examples $E$, domain theory $T$, target concept $C$.
+\STATE \textbf{Output:} Generalized rule $R$.
+
+\FOR{each example $e \in E$}
+    \STATE Construct an explanation $E_x$ for $e$ using $T$.
+    \IF{$E_x$ is consistent with $C$}
+        \STATE Generalize $E_x$ to form a rule $R_e$.
+        \STATE Add $R_e$ to the set of candidate rules $R_{candidates}$.
+    \ENDIF
+\ENDFOR
+
+\STATE Select the most general rule $R$ from $R_{candidates}$.
+\STATE Refine $R$ by removing redundant conditions using $T$.
+\STATE \textbf{Return:} $R$.
+\end{algorithmic}
+\end{algorithm}
+Item 3: Analogical Reasoning
+
+\begin{algorithm}
+\caption{Analogical Reasoning in Neuro-Symbolic AI}\label{alg:analogical_reasoning}
+\begin{algorithmic}[1]
+\REQUIRE Knowledge base $KB$, source domain $S$, target domain $T$, similarity threshold $\theta$
+\ENSURE Mapped relationships $R$ between $S$ and $T$
+
+\STATE Initialize $R \gets \emptyset$
+\FOR{each entity $s_i \in S$}
+    \FOR{each entity $t_j \in T$}
+        \STATE Compute similarity score $sim(s_i, t_j)$ using $KB$
+        \IF{$sim(s_i, t_j) \geq \theta$}
+            \STATE Add $(s_i, t_j)$ to $R$
+        \ENDIF
+    \ENDFOR
+\ENDFOR
+
+\FOR{each relationship $(s_k, s_l) \in S$}
+    \STATE Find corresponding $(t_m, t_n) \in R$ such that $(s_k, t_m) \in R$ and $(s_l, t_n) \in R$
+    \IF{$(t_m, t_n)$ exists}
+        \STATE Add $(s_k, s_l) \rightarrow (t_m, t_n)$ to $R$
+    \ENDIF
+\ENDFOR
+
+\RETURN $R$
+\end{algorithmic}
+\end{algorithm}
+Section 3: Hybrid Learning Approaches
+Item 1: Learning with Logical Constraints
+
+\begin{algorithm}
+\caption{Learning with Logical Constraints}
+\label{alg:learning_with_logical_constraints}
+\begin{algorithmic}[1]
+\REQUIRE Dataset $\mathcal{D} = \{(\mathbf{x}_i, y_i)\}_{i=1}^N$, logical constraints $\mathcal{C}$, neural network model $f_\theta$, loss function $\mathcal{L}$, learning rate $\eta$
+\ENSURE Trained model $f_\theta$ that satisfies logical constraints $\mathcal{C}$
+
+\STATE Initialize model parameters $\theta$ randomly
+\FOR{each epoch $t = 1$ to $T$}
+    \FOR{each batch $\mathcal{B} \subset \mathcal{D}$}
+        \STATE Compute predictions $\hat{y}_i = f_\theta(\mathbf{x}_i)$ for all $\mathbf{x}_i \in \mathcal{B}$
+        \STATE Compute data loss $\mathcal{L}_{\text{data}} = \frac{1}{|\mathcal{B}|} \sum_{(\mathbf{x}_i, y_i) \in \mathcal{B}} \mathcal{L}(y_i, \hat{y}_i)$
+        \STATE Compute constraint loss $\mathcal{L}_{\text{constraint}} = \sum_{c \in \mathcal{C}} \text{Violation}(c, \hat{y}_i)$
+        \STATE Compute total loss $\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{data}} + \lambda \mathcal{L}_{\text{constraint}}$, where $\lambda$ is a hyperparameter
+        \STATE Update parameters $\theta \leftarrow \theta - \eta \nabla_\theta \mathcal{L}_{\text{total}}$
+    \ENDFOR
+\ENDFOR
+\RETURN Trained model $f_\theta$
+\end{algorithmic}
+\end{algorithm}
+Item 2: Neural-Guided Search
+
+\begin{algorithm}
+\caption{Neural-Guided Search}
+\label{alg:neural_guided_search}
+\begin{algorithmic}[1]
+\REQUIRE Neural network model $f_\theta$, symbolic search space $\mathcal{S}$, initial state $s_0$, goal condition $g$, maximum iterations $T$
+\ENSURE Sequence of actions $a_1, a_2, \dots, a_n$ leading to a state satisfying $g$
+
+\STATE Initialize current state $s \gets s_0$
+\STATE Initialize action sequence $\mathcal{A} \gets \emptyset$
+
+\FOR{$t = 1$ to $T$}
+    \STATE Generate candidate actions $\mathcal{C} \gets \text{GenerateCandidates}(s, \mathcal{S})$
+    \STATE Evaluate candidates using neural network: $Q(s, a) \gets f_\theta(s, a)$ for all $a \in \mathcal{C}$
+    \STATE Select action $a_t \gets \arg\max_{a \in \mathcal{C}} Q(s, a)$
+    \STATE Update state $s \gets \text{ApplyAction}(s, a_t)$
+    \STATE Append action to sequence $\mathcal{A} \gets \mathcal{A} \cup \{a_t\}$
+    
+    \IF{$g(s)$ is satisfied}
+        \RETURN $\mathcal{A}$
+    \ENDIF
+\ENDFOR
+
+\RETURN $\mathcal{A}$ \COMMENT{Return the best sequence found within $T$ iterations}
+\end{algorithmic}
+\end{algorithm}
+Item 3: Symbol Emergence in Neural Systems
+
+\begin{algorithm}
+\caption{Symbol Emergence in Neural Systems}
+\label{alg:symbol_emergence}
+\begin{algorithmic}[1]
+\REQUIRE Neural network model $M$, input data $X$, symbolic representation space $S$, learning rate $\eta$
+\ENSURE Emerged symbolic representation $S^*$
+
+\STATE Initialize neural network weights $W$ randomly
+\STATE Initialize symbolic representation $S$ with random mappings
+\STATE Set convergence threshold $\epsilon$
+
+\WHILE{$\Delta S > \epsilon$}
+    \FOR{each input $x_i \in X$}
+        \STATE Compute neural activation $a_i = M(x_i; W)$
+        \STATE Map activation $a_i$ to symbolic representation $s_i \in S$
+        \STATE Update symbolic representation $s_i$ based on $a_i$ and $S$
+        \STATE Compute error $E_i = \text{distance}(a_i, s_i)$
+        \STATE Update weights $W \leftarrow W - \eta \nabla_W E_i$
+    \ENDFOR
+    \STATE Compute overall change in symbolic representation $\Delta S = \sum_i \text{distance}(s_i^{\text{new}}, s_i^{\text{old}})$
+\ENDWHILE
+
+\STATE Return emerged symbolic representation $S^* = S$
+\end{algorithmic}
+\end{algorithm}
+Chapter 5: Reasoning Systems
+Section 1: Logical Reasoning
+Item 1: Automated Theorem Proving
+
+[Automated Theorem Proving]
+
+\begin{algorithm}
+\caption{Automated Theorem Proving in Neuro-Symbolic AI}
+\label{alg:atp_neurosymbolic}
+\begin{algorithmic}[1]
+\REQUIRE Knowledge base \( \mathcal{K} \), Theorem \( \phi \), Neural model \( \mathcal{N} \)
+\ENSURE Proof \( \mathcal{P} \) or "No proof found"
+
+\STATE Initialize proof search space \( \mathcal{S} \leftarrow \{\mathcal{K}\} \)
+\STATE Initialize neural guidance \( \mathcal{G} \leftarrow \mathcal{N}(\mathcal{K}, \phi) \)
+
+\WHILE{\( \mathcal{S} \) is not empty}
+    \STATE Select a candidate \( C \in \mathcal{S} \) using \( \mathcal{G} \)
+    \IF{\( C \models \phi \)}
+        \STATE Construct proof \( \mathcal{P} \) from \( C \)
+        \RETURN \( \mathcal{P} \)
+    \ELSE
+        \STATE Expand \( C \) into new candidates \( \{C_1, C_2, \dots, C_n\} \) using inference rules
+        \STATE Add \( \{C_1, C_2, \dots, C_n\} \) to \( \mathcal{S} \)
+        \STATE Update \( \mathcal{G} \) with feedback from expansion
+    \ENDIF
+\ENDWHILE
+
+\RETURN "No proof found"
+\end{algorithmic}
+\end{algorithm}
+Item 2: Answer Set Programming
+
+\subsection*{[Answer Set Programming]}
+\begin{algorithm}
+\caption{Answer Set Programming in Neuro-Symbolic AI}\label{alg:asp}
+\begin{algorithmic}[1]
+\REQUIRE A logical program \( P \) with rules, facts, and constraints; a set of atoms \( A \).
+\ENSURE A set of answer sets \( S \) that satisfy \( P \).
+
+\STATE Initialize \( S \gets \emptyset \)
+\STATE Let \( G \) be the ground instantiation of \( P \)
+\STATE Let \( C \) be the set of constraints in \( G \)
+
+\FOR{each rule \( r \in G \)}
+    \IF{\( r \) is a fact}
+        \STATE Add \( r \) to the current interpretation \( I \)
+    \ELSIF{\( r \) is a rule of the form \( head \gets body \)}
+        \IF{\( body \) is satisfied by \( I \)}
+            \STATE Add \( head \) to \( I \)
+        \ENDIF
+    \ENDIF
+\ENDFOR
+
+\FOR{each constraint \( c \in C \)}
+    \IF{\( c \) is violated by \( I \)}
+        \STATE Discard \( I \) and backtrack
+    \ENDIF
+\ENDFOR
+
+\IF{\( I \) is a minimal model of \( G \)}
+    \STATE Add \( I \) to \( S \)
+\ENDIF
+
+\RETURN \( S \)
+\end{algorithmic}
+\end{algorithm}
+Item 3: Probabilistic Logic Programming
+
+[Probabilistic Logic Programming]
+
+\begin{algorithm}
+\caption{Probabilistic Logic Programming in Neuro-Symbolic AI}
+\label{alg:prob_logic_prog}
+\begin{algorithmic}[1]
+\REQUIRE A probabilistic logic program \( P \), a set of logical rules \( R \), and a set of probabilistic facts \( F \).
+\ENSURE A probability distribution over possible worlds \( W \).
+
+\STATE Initialize the set of possible worlds \( W \gets \emptyset \).
+\STATE Initialize the probability distribution \( D \gets \emptyset \).
+
+\FOR{each rule \( r \in R \)}
+    \STATE Apply the rule \( r \) to the set of facts \( F \).
+    \STATE Generate new derived facts \( F' \).
+    \STATE Update \( F \gets F \cup F' \).
+\ENDFOR
+
+\FOR{each combination of probabilistic facts \( f \in F \)}
+    \STATE Construct a possible world \( w \) by selecting a subset of \( F \) based on their probabilities.
+    \STATE Add \( w \) to the set of possible worlds \( W \).
+\ENDFOR
+
+\FOR{each possible world \( w \in W \)}
+    \STATE Compute the probability \( p(w) \) as the product of the probabilities of the selected facts in \( w \).
+    \STATE Add \( p(w) \) to the probability distribution \( D \).
+\ENDFOR
+
+\RETURN The probability distribution \( D \) over possible worlds \( W \).
+\end{algorithmic}
+\end{algorithm}
+Section 2: Neural Reasoning
+Item 1: Attention Mechanisms
+
+\begin{algorithm}
+\caption{Attention Mechanisms in Neuro-Symbolic AI}\label{alg:attention}
+\begin{algorithmic}[1]
+\REQUIRE Input sequence $X = \{x_1, x_2, \dots, x_n\}$, where $x_i \in \mathbb{R}^d$
+\REQUIRE Symbolic knowledge base $K = \{k_1, k_2, \dots, k_m\}$, where $k_j \in \mathbb{R}^s$
+\REQUIRE Neural model parameters $\theta$
+\ENSURE Output sequence $Y = \{y_1, y_2, \dots, y_n\}$, where $y_i \in \mathbb{R}^o$
+
+\STATE Initialize attention weights $A = \{a_1, a_2, \dots, a_n\}$, where $a_i \in \mathbb{R}^m$
+\STATE Initialize context vectors $C = \{c_1, c_2, \dots, c_n\}$, where $c_i \in \mathbb{R}^s$
+
+\FOR{$i = 1$ to $n$}
+    \FOR{$j = 1$ to $m$}
+        \STATE Compute attention score $a_{ij} = \text{softmax}(f(x_i, k_j; \theta))$
+    \ENDFOR
+    \STATE Normalize attention weights $a_i = \text{softmax}(a_i)$
+    \STATE Compute context vector $c_i = \sum_{j=1}^{m} a_{ij} k_j$
+    \STATE Generate output $y_i = g(x_i, c_i; \theta)$
+\ENDFOR
+
+\RETURN $Y$
+\end{algorithmic}
+\end{algorithm}
+Item 2: Memory Networks
+
+\begin{algorithm}
+\caption{Memory Networks in Neuro-Symbolic AI}
+\label{alg:memory_networks}
+\begin{algorithmic}[1]
+\REQUIRE Input: $x$ (query), $M$ (memory), $k$ (number of hops)
+\ENSURE Output: $y$ (answer)
+
+\STATE Initialize memory $M$ with facts or knowledge base.
+\STATE Encode input $x$ into a vector representation $u$.
+\FOR{$i = 1$ to $k$}
+    \STATE Compute attention scores $a_i$ over memory $M$ using $u$.
+    \STATE Retrieve relevant memory vectors $m_i$ based on $a_i$.
+    \STATE Update query vector $u$ using $m_i$.
+\ENDFOR
+\STATE Generate output $y$ from the final query vector $u$.
+\RETURN $y$
+\end{algorithmic}
+\end{algorithm}
+Item 3: Neural Module Networks
+
+\begin{algorithm}
+\caption{Neural Module Networks for Neuro-Symbolic Reasoning}
+\label{alg:neural_module_networks}
+\begin{algorithmic}[1]
+\REQUIRE Input: Question $Q$, Knowledge Base $KB$, Neural Modules $M = \{m_1, m_2, \dots, m_n\}$
+\ENSURE Output: Answer $A$
+
+\STATE Parse $Q$ into a structured representation $S_Q$ using a semantic parser.
+\STATE Identify relevant modules $M_Q \subseteq M$ based on $S_Q$.
+\STATE Initialize intermediate representations $R = \emptyset$.
+
+\FOR{each module $m_i \in M_Q$}
+    \STATE Extract input features $F_i$ from $S_Q$ and $KB$.
+    \STATE Apply module $m_i$ to $F_i$ to produce output $O_i$.
+    \STATE Update intermediate representations $R = R \cup \{O_i\}$.
+\ENDFOR
+
+\STATE Aggregate intermediate representations $R$ into a final representation $R_f$.
+\STATE Generate answer $A$ from $R_f$ using a decoder network.
+
+\RETURN $A$
+\end{algorithmic}
+\end{algorithm}
+Section 3: Hybrid Reasoning
+Item 1: Neural-Symbolic Theorem Proving
+
+\begin{algorithm}
+\caption{Neural-Symbolic Theorem Proving}
+\label{alg:neural_symbolic_theorem_proving}
+\begin{algorithmic}[1]
+\Require Knowledge base \( \mathcal{K} \), Query \( Q \), Neural model \( M \)
+\Ensure Proof \( P \) or Refutation \( R \)
+
+\State Initialize \( P \gets \emptyset \)
+\State Initialize \( R \gets \emptyset \)
+\State Initialize \( \text{visited} \gets \emptyset \)
+
+\While{\( Q \) is not resolved}
+    \State \( \text{neural\_prediction} \gets M(Q) \)
+    \If{\( \text{neural\_prediction} \) is a valid inference}
+        \State \( P \gets P \cup \{\text{neural\_prediction}\} \)
+        \State \( Q \gets \text{UpdateQuery}(Q, \text{neural\_prediction}) \)
+    \Else
+        \State \( \text{symbolic\_inference} \gets \text{SymbolicReasoning}(\mathcal{K}, Q) \)
+        \If{\( \text{symbolic\_inference} \) is a valid inference}
+            \State \( P \gets P \cup \{\text{symbolic\_inference}\} \)
+            \State \( Q \gets \text{UpdateQuery}(Q, \text{symbolic\_inference}) \)
+        \Else
+            \State \( R \gets \text{Refutation}(Q) \)
+            \State \textbf{break}
+        \EndIf
+    \EndIf
+    \State \( \text{visited} \gets \text{visited} \cup \{Q\} \)
+\EndWhile
+
+\If{\( Q \) is resolved}
+    \State \textbf{return} \( P \)
+\Else
+    \State \textbf{return} \( R \)
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+Item 2: Differentiable Reasoning
+
+\begin{algorithm}
+\caption{Differentiable Reasoning in Neuro-Symbolic AI}
+\label{alg:diff_reasoning}
+\begin{algorithmic}[1]
+\REQUIRE Input: Symbolic knowledge base \( \mathcal{K} \), Neural network model \( \mathcal{N} \), Query \( q \)
+\ENSURE Output: Probabilistic answer \( p \)
+
+\STATE Initialize neural-symbolic integration layer \( \mathcal{L} \)
+\STATE Encode symbolic knowledge \( \mathcal{K} \) into differentiable format using \( \mathcal{L} \)
+\STATE Train \( \mathcal{N} \) on encoded knowledge \( \mathcal{K} \) to learn reasoning patterns
+\STATE Encode query \( q \) into differentiable format using \( \mathcal{L} \)
+\STATE Pass encoded query \( q \) through \( \mathcal{N} \) to compute intermediate reasoning steps
+\STATE Aggregate intermediate reasoning steps to produce probabilistic answer \( p \)
+\STATE Return \( p \)
+\end{algorithmic}
+\end{algorithm}
+Item 3: Probabilistic Soft Logic
+
+[Probabilistic Soft Logic]
+
+\begin{algorithm}
+\caption{Probabilistic Soft Logic for Hybrid Reasoning in Neuro-Symbolic AI}
+\label{alg:psl}
+\begin{algorithmic}[1]
+\REQUIRE Knowledge base $KB$, set of rules $R$, set of observations $O$, threshold $\tau$
+\ENSURE Inferred probabilities $P$ for all ground atoms in $KB$
+
+\STATE Initialize $P$ with random probabilities for all ground atoms in $KB$
+\STATE Define potential functions $\phi_r$ for each rule $r \in R$
+\STATE Define hinge-loss functions $L_r$ for each rule $r \in R$
+
+\WHILE{not converged}
+    \FOR{each ground atom $a$ in $KB$}
+        \STATE Compute the gradient of the total loss $\nabla L(a)$
+        \STATE Update $P(a) \gets P(a) - \eta \nabla L(a)$
+        \STATE Clip $P(a)$ to ensure $0 \leq P(a) \leq 1$
+    \ENDFOR
+    \STATE Check for convergence using threshold $\tau$
+\ENDWHILE
+
+\RETURN $P$
+\end{algorithmic}
+\end{algorithm}
+Chapter 6: Advanced Neural Architectures
+Section 1: Modern Architecture Design
+Item 1: Transformers and Beyond
+```latex [Transformers and Beyond] \begin{algorithm} \caption{Neuro-Symbolic Integration with Transformers} \label{alg:neuro_symbolic_transformers} \begin{algorithmic}[1] \REQUIRE Input sequence $X = \{x_1, x_2, \dots, x_n\}$, Symbolic knowledge base $K$ \ENSURE Output sequence $Y = \{y_1, y_2, \dots, y_m\}$ \STATE Initialize Transformer model $T$ with pre-trained weights \STATE Encode input sequence $X$ using $T$ to obtain embeddings $E = \{e_1, e_2, \dots, e_n\}$ \FOR{each embedding $e_i \in E$} \STATE Query symbolic knowledge base $K$ with $e_i$ to retrieve relevant symbolic rules $R_i$ \IF{$R_i$ is not empty} \STATE Apply symbolic reasoning on $e_i$ using $R_i$ to generate intermediate representation $z_i$ \ELSE \STATE Set $z_i = e_i$ \ENDIF \ENDFOR \STATE Concatenate intermediate representations $Z = \{z_1, z_2, \dots, z_n\}$ \STATE Decode $Z$ using $T$ to generate output sequence $Y$ \RETURN $Y$ \end{algorithmic} \end{algorithm} ```
+
+Item 2: Graph Neural Networks
+
+\begin{algorithm}
+\caption{Graph Neural Networks in Neuro-Symbolic AI}\label{alg:gnn}
+\begin{algorithmic}[1]
+\REQUIRE Graph \( G = (V, E) \), node features \( X \), edge features \( E_{attr} \), number of layers \( L \), activation function \( \sigma \)
+\ENSURE Node embeddings \( H^{(L)} \)
+
+\STATE Initialize node embeddings \( H^{(0)} = X \)
+\FOR{\( l = 1 \) to \( L \)}
+    \FOR{each node \( v \in V \)}
+        \STATE Aggregate neighbor embeddings: 
+        \STATE \( m_v^{(l)} = \text{AGGREGATE}(\{ H_u^{(l-1)} \mid u \in \mathcal{N}(v) \}) \)
+        \STATE Update node embedding:
+        \STATE \( H_v^{(l)} = \sigma(W^{(l)} \cdot \text{CONCAT}(H_v^{(l-1)}, m_v^{(l)})) \)
+    \ENDFOR
+\ENDFOR
+\RETURN \( H^{(L)} \)
+\end{algorithmic}
+\end{algorithm}
+Item 3: Neural-Symbolic Architecture Patterns
+
+\begin{algorithm}
+\caption{Neural-Symbolic Architecture Patterns}
+\label{alg:neural_symbolic_patterns}
+\begin{algorithmic}[1]
+\REQUIRE Input data $X$, symbolic rules $R$, neural network model $M$
+\ENSURE Output predictions $Y$ with integrated symbolic reasoning
+
+\STATE Initialize neural network model $M$ with pre-trained weights
+\STATE Encode input data $X$ into a feature representation $F$ using $M$
+\FOR{each symbolic rule $r_i \in R$}
+    \STATE Parse rule $r_i$ into a logical expression $L_i$
+    \STATE Convert logical expression $L_i$ into a differentiable function $D_i$
+    \STATE Integrate $D_i$ into the neural network $M$ as a constraint layer
+\ENDFOR
+\STATE Train the combined model $M$ on $X$ with symbolic constraints
+\STATE Generate predictions $Y$ using the trained model $M$
+\RETURN $Y$
+\end{algorithmic}
+\end{algorithm}
+Section 2: Memory and State
+Item 1: External Memory Architectures
+
+\begin{algorithm}
+\caption{External Memory Architectures in Neuro-Symbolic AI}
+\label{alg:external_memory}
+\begin{algorithmic}[1]
+\REQUIRE Input data $D$, Memory matrix $M$, Read/Write heads $H$, Neural network $N$
+\ENSURE Updated memory matrix $M'$, Output $O$
+
+\STATE Initialize memory matrix $M$ with zeros or pre-trained values
+\STATE Initialize read/write heads $H$ with default positions
+
+\FOR{each input $d_i \in D$}
+    \STATE Compute attention weights $\alpha$ using $N$ and $d_i$
+    \STATE Update read head positions based on $\alpha$
+    \STATE Read memory content $r$ from $M$ using read heads
+    \STATE Combine $r$ and $d_i$ to form intermediate representation $x$
+    \STATE Compute output $o_i$ using $N$ and $x$
+    \STATE Compute write head positions and update memory $M$ using $N$ and $o_i$
+    \STATE Append $o_i$ to output $O$
+\ENDFOR
+
+\RETURN $M'$, $O$
+\end{algorithmic}
+\end{algorithm}
+Item 2: Differentiable Neural Computers
+
+\begin{algorithm}
+\caption{Differentiable Neural Computers in Neuro-Symbolic AI}
+\label{alg:dnc}
+\begin{algorithmic}[1]
+\REQUIRE Input sequence \( X = \{x_1, x_2, \dots, x_T\} \), Memory matrix \( M \), Read vectors \( R \), Write vectors \( W \)
+\ENSURE Output sequence \( Y = \{y_1, y_2, \dots, y_T\} \), Updated memory \( M' \), Updated read vectors \( R' \)
+
+\STATE Initialize memory \( M \) with zeros or random values
+\STATE Initialize read vectors \( R \) with zeros or random values
+
+\FOR{each time step \( t = 1 \) to \( T \)}
+    \STATE Compute controller output \( h_t = \text{Controller}(x_t, R_{t-1}) \)
+    \STATE Compute interface vector \( \xi_t = \text{Interface}(h_t) \)
+    \STATE Compute read weights \( w_t^r = \text{ReadHead}(\xi_t, M_{t-1}) \)
+    \STATE Compute write weights \( w_t^w = \text{WriteHead}(\xi_t, M_{t-1}) \)
+    \STATE Read from memory: \( r_t = \sum_{i} w_{t,i}^r \cdot M_{t-1,i} \)
+    \STATE Write to memory: \( M_t = \text{Write}(M_{t-1}, w_t^w, \xi_t) \)
+    \STATE Update read vectors: \( R_t = \text{UpdateRead}(R_{t-1}, r_t) \)
+    \STATE Compute output: \( y_t = \text{OutputLayer}(h_t, r_t) \)
+\ENDFOR
+
+\RETURN \( Y, M_T, R_T \)
+\end{algorithmic}
+\end{algorithm}
+Item 3: Memory-Augmented Neural Networks
+```latex \begin{algorithm} \caption{Memory-Augmented Neural Networks in Neuro-Symbolic AI} \label{alg:mann} \begin{algorithmic}[1] \REQUIRE Input sequence $X = \{x_1, x_2, \dots, x_T\}$, Memory matrix $M \in \mathbb{R}^{N \times D}$, Read/Write heads $H$ \ENSURE Output sequence $Y = \{y_1, y_2, \dots, y_T\}$, Updated memory $M'$ \STATE Initialize memory $M$ with random values \FOR{$t = 1$ to $T$} \STATE Compute attention weights $\alpha_t = \text{softmax}(f(x_t, M))$ \STATE Read memory content $r_t = \sum_{i=1}^N \alpha_{t,i} M_i$ \STATE Compute hidden state $h_t = \text{GRU}(x_t, r_t, h_{t-1})$ \STATE Generate output $y_t = \text{MLP}(h_t)$ \STATE Compute new memory content $M'_t = \text{MLP}(h_t, r_t)$ \STATE Update memory $M \leftarrow M + \beta M'_t$ \ENDFOR \RETURN $Y, M'$ \end{algorithmic} \end{algorithm} ```
+
+Chapter 7: Neural-Symbolic Integration
+Section 1: Integration Patterns
+Item 1: Deep Learning with Symbolic Features
+```latex \begin{algorithm} \caption{Deep Learning with Symbolic Features} \label{alg:deep_learning_symbolic} \begin{algorithmic}[1] \REQUIRE Symbolic features $S = \{s_1, s_2, \dots, s_n\}$, Neural network model $M$, Training data $D = \{(x_1, y_1), (x_2, y_2), \dots, (x_m, y_m)\}$ \ENSURE Trained neural network model $M'$ with integrated symbolic features \STATE Initialize neural network model $M$ with random weights \FOR{each epoch $e$ in training} \FOR{each batch $(X_b, Y_b)$ in $D$} \STATE Extract symbolic features $S_b$ from $X_b$ \STATE Combine $X_b$ and $S_b$ to form enriched input $X_b'$ \STATE Forward pass: Compute predictions $\hat{Y}_b = M(X_b')$ \STATE Compute loss $L$ using $\hat{Y}_b$ and $Y_b$ \STATE Backward pass: Compute gradients $\nabla L$ with respect to $M$'s parameters \STATE Update model parameters using gradient descent \ENDFOR \ENDFOR \STATE Return trained model $M'$ \end{algorithmic} \end{algorithm} ```
+
+Item 2: Neural Predicates
+
+\begin{algorithm}
+\caption{Neural Predicates in Neuro-Symbolic AI}
+\label{alg:neural_predicates}
+\begin{algorithmic}[1]
+\REQUIRE Knowledge base $KB$, Neural network $NN$, Input data $X$
+\ENSURE Predicate outputs $P$
+
+\STATE Initialize $P \gets \emptyset$
+\FOR{each rule $r \in KB$}
+    \STATE Extract symbolic predicates $S_r$ from $r$
+    \FOR{each predicate $s \in S_r$}
+        \STATE Map $s$ to a neural module $M_s$ in $NN$
+        \STATE Compute neural output $o_s \gets M_s(X)$
+        \STATE Add $(s, o_s)$ to $P$
+    \ENDFOR
+\ENDFOR
+\RETURN $P$
+\end{algorithmic}
+\end{algorithm}
+Item 3: End-to-End Differentiable Logic
+
+\begin{algorithm}
+\caption{End-to-End Differentiable Logic}
+\label{alg:end_to_end_differentiable_logic}
+\begin{algorithmic}[1]
+\REQUIRE Neural network model $f_\theta$, symbolic logic rules $\mathcal{R}$, input data $\mathcal{X}$, ground truth labels $\mathcal{Y}$
+\ENSURE Trained neural network model $f_\theta^*$ with integrated symbolic logic
+
+\STATE Initialize neural network parameters $\theta$
+\STATE Define differentiable loss function $\mathcal{L}(\theta)$ combining neural and symbolic components
+\STATE Define learning rate $\eta$ and number of epochs $T$
+
+\FOR{$t = 1$ to $T$}
+    \FOR{each batch $(x, y) \in (\mathcal{X}, \mathcal{Y})$}
+        \STATE Compute neural predictions: $\hat{y} = f_\theta(x)$
+        \STATE Compute neural loss: $\mathcal{L}_{\text{neural}} = \text{CrossEntropy}(\hat{y}, y)$
+        \STATE Compute symbolic loss: $\mathcal{L}_{\text{symbolic}} = \text{EvaluateSymbolicRules}(\hat{y}, \mathcal{R})$
+        \STATE Combine losses: $\mathcal{L}(\theta) = \mathcal{L}_{\text{neural}} + \lambda \mathcal{L}_{\text{symbolic}}$
+        \STATE Update parameters: $\theta \leftarrow \theta - \eta \nabla_\theta \mathcal{L}(\theta)$
+    \ENDFOR
+\ENDFOR
+
+\RETURN Trained model $f_\theta^*$
+\end{algorithmic}
+\end{algorithm}
+Section 2: Learning and Reasoning Loop
+Item 1: Neural Perception to Symbolic Knowledge
+```latex \begin{algorithm} \caption{Neural Perception to Symbolic Knowledge} \label{alg:neural_to_symbolic} \begin{algorithmic}[1] \REQUIRE Neural network model $N$, symbolic knowledge base $K$, input data $D$ \ENSURE Updated symbolic knowledge base $K'$ \STATE Initialize $K' \gets K$ \FOR{each data point $d \in D$} \STATE $p \gets N(d)$ \COMMENT{Neural network prediction} \STATE $s \gets \text{SymbolicRepresentation}(p)$ \COMMENT{Convert prediction to symbolic form} \IF{$s \notin K'$} \STATE $K' \gets K' \cup \{s\}$ \COMMENT{Add new symbolic knowledge} \ENDIF \ENDFOR \RETURN $K'$ \end{algorithmic} \end{algorithm} ```
+
+Item 2: Symbolic Reasoning to Neural Control
+
+[Symbolic Reasoning to Neural Control]
+
+\begin{algorithm}
+\caption{Symbolic Reasoning to Neural Control}
+\label{alg:symbolic_to_neural}
+\begin{algorithmic}[1]
+\REQUIRE Symbolic knowledge base $K$, neural network model $M$, input data $X$
+\ENSURE Controlled output $Y$
+
+\STATE Initialize neural network model $M$ with random weights
+\STATE Encode symbolic knowledge $K$ into a differentiable representation $R$
+\STATE Integrate $R$ into the neural network $M$ to form a neuro-symbolic model $M_{NS}$
+
+\FOR{each training iteration}
+    \STATE Forward pass: Compute predictions $\hat{Y} = M_{NS}(X)$
+    \STATE Compute loss $\mathcal{L}$ using a combination of neural and symbolic loss functions
+    \STATE Backward pass: Update weights of $M_{NS}$ using gradient descent
+    \IF{convergence criteria met}
+        \STATE Break
+    \ENDIF
+\ENDFOR
+
+\STATE Generate controlled output $Y$ using the trained neuro-symbolic model $M_{NS}$
+\RETURN $Y$
+\end{algorithmic}
+\end{algorithm}
+Item 3: Hybrid Learning Algorithms
+
+\subsection*{[Hybrid Learning Algorithms]}
+
+\begin{algorithm}
+\caption{Hybrid Learning Algorithm for Neuro-Symbolic AI}
+\label{alg:hybrid_learning}
+\begin{algorithmic}[1]
+\REQUIRE Neural network model $N$, symbolic knowledge base $K$, dataset $D$, learning rate $\eta$, maximum iterations $T$
+\ENSURE Trained neural network model $N^*$ with integrated symbolic reasoning
+
+\STATE Initialize neural network parameters $\theta$ randomly
+\FOR{$t = 1$ to $T$}
+    \STATE Sample a batch of data $(x, y) \sim D$
+    \STATE Perform forward pass through $N$ to obtain predictions $\hat{y} = N(x; \theta)$
+    \STATE Compute neural loss $L_{neural}(\hat{y}, y)$ using a suitable loss function
+    \STATE Query symbolic knowledge base $K$ to obtain symbolic constraints $C(x)$
+    \STATE Compute symbolic loss $L_{symbolic}(\hat{y}, C(x))$ based on constraints
+    \STATE Combine losses: $L_{total} = L_{neural} + \lambda L_{symbolic}$, where $\lambda$ is a weighting factor
+    \STATE Compute gradients $\nabla_\theta L_{total}$
+    \STATE Update parameters: $\theta \leftarrow \theta - \eta \nabla_\theta L_{total}$
+\ENDFOR
+\RETURN Trained model $N^*$ with parameters $\theta$
+\end{algorithmic}
+\end{algorithm}
+Chapter 8: Language Understanding and Generation
+Section 1: Semantic Parsing
+Item 1: Grammar-Guided Parsing
+
+[Grammar-Guided Parsing]
+
+\begin{algorithm}
+\caption{Grammar-Guided Parsing for Semantic Parsing in Neuro-Symbolic AI}
+\label{alg:grammar_guided_parsing}
+\begin{algorithmic}[1]
+\REQUIRE Input sentence $S$, Grammar $G$, Neural model $M$
+\ENSURE Parsed semantic representation $R$
+
+\STATE Tokenize $S$ into tokens $T = \{t_1, t_2, \dots, t_n\}$
+\STATE Initialize parse tree $P$ as empty
+\STATE Initialize stack $ST$ with start symbol of $G$
+
+\WHILE{$ST$ is not empty}
+    \STATE Pop top symbol $X$ from $ST$
+    \IF{$X$ is a terminal symbol}
+        \IF{$X$ matches current token $t_i$}
+            \STATE Add $X$ to $P$
+            \STATE Move to next token $t_{i+1}$
+        \ELSE
+            \STATE Backtrack or report parsing error
+        \ENDIF
+    \ELSIF{$X$ is a non-terminal symbol}
+        \STATE Use $M$ to predict production rules for $X$ from $G$
+        \STATE Push predicted rules onto $ST$ in reverse order
+    \ENDIF
+\ENDWHILE
+
+\STATE Construct semantic representation $R$ from $P$
+\RETURN $R$
+\end{algorithmic}
+\end{algorithm}
+Item 2: Neural Semantic Parsing
+
+\begin{algorithm}
+\caption{Neural Semantic Parsing in Neuro-Symbolic AI}
+\label{alg:neural_semantic_parsing}
+\begin{algorithmic}[1]
+\REQUIRE Input natural language utterance $U$, pre-trained neural model $M$, knowledge base $KB$
+\ENSURE Structured logical form $L$
+
+\STATE Tokenize the utterance $U$ into a sequence of tokens $T = \{t_1, t_2, \dots, t_n\}$
+\STATE Encode the token sequence $T$ into a continuous representation $R$ using model $M$
+\STATE Generate a candidate set of logical forms $C = \{c_1, c_2, \dots, c_m\}$ from $R$ using a decoder
+\FOR{each logical form $c_i \in C$}
+    \STATE Parse $c_i$ into an executable query $Q_i$ using $KB$
+    \STATE Execute $Q_i$ on $KB$ to obtain a result $r_i$
+    \IF{$r_i$ is valid and matches the expected output}
+        \STATE Assign $c_i$ as the structured logical form $L$
+        \STATE \textbf{break}
+    \ENDIF
+\ENDFOR
+\RETURN $L$
+\end{algorithmic}
+\end{algorithm}
+Item 3: Hybrid Parsing Approaches
+
+\begin{algorithm}
+\caption{Hybrid Parsing Approaches for Neuro-Symbolic AI}
+\label{alg:hybrid_parsing}
+\begin{algorithmic}[1]
+\REQUIRE Input sentence $S$, pre-trained neural model $M$, symbolic grammar $G$
+\ENSURE Semantic parse tree $T$
+
+\STATE Tokenize the input sentence $S$ into tokens $t_1, t_2, \dots, t_n$
+\STATE Initialize an empty parse tree $T$
+
+\FOR{each token $t_i$ in $S$}
+    \STATE Use neural model $M$ to generate a probability distribution over possible syntactic roles $R_i$ for $t_i$
+    \STATE Select the most probable role $r_i$ from $R_i$
+    \STATE Use symbolic grammar $G$ to validate the compatibility of $r_i$ with the current structure of $T$
+    \IF{$r_i$ is compatible with $T$}
+        \STATE Add $r_i$ to $T$ at the appropriate position
+    \ELSE
+        \STATE Backtrack and revise previous roles in $T$ to accommodate $r_i$
+    \ENDIF
+\ENDFOR
+
+\STATE Return the completed semantic parse tree $T$
+\end{algorithmic}
+\end{algorithm}
+Section 2: Reasoning About Language
+Item 1: Natural Logic
+
+\begin{algorithm}
+\caption{Natural Logic in Neuro-Symbolic AI for Language Understanding and Generation}
+\label{alg:natural_logic}
+\begin{algorithmic}[1]
+\REQUIRE Input text $T$, Knowledge base $KB$, Lexical relations $LR$
+\ENSURE Output logical representation $L$, Inferences $I$
+
+\STATE Tokenize $T$ into sentences $S = \{s_1, s_2, \dots, s_n\}$
+\FOR{each sentence $s_i \in S$}
+    \STATE Parse $s_i$ to extract syntactic structure $SS_i$
+    \STATE Map $SS_i$ to logical form $LF_i$ using $KB$ and $LR$
+    \STATE Add $LF_i$ to $L$
+\ENDFOR
+
+\FOR{each logical form $lf_j \in L$}
+    \STATE Apply natural logic rules to $lf_j$ to derive inferences $I_j$
+    \STATE Add $I_j$ to $I$
+\ENDFOR
+
+\RETURN $L$, $I$
+\end{algorithmic}
+\end{algorithm}
+Item 2: Textual Entailment
+
+\begin{algorithm}
+\caption{Textual Entailment in Neuro-Symbolic AI}
+\label{alg:textual_entailment}
+\begin{algorithmic}[1]
+\REQUIRE Text $T$, Hypothesis $H$, Knowledge Base $KB$
+\ENSURE Entailment Relation $R$ (Entailment, Contradiction, Neutral)
+
+\STATE Tokenize $T$ and $H$ into sequences of tokens: $T_{tokens}$, $H_{tokens}$
+\STATE Encode $T_{tokens}$ and $H_{tokens}$ using a neural encoder: $T_{emb}$, $H_{emb}$
+\STATE Compute attention weights between $T_{emb}$ and $H_{emb}$: $A_{th}$
+\STATE Generate a joint representation $J$ using a neural network: $J = f(T_{emb}, H_{emb}, A_{th})$
+\STATE Query $KB$ for relevant symbolic rules and facts: $KB_{relevant}$
+\STATE Apply symbolic reasoning on $J$ and $KB_{relevant}$ to infer logical relations: $R_{symbolic}$
+\STATE Combine neural and symbolic outputs: $R = g(J, R_{symbolic})$
+\STATE Classify $R$ into one of {Entailment, Contradiction, Neutral} using a softmax layer
+\RETURN $R$
+\end{algorithmic}
+\end{algorithm}
+Item 3: Common Sense Reasoning
+```latex \begin{algorithm} \caption{Common Sense Reasoning in Neuro-Symbolic AI} \label{alg:common_sense_reasoning} \begin{algorithmic}[1] \REQUIRE Input: Natural Language Text $T$, Knowledge Base $KB$ \ENSURE Output: Common Sense Inference $I$ \STATE Tokenize $T$ into words $W = \{w_1, w_2, \dots, w_n\}$ \STATE Parse $W$ into a syntactic structure $S$ using a neural parser \STATE Extract semantic roles $R = \{r_1, r_2, \dots, r_m\}$ from $S$ \FOR{each role $r_i \in R$} \STATE Query $KB$ for common sense facts related to $r_i$ \IF{relevant facts $F_i$ are found} \STATE Infer logical relations $L_i$ between $r_i$ and $F_i$ \STATE Update $I$ with $L_i$ \ENDIF \ENDFOR \STATE Refine $I$ using a neuro-symbolic reasoning module \RETURN $I$ \end{algorithmic} \end{algorithm} ```
+
+Section 3: Knowledge-Enhanced Language Models
+Item 1: Incorporating External Knowledge
+
+\begin{algorithm}
+\caption{Incorporating External Knowledge in Neuro-Symbolic AI}
+\label{alg:incorporate_external_knowledge}
+\begin{algorithmic}[1]
+\REQUIRE Knowledge base $K$, Language model $L$, Input text $T$
+\ENSURE Enhanced output text $T'$
+\STATE Initialize $T' \gets T$
+\FOR{each entity $e$ in $T$}
+    \STATE Query $K$ for relevant knowledge $k_e$ related to $e$
+    \IF{$k_e$ is not empty}
+        \STATE Generate context $C_e$ using $L$ and $k_e$
+        \STATE Update $T'$ by integrating $C_e$ at the position of $e$
+    \ENDIF
+\ENDFOR
+\STATE Refine $T'$ using $L$ to ensure coherence and fluency
+\RETURN $T'$
+\end{algorithmic}
+\end{algorithm}
+Item 2: Structured Knowledge Prediction
+
+[Structured Knowledge Prediction]
+
+\begin{algorithm}
+\caption{Structured Knowledge Prediction in Neuro-Symbolic AI}
+\label{alg:structured_knowledge_prediction}
+\begin{algorithmic}[1]
+\REQUIRE Input text $T$, Knowledge Graph $G$, Pre-trained Language Model $LM$
+\ENSURE Predicted structured knowledge $K$
+
+\STATE Tokenize input text $T$ into tokens $t_1, t_2, \dots, t_n$
+\STATE Initialize empty list $K \gets \emptyset$
+
+\FOR{each token $t_i$ in $T$}
+    \STATE Generate embeddings $e_i \gets LM(t_i)$
+    \STATE Query Knowledge Graph $G$ with $e_i$ to retrieve relevant entities $E_i$
+    \IF{$E_i$ is not empty}
+        \FOR{each entity $e_j$ in $E_i$}
+            \STATE Extract relations $R_j \gets G(e_j)$
+            \STATE Append $(e_j, R_j)$ to $K$
+        \ENDFOR
+    \ENDIF
+\ENDFOR
+
+\STATE Return $K$
+\end{algorithmic}
+\end{algorithm}
+Item 3: Faithful Generation
+
+[Faithful Generation]
+
+\begin{algorithm}
+\caption{Faithful Generation in Neuro-Symbolic AI}
+\label{alg:faithful_generation}
+\begin{algorithmic}[1]
+\REQUIRE Input text $T$, Knowledge base $K$, Language model $M$
+\ENSURE Generated text $G$ that is faithful to $K$
+
+\STATE Tokenize input text $T$ into tokens $t_1, t_2, \dots, t_n$
+\STATE Initialize empty list $G \gets []$
+\STATE Initialize knowledge-enhanced context $C \gets \emptyset$
+
+\FOR{each token $t_i$ in $T$}
+    \STATE Retrieve relevant knowledge $k_i$ from $K$ based on $t_i$
+    \STATE Update context $C \gets C \cup k_i$
+    \STATE Generate next token $g_i$ using $M$ with context $C$
+    \STATE Append $g_i$ to $G$
+\ENDFOR
+
+\STATE Return generated text $G$
+\end{algorithmic}
+\end{algorithm}
+Chapter 9: Visual Intelligence
+Section 1: Scene Understanding
+Item 1: Object-Centric Learning
+
+\begin{algorithm}
+\caption{Object-Centric Learning for Scene Understanding}
+\label{alg:object_centric_learning}
+\begin{algorithmic}[1]
+\REQUIRE Scene image $I$, set of object classes $C$, pretrained feature extractor $F$
+\ENSURE Object-centric representation $R$, object labels $L$
+
+\STATE Initialize object-centric representation $R \gets \emptyset$
+\STATE Initialize object labels $L \gets \emptyset$
+
+\FOR{each region $r_i$ in $I$}
+    \STATE Extract features $f_i \gets F(r_i)$
+    \STATE Compute objectness score $s_i \gets \text{ObjectnessScore}(f_i)$
+    \IF{$s_i > \text{threshold}$}
+        \STATE Predict object class $c_i \gets \text{Classify}(f_i, C)$
+        \STATE Add $f_i$ to $R$
+        \STATE Add $c_i$ to $L$
+    \ENDIF
+\ENDFOR
+
+\STATE Refine $R$ using spatial and semantic constraints
+\STATE Output $R$ and $L$
+\end{algorithmic}
+\end{algorithm}
+Item 2: Relational Scene Graphs
+
+[Relational Scene Graphs]
+
+\begin{algorithm}
+\caption{Relational Scene Graph Construction}
+\label{alg:relational_scene_graph}
+\begin{algorithmic}[1]
+\REQUIRE $I$: Input image, $O$: Set of detected objects, $R$: Set of possible relationships
+\ENSURE $G$: Relational Scene Graph
+
+\STATE Initialize $G \gets \emptyset$
+\FOR{each object $o_i \in O$}
+    \STATE Add node $n_i$ to $G$ representing $o_i$
+\ENDFOR
+
+\FOR{each pair of objects $(o_i, o_j) \in O \times O$}
+    \STATE Compute relationship $r_{ij} \in R$ between $o_i$ and $o_j$
+    \IF{$r_{ij} \neq \emptyset$}
+        \STATE Add edge $e_{ij}$ to $G$ representing $r_{ij}$
+    \ENDIF
+\ENDFOR
+
+\STATE Return $G$
+\end{algorithmic}
+\end{algorithm}
+Item 3: Physical Scene Understanding
+```latex \begin{algorithm} \caption{Physical Scene Understanding in Neuro-Symbolic AI} \label{alg:physical_scene_understanding} \begin{algorithmic}[1] \REQUIRE $I$: Input image or video frame \REQUIRE $K$: Knowledge base of symbolic rules \ENSURE $S$: Structured representation of the physical scene \STATE \textbf{Step 1: Feature Extraction} \STATE Extract low-level features $F$ from $I$ using a neural network. \STATE $F \gets \text{NeuralFeatureExtractor}(I)$ \STATE \textbf{Step 2: Object Detection} \STATE Detect objects $O$ in $F$ using an object detection model. \STATE $O \gets \text{ObjectDetector}(F)$ \STATE \textbf{Step 3: Symbolic Reasoning} \FOR{each object $o_i \in O$} \STATE Infer symbolic properties $P_i$ using $K$. \STATE $P_i \gets \text{SymbolicReasoner}(o_i, K)$ \STATE Update scene representation $S$ with $P_i$. \STATE $S \gets S \cup P_i$ \ENDFOR \STATE \textbf{Step 4: Scene Interpretation} \STATE Interpret the scene $S$ using symbolic rules in $K$. \STATE $S \gets \text{SceneInterpreter}(S, K)$ \STATE \textbf{Step 5: Output Structured Representation} \RETURN $S$ \end{algorithmic} \end{algorithm} ```
+
+Section 2: Visual Reasoning
+Item 1: Program-Guided Reasoning
+
+[Program-Guided Reasoning]
+
+\begin{algorithm}
+\caption{Program-Guided Reasoning for Visual Intelligence}
+\label{alg:program_guided_reasoning}
+\begin{algorithmic}[1]
+\REQUIRE Visual input $I$, symbolic program $P$, neural model $M$
+\ENSURE Output $O$ representing the reasoning result
+
+\STATE Parse the symbolic program $P$ into a sequence of operations $\{op_1, op_2, \dots, op_n\}$
+\STATE Initialize intermediate representation $R \gets I$
+
+\FOR{each operation $op_i$ in $\{op_1, op_2, \dots, op_n\}$}
+    \IF{$op_i$ is a neural operation}
+        \STATE Apply neural model $M$ to $R$ to obtain $R'$
+        \STATE Update $R \gets R'$
+    \ELSIF{$op_i$ is a symbolic operation}
+        \STATE Apply symbolic transformation to $R$ based on $op_i$ to obtain $R'$
+        \STATE Update $R \gets R'$
+    \ENDIF
+\ENDFOR
+
+\STATE Set $O \gets R$
+\RETURN $O$
+\end{algorithmic}
+\end{algorithm}
+Item 2: Neuro-Symbolic Concept Learning
+```latex \begin{algorithm} \caption{Neuro-Symbolic Concept Learning}\label{alg:neuro_symbolic_concept_learning} \begin{algorithmic}[1] \REQUIRE Visual input $I$, symbolic knowledge base $K$, neural network model $M$ \ENSURE Learned concept $C$ \STATE Initialize neural network model $M$ with pre-trained weights \STATE Extract visual features $F \gets M(I)$ \STATE Generate symbolic representation $S \gets \text{SymbolicMapping}(F)$ \STATE Query knowledge base $K$ with $S$ to retrieve relevant concepts $R$ \FOR{each concept $r \in R$} \IF{$\text{Validate}(r, S)$} \STATE $C \gets r$ \STATE \textbf{break} \ENDIF \ENDFOR \IF{$C$ is not found} \STATE Refine $S$ using feedback from $K$ \STATE Repeat steps 3-6 with refined $S$ \ENDIF \RETURN $C$ \end{algorithmic} \end{algorithm} ```
+
+Item 3: Multi-Modal Integration
+
+\begin{algorithm}
+\caption{Multi-Modal Integration for Visual Reasoning in Neuro-Symbolic AI}
+\label{alg:multi_modal_integration}
+\begin{algorithmic}[1]
+\REQUIRE Visual input $V$, Symbolic knowledge base $K$, Query $Q$
+\ENSURE Answer $A$ to the query $Q$
+
+\STATE \textbf{Step 1: Preprocessing}
+\STATE Extract visual features $F_V$ from $V$ using a convolutional neural network (CNN).
+\STATE Parse $Q$ into a symbolic representation $S_Q$.
+
+\STATE \textbf{Step 2: Feature Mapping}
+\STATE Map $F_V$ to a symbolic representation $S_V$ using a neural-symbolic mapping function $M$.
+
+\STATE \textbf{Step 3: Knowledge Integration}
+\STATE Combine $S_V$ and $K$ to form an integrated knowledge base $K'$.
+
+\STATE \textbf{Step 4: Reasoning}
+\STATE Apply a symbolic reasoning engine $R$ on $K'$ and $S_Q$ to derive $A$.
+
+\STATE \textbf{Step 5: Output}
+\RETURN $A$
+\end{algorithmic}
+\end{algorithm}
+Section 3: Generation and Control
+Item 1: Structured Image Generation
+```latex \begin{algorithm} \caption{Structured Image Generation} \label{alg:structured_image_generation} \begin{algorithmic}[1] \REQUIRE Symbolic representation $S$, Neural network model $M$, Latent space $\mathcal{Z}$ \ENSURE Generated image $I$ \STATE Initialize latent vector $z \in \mathcal{Z}$ \STATE Parse symbolic representation $S$ into structured components $\{s_1, s_2, \dots, s_n\}$ \FOR{each component $s_i \in \{s_1, s_2, \dots, s_n\}$} \STATE Encode $s_i$ into a latent feature vector $f_i$ using $M$ \STATE Combine $f_i$ with $z$ to update $z$: $z \leftarrow M(z, f_i)$ \ENDFOR \STATE Generate image $I$ from latent vector $z$ using $M$ \RETURN $I$ \end{algorithmic} \end{algorithm} ```
+
+Item 2: Scene Manipulation
+
+\begin{algorithm}
+\caption{Scene Manipulation in Neuro-Symbolic AI}
+\label{alg:scene_manipulation}
+\begin{algorithmic}[1]
+\REQUIRE Input scene $S$, manipulation goal $G$, symbolic rules $R$, neural model $M$
+\ENSURE Manipulated scene $S'$
+\STATE Parse $S$ into symbolic representation $S_{sym}$ using $M$
+\STATE Identify relevant objects and relationships in $S_{sym}$ based on $G$
+\FOR{each object $o$ in $S_{sym}$}
+    \IF{$o$ is relevant to $G$}
+        \STATE Apply symbolic rules $R$ to modify $o$ or its relationships
+    \ENDIF
+\ENDFOR
+\STATE Generate new scene $S'$ from modified $S_{sym}$ using $M$
+\RETURN $S'$
+\end{algorithmic}
+\end{algorithm}
+Item 3: Visual Planning
+```latex \begin{algorithm} \caption{Visual Planning in Neuro-Symbolic AI}\label{alg:visual_planning} \begin{algorithmic}[1] \REQUIRE Input: Visual scene $S$, Goal $G$, Symbolic knowledge base $K$ \ENSURE Output: Action sequence $A$ to achieve $G$ \STATE \textbf{Step 1: Scene Parsing} \STATE Parse $S$ into symbolic representations $R$ using a neural network. \STATE $R \gets \text{NeuralSceneParser}(S)$ \STATE \textbf{Step 2: Goal Alignment} \STATE Align $G$ with $R$ using symbolic reasoning. \STATE $A_{\text{partial}} \gets \text{SymbolicReasoner}(R, G, K)$ \STATE \textbf{Step 3: Action Sequence Generation} \STATE Generate candidate action sequences $C$ based on $A_{\text{partial}}$. \STATE $C \gets \text{ActionGenerator}(A_{\text{partial}})$ \STATE \textbf{Step 4: Sequence Evaluation} \STATE Evaluate $C$ using a neural-symbolic evaluator. \STATE $A \gets \text{NeuralSymbolicEvaluator}(C, R, K)$ \STATE \textbf{Step 5: Output} \RETURN $A$ \end{algorithmic} \end{algorithm} ```
+
+Chapter 10: Robotics and Embodied Intelligence
+Section 1: Perception-Action Loops
+Item 1: Sensorimotor Integration
+```latex \begin{algorithm} \caption{Sensorimotor Integration in Neuro-Symbolic AI}\label{alg:sensorimotor_integration} \begin{algorithmic}[1] \REQUIRE Sensory input $S$, Motor commands $M$, Environment state $E$ \ENSURE Integrated action $A$ \STATE Initialize sensory buffer $B_S \gets \emptyset$ \STATE Initialize motor buffer $B_M \gets \emptyset$ \STATE Initialize environment model $E_M \gets \emptyset$ \STATE Initialize symbolic representation $R \gets \emptyset$ \FOR{each time step $t$} \STATE Capture sensory input $S_t$ from environment \STATE Update sensory buffer $B_S \gets B_S \cup \{S_t\}$ \STATE Extract features $F_t$ from $B_S$ using feature extraction module \STATE Update symbolic representation $R \gets R \cup \{F_t\}$ \STATE Predict environment state $E_t$ using $R$ and $E_M$ \STATE Generate motor commands $M_t$ based on $E_t$ and $R$ \STATE Update motor buffer $B_M \gets B_M \cup \{M_t\}$ \STATE Execute motor commands $M_t$ in environment \STATE Observe new environment state $E_{t+1}$ \STATE Update environment model $E_M \gets E_M \cup \{E_{t+1}\}$ \ENDFOR \STATE Return integrated action $A \gets B_M$ \end{algorithmic} \end{algorithm} ```
+
+Item 2: Affordance Learning
+
+\begin{algorithm}
+\caption{Affordance Learning in Neuro-Symbolic AI}
+\label{alg:affordance_learning}
+\begin{algorithmic}[1]
+\REQUIRE Sensory input $S$, Environment $E$, Action set $A$, Symbolic knowledge base $K$
+\ENSURE Learned affordances $L$
+\STATE Initialize $L \gets \emptyset$
+\FOR{each sensory input $s_i \in S$}
+    \STATE Extract features $F_i \gets \text{FeatureExtraction}(s_i)$
+    \STATE Generate symbolic representation $R_i \gets \text{SymbolicMapping}(F_i, K)$
+    \FOR{each action $a_j \in A$}
+        \STATE Predict outcome $O_{ij} \gets \text{SimulateAction}(R_i, a_j, E)$
+        \IF{$\text{IsValidAffordance}(O_{ij}, K)$}
+            \STATE $L \gets L \cup \{(R_i, a_j, O_{ij})\}$
+        \ENDIF
+    \ENDFOR
+\ENDFOR
+\RETURN $L$
+\end{algorithmic}
+\end{algorithm}
+Section 2: Task and Motion Planning
+Item 1: Symbolic Planning
+```latex \subsection*{[Symbolic Planning]} \begin{algorithm} \caption{Symbolic Planning for Task and Motion Planning in Neuro-Symbolic AI} \label{alg:symbolic_planning} \begin{algorithmic}[1] \REQUIRE Initial state $s_0$, Goal state $s_g$, Symbolic action set $A$, Environment model $M$ \ENSURE Plan $\pi$ as a sequence of actions $[a_1, a_2, \dots, a_n]$ \STATE $\pi \gets \emptyset$ \COMMENT{Initialize an empty plan} \STATE $s \gets s_0$ \COMMENT{Set current state to initial state} \WHILE{$s \neq s_g$} \STATE $C \gets \text{GenerateCandidates}(s, A, M)$ \COMMENT{Generate candidate actions} \STATE $a \gets \text{SelectAction}(C, s_g)$ \COMMENT{Select the best action} \STATE $\pi \gets \pi \cup \{a\}$ \COMMENT{Add action to the plan} \STATE $s \gets \text{ApplyAction}(s, a, M)$ \COMMENT{Update the current state} \ENDWHILE \RETURN $\pi$ \COMMENT{Return the generated plan} \end{algorithmic} \end{algorithm} ```
+
+Item 2: Neural Motion Control
+
+\begin{algorithm}
+\caption{Neural Motion Control for Task and Motion Planning}
+\label{alg:neural_motion_control}
+\begin{algorithmic}[1]
+\REQUIRE Environment model $E$, Task specification $T$, Initial robot state $S_0$, Neural network model $N$
+\ENSURE Robot motion trajectory $\tau$
+
+\STATE Initialize robot state $S \gets S_0$
+\STATE Generate symbolic task plan $P \gets \text{SymbolicPlanner}(T, E)$
+\STATE Initialize motion trajectory $\tau \gets \emptyset$
+
+\FOR{each action $a_i$ in $P$}
+    \STATE Extract symbolic constraints $C_i \gets \text{ExtractConstraints}(a_i, E)$
+    \STATE Encode constraints into neural input $X_i \gets \text{EncodeConstraints}(C_i)$
+    \STATE Predict motion parameters $M_i \gets N(X_i)$
+    \STATE Generate motion trajectory segment $\tau_i \gets \text{MotionPlanner}(S, M_i, E)$
+    \STATE Update robot state $S \gets \text{ExecuteMotion}(\tau_i)$
+    \STATE Append $\tau_i$ to $\tau$
+\ENDFOR
+
+\RETURN $\tau$
+\end{algorithmic}
+\end{algorithm}
+Item 3: Integrated Task-Motion Planning
+
+\begin{algorithm}
+\caption{Integrated Task-Motion Planning in Neuro-Symbolic AI}
+\label{alg:task_motion_planning}
+\begin{algorithmic}[1]
+\REQUIRE Task specification $T$, environment model $E$, robot capabilities $C$
+\ENSURE Executable motion plan $P$
+
+\STATE Initialize symbolic planner $S$ with $T$, $E$, and $C$
+\STATE Initialize motion planner $M$ with $E$ and $C$
+
+\WHILE{$\neg S.\text{isGoalReached}()$}
+    \STATE Generate symbolic plan $S_{\text{plan}} \gets S.\text{planNextStep}()$
+    \IF{$S_{\text{plan}} \neq \emptyset$}
+        \STATE Translate $S_{\text{plan}}$ to motion constraints $M_{\text{constraints}}$
+        \STATE Generate motion plan $M_{\text{plan}} \gets M.\text{plan}(M_{\text{constraints}})$
+        \IF{$M_{\text{plan}} \neq \emptyset$}
+            \STATE Execute $M_{\text{plan}}$ on robot
+            \STATE Update $S$ with executed plan $M_{\text{plan}}$
+        \ELSE
+            \STATE Backtrack $S$ to previous state
+        \ENDIF
+    \ELSE
+        \STATE \textbf{break} \COMMENT{No further symbolic steps available}
+    \ENDIF
+\ENDWHILE
+
+\STATE \textbf{return} $P \gets M.\text{getExecutedPlan}()$
+\end{algorithmic}
+\end{algorithm}
