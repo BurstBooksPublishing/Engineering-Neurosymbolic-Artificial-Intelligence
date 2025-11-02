@@ -1,0 +1,2103 @@
+Chapter 1: Foundations of Modern Artificial Intelligence
+Section 1: The Three Waves of AI
+Item 1: Third Wave: Hybrid Intelligence
+[Third Wave: Hybrid Intelligence] \begin{verbatim}
+
+
+# Import necessary libraries
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier
+from sympy import symbols, Eq, solve
+
+# Step 1: Define symbolic variables for symbolic reasoning
+x, y = symbols('x y')
+equation = Eq(x**2 + y**2, 25)  # Represents a circle equation
+
+# Step 2: Solve the symbolic equation
+solution = solve(equation, y)
+print("Symbolic solution for y:", solution)
+
+# Step 3: Generate synthetic data for machine learning
+np.random.seed(42)
+X = np.random.rand(100, 2) * 10  # Random 2D data points
+y = (X[:, 0]**2 + X[:, 1]**2 <= 25).astype(int)  # Labels based on circle equation
+
+# Step 4: Train a Random Forest classifier (neural-symbolic hybrid)
+clf = RandomForestClassifier(n_estimators=100)
+clf.fit(X, y)
+
+# Step 5: Predict using the trained model
+test_point = np.array([[3, 4]])  # Test point inside the circle
+prediction = clf.predict(test_point)
+print("Prediction for test point:", prediction)
+
+# Step 6: Combine symbolic and neural predictions
+if prediction == 1:
+    print("The point lies inside the circle (symbolic validation).")
+else:
+    print("The point lies outside the circle (symbolic validation).")
+\end{verbatim}
+Section 2: The Limitations of Current AI Systems
+Item 1: Deep Learning's Successes and Failures
+[Deep Learning's Successes and Failures] \begin{verbatim}
+
+
+# Import necessary libraries
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras import layers, models
+
+# Define a simple neural network model
+def create_model():
+    model = models.Sequential([
+        layers.Dense(64, activation='relu', input_shape=(784,)),  # Input layer
+        layers.Dense(64, activation='relu'),  # Hidden layer
+        layers.Dense(10, activation='softmax')  # Output layer
+    ])
+    return model
+
+# Compile the model with appropriate loss function and optimizer
+model = create_model()
+model.compile(optimizer='adam',
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy'])
+
+# Load and preprocess the MNIST dataset
+(x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+x_train = x_train.reshape(-1, 784).astype('float32') / 255  # Flatten and normalize
+x_test = x_test.reshape(-1, 784).astype('float32') / 255
+
+# Train the model
+model.fit(x_train, y_train, epochs=5, batch_size=32, validation_split=0.2)
+
+# Evaluate the model on the test data
+test_loss, test_acc = model.evaluate(x_test, y_test)
+print(f"Test Accuracy: {test_acc}")
+
+# Example of a failure case: Adversarial attack
+def adversarial_attack(image, epsilon=0.1):
+    perturbation = epsilon * np.sign(np.random.randn(*image.shape))  # Add noise
+    adversarial_image = image + perturbation
+    adversarial_image = np.clip(adversarial_image, 0, 1)  # Clip to valid range
+    return adversarial_image
+
+# Generate an adversarial example
+adversarial_example = adversarial_attack(x_test[0:1])
+prediction = model.predict(adversarial_example)
+print(f"Prediction on adversarial example: {np.argmax(prediction)}")
+\end{verbatim}
+Section 3: Understanding Intelligence
+Item 1: Human Cognitive Architecture
+[Human Cognitive Architecture] \begin{verbatim}
+
+
+# Import necessary libraries
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras import layers
+
+# Define a simple neural network model to simulate cognitive processes
+def create_cognitive_model(input_shape):
+    """
+    Create a neural-symbolic model to simulate human cognitive architecture.
+    This model combines neural networks (for pattern recognition) and symbolic
+    reasoning (for logical operations).
+    """
+    # Input layer to receive sensory data
+    inputs = tf.keras.Input(shape=input_shape)
+    
+    # Neural component: Dense layers for pattern recognition
+    x = layers.Dense(64, activation='relu')(inputs)
+    x = layers.Dense(64, activation='relu')(x)
+    
+    # Symbolic component: Logical operations using custom layers
+    # Example: Logical AND operation
+    logical_output = layers.Lambda(lambda x: tf.reduce_all(x, axis=-1, keepdims=True))(x)
+    
+    # Combine neural and symbolic outputs
+    combined_output = layers.Concatenate()([x, logical_output])
+    
+    # Final output layer for decision-making
+    outputs = layers.Dense(1, activation='sigmoid')(combined_output)
+    
+    # Define the model
+    model = tf.keras.Model(inputs, outputs)
+    
+    return model
+
+# Example usage
+input_shape = (10,)  # Example input shape (e.g., 10 features)
+model = create_cognitive_model(input_shape)
+
+# Compile the model
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
+# Summary of the model architecture
+model.summary()
+\end{verbatim}
+Item 2: Learning vs. Reasoning
+[Learning vs. Reasoning] \begin{verbatim}
+
+
+# Import necessary libraries
+import numpy as np
+from sklearn.neural_network import MLPClassifier
+from sympy import symbols, Eq, solve
+
+# Learning: Training a neural network to classify data
+# Generate synthetic data for binary classification
+X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])  # Input features
+y = np.array([0, 1, 1, 0])  # Labels (XOR problem)
+
+# Initialize and train a Multi-Layer Perceptron (MLP) classifier
+mlp = MLPClassifier(hidden_layer_sizes=(4,), max_iter=1000, random_state=42)
+mlp.fit(X, y)
+
+# Predict using the trained model
+predictions = mlp.predict(X)
+print("Learned Predictions:", predictions)
+
+# Reasoning: Solving a symbolic equation using logical rules
+# Define symbolic variables
+x, y = symbols('x y')
+
+# Define an equation to solve
+equation = Eq(x**2 + y**2, 25)
+
+# Solve the equation symbolically
+solution = solve(equation, (x, y))
+print("Reasoned Solution:", solution)
+\end{verbatim}
+Chapter 2: Mathematical Foundations
+Section 1: Statistical Learning Theory
+Item 1: PAC Learning
+[PAC Learning] \begin{verbatim}
+
+
+# Import necessary libraries
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+
+# Generate synthetic data for binary classification
+np.random.seed(42)
+X = np.random.randn(1000, 10)  # 1000 samples, 10 features
+y = (np.sum(X, axis=1) > 0).astype(int)  # Binary labels based on feature sum
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Initialize a logistic regression model
+model = LogisticRegression()
+
+# Train the model on the training data
+model.fit(X_train, y_train)
+
+# Predict labels for the test set
+y_pred = model.predict(X_test)
+
+# Calculate the accuracy of the model
+accuracy = accuracy_score(y_test, y_pred)
+
+# Output the accuracy
+print(f"Model Accuracy: {accuracy:.4f}")
+
+# PAC Learning: The model's accuracy represents the probability of correct classification.
+# The goal is to ensure that the model generalizes well to unseen data, which aligns
+# with the Probably Approximately Correct (PAC) learning framework.
+\end{verbatim}
+Item 2: VC Dimension and Generalization
+[VC Dimension and Generalization] \begin{verbatim}
+
+
+# Import necessary libraries
+import numpy as np
+from sklearn.svm import SVC
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import make_classification
+from sklearn.metrics import accuracy_score
+
+# Generate synthetic data for binary classification
+X, y = make_classification(n_samples=1000, n_features=20, n_informative=15, 
+                           n_redundant=5, random_state=42)
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, 
+                                                    random_state=42)
+
+# Initialize an SVM classifier with a linear kernel
+svm_classifier = SVC(kernel='linear')
+
+# Train the SVM classifier on the training data
+svm_classifier.fit(X_train, y_train)
+
+# Predict the labels for the test data
+y_pred = svm_classifier.predict(X_test)
+
+# Calculate the accuracy of the model on the test data
+accuracy = accuracy_score(y_test, y_pred)
+
+# Print the accuracy to evaluate generalization performance
+print(f"Test Accuracy: {accuracy:.4f}")
+
+# The VC dimension is implicitly controlled by the choice of kernel and 
+# regularization parameters in the SVM. The linear kernel has a lower VC 
+# dimension compared to non-linear kernels, which helps in better generalization.
+\end{verbatim}
+Section 2: Optimization
+Item 1: Gradient-Based Methods
+[Gradient-Based Methods] \begin{verbatim}
+
+
+import numpy as np
+
+# Define a simple quadratic function: f(x) = x^2 + 3x + 4
+def f(x):
+    return x**2 + 3*x + 4
+
+# Define the gradient of the function: f'(x) = 2x + 3
+def grad_f(x):
+    return 2*x + 3
+
+# Gradient Descent Algorithm
+def gradient_descent(starting_point, learning_rate, num_iterations):
+    x = starting_point
+    for i in range(num_iterations):
+        gradient = grad_f(x)  # Compute the gradient at current point
+        x = x - learning_rate * gradient  # Update x using the gradient
+        print(f"Iteration {i+1}: x = {x}, f(x) = {f(x)}")
+    return x
+
+# Parameters
+starting_point = 10.0  # Initial guess
+learning_rate = 0.1    # Step size
+num_iterations = 20    # Number of iterations
+
+# Run Gradient Descent
+optimal_x = gradient_descent(starting_point, learning_rate, num_iterations)
+print(f"Optimal x: {optimal_x}")
+\end{verbatim}
+Chapter 3: Knowledge Representation
+Section 1: Neural Knowledge
+Item 1: Distributed Representations
+[Distributed Representations] \begin{verbatim}
+
+
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.layers import Dense, Embedding
+
+# Define a simple neural network to demonstrate distributed representations
+class DistributedRepresentationModel(tf.keras.Model):
+    def __init__(self, vocab_size, embedding_dim, hidden_dim):
+        super(DistributedRepresentationModel, self).__init__()
+        # Embedding layer to map discrete symbols to dense vectors
+        self.embedding = Embedding(input_dim=vocab_size, 
+                                   output_dim=embedding_dim)
+        # Dense layer to process the distributed representations
+        self.dense = Dense(hidden_dim, activation='relu')
+        # Output layer to map back to the original symbol space
+        self.output_layer = Dense(vocab_size, activation='softmax')
+
+    def call(self, inputs):
+        # Convert input symbols to distributed representations
+        embedded = self.embedding(inputs)
+        # Process the distributed representations
+        hidden = self.dense(embedded)
+        # Map back to the original symbol space
+        output = self.output_layer(hidden)
+        return output
+
+# Example usage
+vocab_size = 1000  # Size of the vocabulary
+embedding_dim = 50  # Dimension of the distributed representation
+hidden_dim = 128  # Hidden layer dimension
+
+# Create the model
+model = DistributedRepresentationModel(vocab_size, embedding_dim, hidden_dim)
+
+# Example input (batch of symbol indices)
+input_data = np.array([[1, 2, 3], [4, 5, 6]])
+
+# Forward pass to get distributed representations and output
+output = model(input_data)
+
+# Display the output
+print(output)
+\end{verbatim}
+Item 2: Embedding Spaces
+[Embedding Spaces] \begin{verbatim}
+
+
+# Import necessary libraries
+import numpy as np
+from sklearn.manifold import TSNE
+import matplotlib.pyplot as plt
+
+# Define a simple set of symbolic entities (e.g., words or concepts)
+symbolic_entities = ['cat', 'dog', 'king', 'queen', 'man', 'woman']
+
+# Create a simple embedding space using random vectors (for illustration)
+# Each entity is represented as a 5-dimensional vector
+embedding_space = {entity: np.random.rand(5) for entity in symbolic_entities}
+
+# Convert the embedding space to a matrix for visualization
+embeddings_matrix = np.array([embedding_space[entity] for entity in symbolic_entities])
+
+# Apply t-SNE to reduce dimensionality for visualization (2D)
+tsne = TSNE(n_components=2, random_state=42)
+embeddings_2d = tsne.fit_transform(embeddings_matrix)
+
+# Plot the 2D embeddings
+plt.figure(figsize=(8, 6))
+for i, entity in enumerate(symbolic_entities):
+    plt.scatter(embeddings_2d[i, 0], embeddings_2d[i, 1], label=entity)
+plt.legend()
+plt.title('2D Visualization of Embedding Space')
+plt.xlabel('Dimension 1')
+plt.ylabel('Dimension 2')
+plt.show()
+\end{verbatim}
+Item 3: Knowledge in Weights
+[Knowledge in Weights] \begin{verbatim}
+
+
+# Import necessary libraries
+import torch
+import torch.nn as nn
+
+# Define a simple neural network class
+class NeuralSymbolicNetwork(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super(NeuralSymbolicNetwork, self).__init__()
+        # Define layers with weights representing knowledge
+        self.fc1 = nn.Linear(input_size, hidden_size)  # Input to hidden layer
+        self.fc2 = nn.Linear(hidden_size, output_size)  # Hidden to output layer
+
+    def forward(self, x):
+        # Forward pass through the network
+        x = torch.relu(self.fc1(x))  # Apply ReLU activation to hidden layer
+        x = self.fc2(x)  # Output layer
+        return x
+
+# Initialize the network with specific dimensions
+input_size = 10  # Input features
+hidden_size = 20  # Hidden layer neurons
+output_size = 5  # Output classes
+model = NeuralSymbolicNetwork(input_size, hidden_size, output_size)
+
+# Example input tensor
+input_tensor = torch.randn(1, input_size)  # Random input data
+
+# Forward pass to get output
+output = model(input_tensor)
+print("Output of the network:", output)
+\end{verbatim}
+Section 2: Hybrid Knowledge Structures
+Item 1: Neural-Symbolic Integration Patterns
+[Neural-Symbolic Integration Patterns] \begin{verbatim}
+
+
+# Import necessary libraries
+import numpy as np
+import tensorflow as tf
+from sympy import symbols, Eq, solve
+
+# Define symbolic variables
+x, y = symbols('x y')
+
+# Define a symbolic equation
+equation = Eq(x**2 + y**2, 25)
+
+# Solve the symbolic equation symbolically
+symbolic_solution = solve(equation, y)
+print("Symbolic Solution:", symbolic_solution)
+
+# Define a neural network model
+model = tf.keras.Sequential([
+    tf.keras.layers.Dense(10, activation='relu', input_shape=(1,)),
+    tf.keras.layers.Dense(1)
+])
+
+# Compile the model
+model.compile(optimizer='adam', loss='mse')
+
+# Generate some synthetic data for training
+X_train = np.linspace(-5, 5, 100).reshape(-1, 1)
+y_train = np.sqrt(25 - X_train**2)
+
+# Train the neural network
+model.fit(X_train, y_train, epochs=100, verbose=0)
+
+# Use the trained neural network to predict values
+X_test = np.array([3, 4, 0]).reshape(-1, 1)
+y_pred = model.predict(X_test)
+print("Neural Network Predictions:", y_pred)
+
+# Compare neural network predictions with symbolic solutions
+for i, x_val in enumerate(X_test):
+    print(f"x = {x_val[0]}, Symbolic y = {symbolic_solution[0].subs(x, x_val[0])}, Predicted y = {y_pred[i][0]}")
+\end{verbatim}
+Chapter 4: Physics Understanding and Emulation
+Section 1: Fundamentals of Physics in AI
+Item 1: Physics-Based Simulations in AI
+[Physics-Based Simulations in AI] \begin{verbatim}
+
+
+# Import necessary libraries
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.layers import Dense
+
+# Define a simple physics-based simulation: projectile motion
+def projectile_motion(v0, theta, g=9.81):
+    """
+    Simulate projectile motion given initial velocity (v0),
+    launch angle (theta), and gravity (g).
+    """
+    # Convert angle to radians
+    theta_rad = np.radians(theta)
+    
+    # Calculate initial velocity components
+    v0_x = v0 * np.cos(theta_rad)  # Horizontal component
+    v0_y = v0 * np.sin(theta_rad)  # Vertical component
+    
+    # Time of flight calculation
+    t_flight = 2 * v0_y / g
+    
+    # Time array for simulation
+    t = np.linspace(0, t_flight, num=100)
+    
+    # Calculate positions over time
+    x = v0_x * t  # Horizontal position
+    y = v0_y * t - 0.5 * g * t**2  # Vertical position
+    
+    return x, y
+
+# Neural network to predict projectile motion
+class ProjectileNet(tf.keras.Model):
+    def __init__(self):
+        super(ProjectileNet, self).__init__()
+        self.dense1 = Dense(32, activation='relu')  # First hidden layer
+        self.dense2 = Dense(32, activation='relu')  # Second hidden layer
+        self.output_layer = Dense(2)  # Output layer (x, y coordinates)
+    
+    def call(self, inputs):
+        # Forward pass through the network
+        x = self.dense1(inputs)
+        x = self.dense2(x)
+        return self.output_layer(x)
+
+# Example usage
+if __name__ == "__main__":
+    # Simulate projectile motion
+    v0 = 50  # Initial velocity (m/s)
+    theta = 45  # Launch angle (degrees)
+    x, y = projectile_motion(v0, theta)
+    
+    # Prepare input for neural network (time steps)
+    t = np.linspace(0, 2 * v0 * np.sin(np.radians(theta)) / 9.81, num=100)
+    inputs = t.reshape(-1, 1)
+    
+    # Initialize and train the neural network
+    model = ProjectileNet()
+    model.compile(optimizer='adam', loss='mse')
+    model.fit(inputs, np.column_stack((x, y)), epochs=100, verbose=0)
+    
+    # Predict using the trained model
+    predictions = model.predict(inputs)
+\end{verbatim}
+Section 2: Symbolic and Neural Approaches to Physical Systems
+Item 1: Learning Physical Dynamics with Neural Networks
+[Learning Physical Dynamics with Neural Networks] \begin{verbatim}
+
+
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+# Define a simple neural network to model physical dynamics
+class PhysicsNet(nn.Module):
+    def __init__(self, input_dim, hidden_dim, output_dim):
+        super(PhysicsNet, self).__init__()
+        self.fc1 = nn.Linear(input_dim, hidden_dim)  # Input to hidden layer
+        self.fc2 = nn.Linear(hidden_dim, hidden_dim) # Hidden to hidden layer
+        self.fc3 = nn.Linear(hidden_dim, output_dim) # Hidden to output layer
+        self.activation = nn.ReLU()                  # Activation function
+
+    def forward(self, x):
+        x = self.activation(self.fc1(x))  # Apply activation to first layer
+        x = self.activation(self.fc2(x))  # Apply activation to second layer
+        x = self.fc3(x)                   # Output layer (no activation)
+        return x
+
+# Initialize the network, loss function, and optimizer
+input_dim = 4  # Example: position, velocity, force, mass
+hidden_dim = 32
+output_dim = 2  # Example: predicted acceleration and next position
+model = PhysicsNet(input_dim, hidden_dim, output_dim)
+criterion = nn.MSELoss()  # Mean Squared Error for regression
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+
+# Example training loop
+for epoch in range(1000):
+    # Generate synthetic data (e.g., state and force inputs)
+    inputs = torch.randn(10, input_dim)  # Batch of 10 samples
+    targets = torch.randn(10, output_dim)  # Corresponding target outputs
+
+    # Forward pass: compute predicted outputs
+    outputs = model(inputs)
+
+    # Compute loss
+    loss = criterion(outputs, targets)
+
+    # Backward pass: compute gradients and update weights
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+
+    # Print loss every 100 epochs
+    if epoch % 100 == 0:
+        print(f"Epoch {epoch}, Loss: {loss.item()}")
+\end{verbatim}
+Section 3: Hybrid Models for Physical Reasoning
+Item 1: Physics-Informed Neural Networks (PINNs)
+[Physics-Informed Neural Networks (PINNs)] \begin{verbatim}
+
+
+import tensorflow as tf
+import numpy as np
+
+# Define the neural network architecture
+class PINN(tf.keras.Model):
+    def __init__(self):
+        super(PINN, self).__init__()
+        self.dense1 = tf.keras.layers.Dense(20, activation='tanh')
+        self.dense2 = tf.keras.layers.Dense(20, activation='tanh')
+        self.dense3 = tf.keras.layers.Dense(1, activation=None)
+
+    def call(self, inputs):
+        x = self.dense1(inputs)
+        x = self.dense2(x)
+        return self.dense3(x)
+
+# Define the physics-informed loss function
+def physics_loss(model, x, t):
+    with tf.GradientTape(persistent=True) as tape:
+        tape.watch([x, t])
+        u = model(tf.stack([x, t], axis=1))
+        u_x = tape.gradient(u, x)
+        u_t = tape.gradient(u, t)
+    u_xx = tape.gradient(u_x, x)
+    del tape  # Free up resources
+
+    # Physics-informed residual (e.g., heat equation)
+    residual = u_t - u_xx
+    return tf.reduce_mean(tf.square(residual))
+
+# Generate synthetic data
+x = np.linspace(0, 1, 100)
+t = np.linspace(0, 1, 100)
+x, t = np.meshgrid(x, t)
+x = x.flatten()
+t = t.flatten()
+
+# Convert to tensors
+x_tensor = tf.convert_to_tensor(x, dtype=tf.float32)
+t_tensor = tf.convert_to_tensor(t, dtype=tf.float32)
+
+# Initialize the model and optimizer
+model = PINN()
+optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+
+# Training loop
+epochs = 1000
+for epoch in range(epochs):
+    with tf.GradientTape() as tape:
+        loss = physics_loss(model, x_tensor, t_tensor)
+    gradients = tape.gradient(loss, model.trainable_variables)
+    optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+    if epoch % 100 == 0:
+        print(f"Epoch {epoch}, Loss: {loss.numpy()}")
+\end{verbatim}
+Chapter 5: Learning Mechanisms
+Section 1: Statistical Learning
+Item 1: Supervised Learning Theory
+[Supervised Learning Theory] \begin{verbatim}
+
+
+# Import necessary libraries
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+
+# Generate synthetic data for demonstration
+np.random.seed(42)
+X = 2 * np.random.rand(100, 1)  # Feature matrix (100 samples, 1 feature)
+y = 4 + 3 * X + np.random.randn(100, 1)  # Target vector with noise
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, 
+                                                    random_state=42)
+
+# Initialize and train a linear regression model
+model = LinearRegression()
+model.fit(X_train, y_train)  # Fit the model to the training data
+
+# Make predictions on the test set
+y_pred = model.predict(X_test)
+
+# Evaluate the model's performance using Mean Squared Error (MSE)
+mse = mean_squared_error(y_test, y_pred)
+print(f"Mean Squared Error: {mse:.2f}")
+
+# Display the learned coefficients
+print(f"Intercept: {model.intercept_[0]:.2f}")
+print(f"Coefficient: {model.coef_[0][0]:.2f}")
+\end{verbatim}
+Item 2: Few-Shot and Zero-Shot Learning
+[Few-Shot and Zero-Shot Learning] \begin{verbatim}
+
+
+# Import necessary libraries
+import torch
+from transformers import pipeline
+
+# Initialize a pre-trained model for zero-shot classification
+classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+
+# Define a sequence to classify and candidate labels
+sequence_to_classify = "The company is investing heavily in renewable energy."
+candidate_labels = ["technology", "environment", "finance"]
+
+# Perform zero-shot classification
+result = classifier(sequence_to_classify, candidate_labels)
+
+# Print the results
+print("Sequence:", sequence_to_classify)
+print("Labels:", candidate_labels)
+print("Classification Result:", result)
+
+# Few-shot learning example using a pre-trained model
+few_shot_model = pipeline("text-generation", model="gpt2")
+
+# Define a prompt with a few examples
+prompt = """
+Example 1: The cat sat on the mat. Label: animal
+Example 2: The car drove down the road. Label: vehicle
+Example 3: The apple fell from the tree. Label: fruit
+Example 4: The book is on the shelf. Label: object
+Example 5: The sun rises in the east. Label: 
+"""
+
+# Generate a completion for the prompt
+completion = few_shot_model(prompt, max_length=50)
+
+# Print the generated completion
+print("Few-Shot Learning Completion:", completion[0]['generated_text'])
+\end{verbatim}
+Section 2: Hybrid Learning Approaches
+Item 1: Learning with Logical Constraints
+[Learning with Logical Constraints] \begin{verbatim}
+
+
+# Import necessary libraries
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+# Define a simple neural network model
+class SimpleNN(nn.Module):
+    def __init__(self):
+        super(SimpleNN, self).__init__()
+        self.fc1 = nn.Linear(10, 50)  # Input layer to hidden layer
+        self.fc2 = nn.Linear(50, 1)   # Hidden layer to output layer
+
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))   # Apply ReLU activation
+        x = torch.sigmoid(self.fc2(x)) # Apply sigmoid activation
+        return x
+
+# Define a logical constraint loss function
+def logical_constraint_loss(output, target):
+    # Logical constraint: output should be close to target
+    return torch.mean((output - target) ** 2)
+
+# Initialize model, loss function, and optimizer
+model = SimpleNN()
+criterion = logical_constraint_loss
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+
+# Generate some dummy data
+input_data = torch.randn(100, 10)  # 100 samples, 10 features
+target_data = torch.randint(0, 2, (100, 1)).float()  # Binary targets
+
+# Training loop
+for epoch in range(100):
+    optimizer.zero_grad()  # Zero the gradients
+    output = model(input_data)  # Forward pass
+    loss = criterion(output, target_data)  # Compute loss
+    loss.backward()  # Backward pass
+    optimizer.step()  # Update weights
+
+    if (epoch + 1) % 10 == 0:
+        print(f'Epoch [{epoch+1}/100], Loss: {loss.item():.4f}')
+\end{verbatim}
+Chapter 6: Reasoning Systems
+Section 1: Neural Reasoning
+Item 1: Attention Mechanisms
+[Attention Mechanisms] \begin{verbatim}
+
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class AttentionMechanism(nn.Module):
+    def __init__(self, embed_size, hidden_size):
+        super(AttentionMechanism, self).__init__()
+        self.embed_size = embed_size
+        self.hidden_size = hidden_size
+        # Linear layers to transform inputs
+        self.attention = nn.Linear(hidden_size + embed_size, hidden_size)
+        self.v = nn.Linear(hidden_size, 1, bias=False)
+
+    def forward(self, hidden, encoder_outputs):
+        # hidden: [batch_size, hidden_size]
+        # encoder_outputs: [batch_size, seq_len, embed_size]
+        batch_size = encoder_outputs.size(0)
+        seq_len = encoder_outputs.size(1)
+        
+        # Repeat hidden state across sequence length
+        hidden = hidden.unsqueeze(1).repeat(1, seq_len, 1)
+        
+        # Concatenate hidden state with encoder outputs
+        energy = torch.tanh(self.attention(torch.cat((hidden, encoder_outputs), dim=2)))
+        
+        # Compute attention scores
+        attention_scores = self.v(energy).squeeze(2)
+        
+        # Apply softmax to get attention weights
+        attention_weights = F.softmax(attention_scores, dim=1)
+        
+        # Weighted sum of encoder outputs using attention weights
+        context_vector = torch.bmm(attention_weights.unsqueeze(1), encoder_outputs)
+        context_vector = context_vector.squeeze(1)
+        
+        return context_vector, attention_weights
+
+# Example usage
+embed_size = 256
+hidden_size = 512
+batch_size = 32
+seq_len = 10
+
+# Initialize attention mechanism
+attention = AttentionMechanism(embed_size, hidden_size)
+
+# Dummy inputs
+hidden = torch.randn(batch_size, hidden_size)
+encoder_outputs = torch.randn(batch_size, seq_len, embed_size)
+
+# Forward pass
+context_vector, attention_weights = attention(hidden, encoder_outputs)
+\end{verbatim}
+Item 2: Memory Networks
+[Memory Networks] \begin{verbatim}
+
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class MemoryNetwork(nn.Module):
+    def __init__(self, input_dim, memory_size, embedding_dim):
+        super(MemoryNetwork, self).__init__()
+        # Embedding layer to convert input tokens to vectors
+        self.embedding = nn.Embedding(input_dim, embedding_dim)
+        # Memory matrix to store information
+        self.memory = nn.Parameter(torch.randn(memory_size, embedding_dim))
+        # Linear layer to compute attention weights
+        self.attention = nn.Linear(embedding_dim, 1)
+        # Output layer to generate final predictions
+        self.output_layer = nn.Linear(embedding_dim, input_dim)
+
+    def forward(self, x):
+        # Embed input tokens
+        embedded = self.embedding(x)
+        # Compute attention scores between input and memory
+        attention_scores = self.attention(embedded).squeeze(-1)
+        attention_weights = F.softmax(attention_scores, dim=-1)
+        # Weighted sum of memory vectors based on attention
+        memory_output = torch.matmul(attention_weights, self.memory)
+        # Combine memory output with input embeddings
+        combined = embedded + memory_output
+        # Generate final output predictions
+        output = self.output_layer(combined)
+        return output
+
+# Example usage
+input_dim = 10000  # Vocabulary size
+memory_size = 128  # Number of memory slots
+embedding_dim = 256  # Dimension of embeddings
+model = MemoryNetwork(input_dim, memory_size, embedding_dim)
+
+# Dummy input (batch of token indices)
+x = torch.randint(0, input_dim, (32, 10))  # Batch of 32 sequences, each of length 10
+output = model(x)
+print(output.shape)  # Expected output shape: (32, 10, input_dim)
+\end{verbatim}
+Section 2: Hybrid Reasoning
+Item 1: Neural-Symbolic Theorem Proving
+[Neural-Symbolic Theorem Proving] \begin{verbatim}
+
+
+# Import necessary libraries
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+# Define a simple neural network for symbolic reasoning
+class NeuralSymbolicReasoner(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super(NeuralSymbolicReasoner, self).__init__()
+        self.fc1 = nn.Linear(input_size, hidden_size)  # First fully connected layer
+        self.fc2 = nn.Linear(hidden_size, output_size)  # Second fully connected layer
+        self.relu = nn.ReLU()  # Activation function
+
+    def forward(self, x):
+        x = self.fc1(x)  # Pass input through first layer
+        x = self.relu(x)  # Apply activation function
+        x = self.fc2(x)  # Pass through second layer
+        return x
+
+# Define a symbolic theorem prover
+def symbolic_theorem_prover(premises, conclusion):
+    # Check if the conclusion logically follows from the premises
+    if all(premise in premises for premise in conclusion):
+        return True
+    return False
+
+# Example usage
+if __name__ == "__main__":
+    # Define input size, hidden size, and output size
+    input_size = 10
+    hidden_size = 20
+    output_size = 5
+
+    # Initialize the neural-symbolic reasoner
+    model = NeuralSymbolicReasoner(input_size, hidden_size, output_size)
+
+    # Example premises and conclusion
+    premises = [1, 2, 3, 4, 5]
+    conclusion = [1, 2, 3]
+
+    # Perform symbolic theorem proving
+    result = symbolic_theorem_prover(premises, conclusion)
+    print(f"Theorem proving result: {result}")
+
+    # Example input tensor
+    input_tensor = torch.randn(1, input_size)
+
+    # Perform neural-symbolic reasoning
+    output = model(input_tensor)
+    print(f"Neural-symbolic reasoning output: {output}")
+\end{verbatim}
+Chapter 7: Advanced Neural Architectures
+Section 1: Modern Architecture Design
+Item 1: Transformers and Beyond
+[Transformers and Beyond] \begin{verbatim}
+
+
+# Import necessary libraries
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+# Define a simple Transformer-based model
+class TransformerModel(nn.Module):
+    def __init__(self, input_dim, model_dim, num_heads, num_layers, output_dim):
+        super(TransformerModel, self).__init__()
+        self.embedding = nn.Embedding(input_dim, model_dim)
+        self.positional_encoding = nn.Parameter(torch.zeros(1, 1000, model_dim))
+        self.transformer = nn.Transformer(
+            d_model=model_dim, nhead=num_heads, num_encoder_layers=num_layers
+        )
+        self.fc = nn.Linear(model_dim, output_dim)
+
+    def forward(self, src):
+        # Embed the input tokens
+        src_embedded = self.embedding(src)
+        # Add positional encoding
+        src_embedded += self.positional_encoding[:, :src.size(1), :]
+        # Pass through the transformer
+        transformer_output = self.transformer(src_embedded, src_embedded)
+        # Apply final linear layer
+        output = self.fc(transformer_output)
+        return output
+
+# Example usage
+input_dim = 10000  # Vocabulary size
+model_dim = 512    # Model dimension
+num_heads = 8      # Number of attention heads
+num_layers = 6     # Number of transformer layers
+output_dim = 10    # Output dimension (e.g., number of classes)
+
+model = TransformerModel(input_dim, model_dim, num_heads, num_layers, output_dim)
+src = torch.randint(0, input_dim, (32, 100))  # Example input (batch_size=32, seq_len=100)
+output = model(src)
+print(output.shape)  # Expected output shape: (32, 100, 10)
+\end{verbatim}
+Item 2: Graph Neural Networks
+[Graph Neural Networks] \begin{verbatim}
+
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from torch_geometric.nn import GCNConv
+from torch_geometric.data import Data
+
+# Define a simple Graph Neural Network (GNN) model
+class GNN(nn.Module):
+    def __init__(self, input_dim, hidden_dim, output_dim):
+        super(GNN, self).__init__()
+        # First graph convolutional layer
+        self.conv1 = GCNConv(input_dim, hidden_dim)
+        # Second graph convolutional layer
+        self.conv2 = GCNConv(hidden_dim, output_dim)
+
+    def forward(self, x, edge_index):
+        # Apply first graph convolution and ReLU activation
+        x = F.relu(self.conv1(x, edge_index))
+        # Apply second graph convolution
+        x = self.conv2(x, edge_index)
+        return x
+
+# Example usage
+if __name__ == "__main__":
+    # Define a simple graph with 4 nodes and 4 edges
+    edge_index = torch.tensor([[0, 1, 1, 2, 2, 3], 
+                               [1, 0, 2, 1, 3, 2]], dtype=torch.long)
+    # Node features (4 nodes, each with 2 features)
+    x = torch.tensor([[1.0, 2.0], [2.0, 3.0], 
+                      [3.0, 4.0], [4.0, 5.0]], dtype=torch.float)
+    # Create a PyTorch Geometric data object
+    data = Data(x=x, edge_index=edge_index)
+    
+    # Initialize the GNN model
+    model = GNN(input_dim=2, hidden_dim=4, output_dim=2)
+    
+    # Forward pass through the model
+    output = model(data.x, data.edge_index)
+    print("Output node features:\n", output)
+\end{verbatim}
+Section 2: Memory and State
+Item 1: Differentiable Neural Computers
+[Differentiable Neural Computers] \begin{verbatim}
+
+
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+# Define the controller network (e.g., an LSTM)
+class Controller(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super(Controller, self).__init__()
+        self.lstm = nn.LSTM(input_size, hidden_size)
+        self.fc = nn.Linear(hidden_size, output_size)
+
+    def forward(self, x, hidden):
+        # Pass input through LSTM
+        out, hidden = self.lstm(x, hidden)
+        # Apply fully connected layer to LSTM output
+        out = self.fc(out)
+        return out, hidden
+
+# Define the memory matrix
+class Memory(nn.Module):
+    def __init__(self, memory_size, memory_dim):
+        super(Memory, self).__init__()
+        self.memory = nn.Parameter(torch.zeros(memory_size, memory_dim))
+
+    def forward(self):
+        return self.memory
+
+# Define the DNC (Differentiable Neural Computer)
+class DNC(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size, memory_size, memory_dim):
+        super(DNC, self).__init__()
+        self.controller = Controller(input_size, hidden_size, output_size)
+        self.memory = Memory(memory_size, memory_dim)
+        self.read_heads = nn.Linear(hidden_size, memory_dim)
+        self.write_heads = nn.Linear(hidden_size, memory_dim)
+
+    def forward(self, x, hidden):
+        # Get memory state
+        memory_state = self.memory()
+        # Pass input through controller
+        controller_out, hidden = self.controller(x, hidden)
+        # Generate read and write vectors
+        read_vector = self.read_heads(controller_out)
+        write_vector = self.write_heads(controller_out)
+        # Update memory (simplified for illustration)
+        updated_memory = memory_state + write_vector
+        # Return output and updated hidden state
+        return controller_out, updated_memory, hidden
+
+# Example usage
+input_size = 10
+hidden_size = 20
+output_size = 5
+memory_size = 100
+memory_dim = 30
+
+dnc = DNC(input_size, hidden_size, output_size, memory_size, memory_dim)
+optimizer = optim.Adam(dnc.parameters(), lr=0.001)
+
+# Dummy input and hidden state
+x = torch.randn(1, 1, input_size)
+hidden = (torch.zeros(1, 1, hidden_size), torch.zeros(1, 1, hidden_size))
+
+# Forward pass
+output, updated_memory, hidden = dnc(x, hidden)
+
+# Compute loss (dummy loss for illustration)
+loss = torch.nn.functional.mse_loss(output, torch.zeros_like(output))
+
+# Backward pass and optimization
+optimizer.zero_grad()
+loss.backward()
+optimizer.step()
+\end{verbatim}
+Chapter 8: Neural-Symbolic Integration
+Section 1: Integration Patterns
+Item 1: Deep Learning with Symbolic Features
+[Deep Learning with Symbolic Features] \begin{verbatim}
+
+
+# Import necessary libraries
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+# Define a simple neural network with symbolic features
+class NeuralSymbolicModel(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super(NeuralSymbolicModel, self).__init__()
+        # Define layers
+        self.fc1 = nn.Linear(input_size, hidden_size)  # Fully connected layer
+        self.relu = nn.ReLU()  # Activation function
+        self.fc2 = nn.Linear(hidden_size, output_size)  # Output layer
+
+    def forward(self, x):
+        # Forward pass through the network
+        out = self.fc1(x)  # Apply first layer
+        out = self.relu(out)  # Apply activation function
+        out = self.fc2(out)  # Apply output layer
+        return out
+
+# Example usage
+input_size = 10  # Size of input features
+hidden_size = 20  # Size of hidden layer
+output_size = 1  # Size of output (e.g., binary classification)
+
+# Initialize model, loss function, and optimizer
+model = NeuralSymbolicModel(input_size, hidden_size, output_size)
+criterion = nn.BCEWithLogitsLoss()  # Binary cross-entropy loss
+optimizer = optim.Adam(model.parameters(), lr=0.001)  # Adam optimizer
+
+# Example input data (symbolic features)
+x = torch.randn(5, input_size)  # Random input data (batch size = 5)
+y = torch.randint(0, 2, (5, output_size)).float()  # Random binary labels
+
+# Forward pass
+outputs = model(x)  # Get model predictions
+loss = criterion(outputs, y)  # Compute loss
+
+# Backward pass and optimization
+optimizer.zero_grad()  # Clear gradients
+loss.backward()  # Compute gradients
+optimizer.step()  # Update weights
+
+# Print loss
+print(f"Loss: {loss.item()}")
+\end{verbatim}
+Item 2: End-to-End Differentiable Logic
+[End-to-End Differentiable Logic] \begin{verbatim}
+
+
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+# Define a differentiable logic layer
+class DifferentiableLogicLayer(nn.Module):
+    def __init__(self):
+        super(DifferentiableLogicLayer, self).__init__()
+        # Initialize weights for logical operations
+        self.weights = nn.Parameter(torch.randn(2, requires_grad=True))
+
+    def forward(self, x):
+        # Apply softmax to weights to simulate logical operations
+        logic_weights = torch.softmax(self.weights, dim=0)
+        # Perform weighted sum to combine inputs
+        output = torch.sum(x * logic_weights, dim=1)
+        return output
+
+# Define a simple neural network with differentiable logic
+class NeuralSymbolicModel(nn.Module):
+    def __init__(self):
+        super(NeuralSymbolicModel, self).__init__()
+        self.logic_layer = DifferentiableLogicLayer()
+        self.fc = nn.Linear(1, 1)  # Fully connected layer for further processing
+
+    def forward(self, x):
+        # Pass input through the differentiable logic layer
+        x = self.logic_layer(x)
+        # Pass through a fully connected layer
+        x = self.fc(x)
+        return x
+
+# Example usage
+if __name__ == "__main__":
+    # Create a model instance
+    model = NeuralSymbolicModel()
+    # Define a loss function and optimizer
+    criterion = nn.MSELoss()
+    optimizer = optim.SGD(model.parameters(), lr=0.01)
+
+    # Example input tensor
+    inputs = torch.tensor([[0.5, 0.7], [0.3, 0.9]], requires_grad=True)
+    # Example target tensor
+    targets = torch.tensor([[0.6], [0.5]])
+
+    # Forward pass
+    outputs = model(inputs)
+    # Compute loss
+    loss = criterion(outputs, targets)
+    # Backward pass and optimization
+    loss.backward()
+    optimizer.step()
+
+    print("Model output:", outputs)
+    print("Loss:", loss.item())
+\end{verbatim}
+Section 2: Learning and Reasoning Loop
+Item 1: Neural Perception to Symbolic Knowledge
+[Neural Perception to Symbolic Knowledge] \begin{verbatim}
+
+
+# Import necessary libraries
+import numpy as np
+from sklearn.cluster import KMeans
+from sympy import symbols, Eq, solve
+
+# Step 1: Simulate neural perception (e.g., feature extraction from raw data)
+# Generate synthetic data representing neural network outputs
+np.random.seed(42)
+neural_output = np.random.rand(100, 5)  # 100 samples, 5 features
+
+# Step 2: Cluster neural outputs into symbolic categories using KMeans
+kmeans = KMeans(n_clusters=3)  # 3 symbolic categories
+symbolic_labels = kmeans.fit_predict(neural_output)
+
+# Step 3: Map symbolic labels to symbolic knowledge (e.g., equations)
+# Define symbolic variables
+x, y = symbols('x y')
+
+# Example symbolic knowledge: Solve equations based on symbolic labels
+symbolic_knowledge = []
+for label in np.unique(symbolic_labels):
+    if label == 0:
+        eq = Eq(x + y, 10)  # Example equation for label 0
+    elif label == 1:
+        eq = Eq(x - y, 5)   # Example equation for label 1
+    else:
+        eq = Eq(x * y, 20)  # Example equation for label 2
+    symbolic_knowledge.append(solve(eq, (x, y)))
+
+# Step 4: Output symbolic knowledge
+print("Symbolic Knowledge:")
+for i, knowledge in enumerate(symbolic_knowledge):
+    print(f"Label {i}: {knowledge}")
+\end{verbatim}
+Section 3: System Architecture
+Item 1: Performance Optimization
+[Performance Optimization] \begin{verbatim}
+
+
+# Import necessary libraries
+import tensorflow as tf
+from tensorflow.keras import layers, models
+import numpy as np
+
+# Define a simple neural network model
+def create_model():
+    model = models.Sequential([
+        layers.Dense(128, activation='relu', input_shape=(784,)),  # Input layer
+        layers.Dropout(0.2),  # Dropout for regularization
+        layers.Dense(64, activation='relu'),  # Hidden layer
+        layers.Dropout(0.2),  # Dropout for regularization
+        layers.Dense(10, activation='softmax')  # Output layer
+    ])
+    return model
+
+# Compile the model with optimized settings
+def compile_model(model):
+    model.compile(optimizer='adam',  # Optimizer for gradient descent
+                  loss='sparse_categorical_crossentropy',  # Loss function
+                  metrics=['accuracy'])  # Metric to monitor
+
+# Load and preprocess the dataset
+def load_data():
+    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+    x_train = x_train.reshape(-1, 784).astype('float32') / 255  # Normalize data
+    x_test = x_test.reshape(-1, 784).astype('float32') / 255  # Normalize data
+    return x_train, y_train, x_test, y_test
+
+# Train the model with performance optimization techniques
+def train_model(model, x_train, y_train):
+    model.fit(x_train, y_train, epochs=10, batch_size=32,  # Training parameters
+              validation_split=0.2,  # Validation split
+              callbacks=[tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=2)])  # Early stopping
+
+# Evaluate the model on test data
+def evaluate_model(model, x_test, y_test):
+    test_loss, test_acc = model.evaluate(x_test, y_test, verbose=2)
+    print(f"Test accuracy: {test_acc}")
+
+# Main function to execute the workflow
+def main():
+    model = create_model()
+    compile_model(model)
+    x_train, y_train, x_test, y_test = load_data()
+    train_model(model, x_train, y_train)
+    evaluate_model(model, x_test, y_test)
+
+if __name__ == "__main__":
+    main()
+\end{verbatim}
+Chapter 9: Language Understanding and Generation
+Section 1: Semantic Parsing
+Item 1: Neural Semantic Parsing
+[Neural Semantic Parsing] \begin{verbatim}
+
+
+# Import necessary libraries
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+# Define a simple neural network for semantic parsing
+class NeuralSemanticParser(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super(NeuralSemanticParser, self).__init__()
+        # Define layers
+        self.embedding = nn.Embedding(input_size, hidden_size)
+        self.rnn = nn.GRU(hidden_size, hidden_size, batch_first=True)
+        self.fc = nn.Linear(hidden_size, output_size)
+    
+    def forward(self, x):
+        # Embed input tokens
+        x = self.embedding(x)
+        # Process sequence with RNN
+        out, _ = self.rnn(x)
+        # Apply fully connected layer to get output logits
+        out = self.fc(out[:, -1, :])
+        return out
+
+# Initialize model, loss function, and optimizer
+input_size = 1000  # Vocabulary size
+hidden_size = 128  # Hidden layer size
+output_size = 10   # Number of output classes
+model = NeuralSemanticParser(input_size, hidden_size, output_size)
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+
+# Example input (batch of token indices)
+input_data = torch.randint(0, input_size, (32, 20))  # Batch of 32 sequences, each of length 20
+labels = torch.randint(0, output_size, (32,))        # Corresponding labels
+
+# Forward pass
+outputs = model(input_data)
+loss = criterion(outputs, labels)
+
+# Backward pass and optimization
+optimizer.zero_grad()
+loss.backward()
+optimizer.step()
+\end{verbatim}
+Section 2: Reasoning About Language
+Item 1: Textual Entailment
+[Textual Entailment] \begin{verbatim}
+
+
+# Import necessary libraries
+from transformers import pipeline
+
+# Initialize the textual entailment pipeline
+# This uses a pre-trained model to determine if a hypothesis is entailed by a premise
+entailment_pipeline = pipeline("text-classification", model="roberta-large-mnli")
+
+# Define a premise and a hypothesis
+premise = "A man is eating an apple."
+hypothesis = "A man is consuming food."
+
+# Use the pipeline to determine if the hypothesis is entailed by the premise
+result = entailment_pipeline(f"{premise} [SEP] {hypothesis}")
+
+# Extract the label and score from the result
+label = result[0]['label']
+score = result[0]['score']
+
+# Print the result
+print(f"Label: {label}, Score: {score}")
+\end{verbatim}
+Section 3: Knowledge-Enhanced Language Models
+Item 1: Incorporating External Knowledge
+[Incorporating External Knowledge] \begin{verbatim}
+
+
+# Import necessary libraries
+import torch
+from transformers import BertModel, BertTokenizer
+from knowledge_graph import KnowledgeGraph  # Hypothetical external knowledge module
+
+# Initialize BERT model and tokenizer
+tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+model = BertModel.from_pretrained('bert-base-uncased')
+
+# Load external knowledge graph
+kg = KnowledgeGraph('path_to_knowledge_graph')
+
+def enhance_language_model_with_knowledge(text):
+    """
+    Enhance language model predictions by incorporating external knowledge.
+    
+    Args:
+        text (str): Input text for which to generate enhanced predictions.
+    
+    Returns:
+        enhanced_output (torch.Tensor): Enhanced model output with external knowledge.
+    """
+    # Tokenize input text
+    inputs = tokenizer(text, return_tensors='pt', padding=True, truncation=True)
+    
+    # Get BERT embeddings
+    with torch.no_grad():
+        outputs = model(**inputs)
+    
+    # Extract relevant entities from the text
+    entities = extract_entities(text)  # Hypothetical entity extraction function
+    
+    # Retrieve related knowledge from the knowledge graph
+    knowledge_embeddings = []
+    for entity in entities:
+        knowledge = kg.retrieve(entity)  # Retrieve knowledge for each entity
+        knowledge_embeddings.append(knowledge)
+    
+    # Combine BERT embeddings with knowledge embeddings
+    combined_embeddings = torch.cat([outputs.last_hidden_state, 
+                                     torch.stack(knowledge_embeddings)], dim=1)
+    
+    # Further processing (e.g., through additional layers)
+    enhanced_output = process_combined_embeddings(combined_embeddings)
+    
+    return enhanced_output
+
+# Example usage
+text = "The Eiffel Tower is located in Paris."
+enhanced_output = enhance_language_model_with_knowledge(text)
+\end{verbatim}
+Chapter 10: Visual Intelligence
+Section 1: Visual Reasoning
+Item 1: Neuro-Symbolic Concept Learning
+[Neuro-Symbolic Concept Learning] \begin{verbatim}
+
+
+# Import necessary libraries
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+# Define a simple neural network for feature extraction
+class FeatureExtractor(nn.Module):
+    def __init__(self):
+        super(FeatureExtractor, self).__init__()
+        self.fc1 = nn.Linear(784, 256)  # Input layer to hidden layer
+        self.fc2 = nn.Linear(256, 128)  # Hidden layer to output layer
+
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))  # Apply ReLU activation
+        x = torch.relu(self.fc2(x))  # Apply ReLU activation
+        return x
+
+# Define a symbolic reasoning module
+class SymbolicReasoner(nn.Module):
+    def __init__(self):
+        super(SymbolicReasoner, self).__init__()
+        self.fc = nn.Linear(128, 10)  # Map features to symbolic concepts
+
+    def forward(self, x):
+        x = self.fc(x)  # Linear transformation
+        return torch.softmax(x, dim=1)  # Apply softmax for classification
+
+# Combine neural and symbolic components
+class NeuroSymbolicModel(nn.Module):
+    def __init__(self):
+        super(NeuroSymbolicModel, self).__init__()
+        self.feature_extractor = FeatureExtractor()
+        self.symbolic_reasoner = SymbolicReasoner()
+
+    def forward(self, x):
+        features = self.feature_extractor(x)  # Extract features
+        concepts = self.symbolic_reasoner(features)  # Perform symbolic reasoning
+        return concepts
+
+# Example usage
+model = NeuroSymbolicModel()
+input_data = torch.randn(1, 784)  # Random input data
+output = model(input_data)  # Get output from the model
+print(output)  # Print the output probabilities
+\end{verbatim}
+Item 2: Multi-Modal Integration
+[Multi-Modal Integration] \begin{verbatim}
+
+
+# Import necessary libraries
+import torch
+import torch.nn as nn
+import torchvision.models as models
+from transformers import BertModel, BertTokenizer
+
+# Define a multi-modal integration model
+class MultiModalIntegration(nn.Module):
+    def __init__(self, visual_feature_dim, text_feature_dim, hidden_dim):
+        super(MultiModalIntegration, self).__init__()
+        
+        # Pre-trained ResNet for visual feature extraction
+        self.visual_encoder = models.resnet50(pretrained=True)
+        self.visual_encoder.fc = nn.Linear(self.visual_encoder.fc.in_features, visual_feature_dim)
+        
+        # Pre-trained BERT for text feature extraction
+        self.text_encoder = BertModel.from_pretrained('bert-base-uncased')
+        self.text_projection = nn.Linear(self.text_encoder.config.hidden_size, text_feature_dim)
+        
+        # Fusion layer to integrate visual and text features
+        self.fusion_layer = nn.Sequential(
+            nn.Linear(visual_feature_dim + text_feature_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Linear(hidden_dim, 1)  # Output a single score for classification
+        )
+    
+    def forward(self, image, text):
+        # Extract visual features
+        visual_features = self.visual_encoder(image)
+        
+        # Extract text features
+        text_features = self.text_encoder(text).last_hidden_state[:, 0, :]
+        text_features = self.text_projection(text_features)
+        
+        # Concatenate visual and text features
+        combined_features = torch.cat((visual_features, text_features), dim=1)
+        
+        # Pass through fusion layer to get final output
+        output = self.fusion_layer(combined_features)
+        
+        return output
+
+# Example usage
+if __name__ == "__main__":
+    # Initialize model
+    model = MultiModalIntegration(visual_feature_dim=512, text_feature_dim=768, hidden_dim=256)
+    
+    # Dummy input (batch size = 1)
+    image = torch.randn(1, 3, 224, 224)  # Random image tensor
+    text = torch.randint(0, 10000, (1, 32))  # Random token IDs for text
+    
+    # Forward pass
+    output = model(image, text)
+    print("Output score:", output.item())
+\end{verbatim}
+Chapter 11: Robotics and Embodied Intelligence
+Section 1: Perception-Action Loops
+Item 1: Sensorimotor Integration
+[ Sensorimotor Integration ] \begin{verbatim}
+
+
+# Import necessary libraries
+import numpy as np
+
+# Define a simple neural network for sensorimotor integration
+class SensorimotorNetwork:
+    def __init__(self, input_size, output_size):
+        # Initialize weights randomly
+        self.weights = np.random.rand(input_size, output_size)
+    
+    def forward(self, sensory_input):
+        # Perform a weighted sum of inputs to generate motor output
+        motor_output = np.dot(sensory_input, self.weights)
+        return motor_output
+
+# Define a perception-action loop
+def perception_action_loop(sensory_input, network):
+    # Step 1: Perception - process sensory input
+    motor_output = network.forward(sensory_input)
+    
+    # Step 2: Action - execute motor output (e.g., move a robot)
+    execute_action(motor_output)
+    
+    # Step 3: Update sensory input based on the action
+    updated_sensory_input = sense_environment()
+    
+    return updated_sensory_input
+
+# Example usage
+if __name__ == "__main__":
+    # Initialize the network with 3 sensory inputs and 2 motor outputs
+    network = SensorimotorNetwork(3, 2)
+    
+    # Simulate initial sensory input (e.g., from sensors)
+    sensory_input = np.array([0.5, 0.3, 0.8])
+    
+    # Run the perception-action loop for 10 iterations
+    for _ in range(10):
+        sensory_input = perception_action_loop(sensory_input, network)
+\end{verbatim}
+Section 2: Task and Motion Planning
+Item 1: Neural Motion Control
+[Neural Motion Control] \begin{verbatim}
+
+
+# Import necessary libraries
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, LSTM
+
+# Define the neural network model for motion control
+def create_motion_control_model(input_shape, output_shape):
+    """
+    Create a neural network model for motion control.
+    
+    Parameters:
+    - input_shape: Shape of the input data (e.g., sensor readings)
+    - output_shape: Shape of the output data (e.g., motor commands)
+    
+    Returns:
+    - model: A compiled neural network model
+    """
+    model = Sequential([
+        # LSTM layer to process sequential data (e.g., time-series sensor data)
+        LSTM(64, input_shape=input_shape, return_sequences=True),
+        # Dense layer to map LSTM output to motor commands
+        Dense(32, activation='relu'),
+        # Output layer with linear activation for continuous control
+        Dense(output_shape, activation='linear')
+    ])
+    
+    # Compile the model with mean squared error loss and Adam optimizer
+    model.compile(optimizer='adam', loss='mse')
+    
+    return model
+
+# Example usage
+if __name__ == "__main__":
+    # Define input and output shapes (e.g., 10 time steps, 3 sensor readings)
+    input_shape = (10, 3)
+    output_shape = 2  # 2 motor commands
+    
+    # Create the motion control model
+    model = create_motion_control_model(input_shape, output_shape)
+    
+    # Generate dummy input data (e.g., sensor readings over time)
+    dummy_input = np.random.rand(1, *input_shape)
+    
+    # Predict motor commands using the model
+    predicted_commands = model.predict(dummy_input)
+    
+    # Print the predicted motor commands
+    print("Predicted Motor Commands:", predicted_commands)
+\end{verbatim}
+Chapter 12: Scientific Discovery
+Section 1: Automated Discovery
+Item 1: Hypothesis Generation
+[Hypothesis Generation] \begin{verbatim}
+
+
+# Import necessary libraries
+import numpy as np
+from sklearn.linear_model import LinearRegression
+from sympy import symbols, Eq, solve
+
+# Define symbolic variables for hypothesis generation
+x, y = symbols('x y')
+
+# Generate synthetic data for demonstration
+np.random.seed(42)
+X = np.random.rand(100, 1) * 10  # Independent variable
+y = 3 * X + np.random.randn(100, 1) * 2  # Dependent variable with noise
+
+# Fit a linear regression model to the data
+model = LinearRegression()
+model.fit(X, y)
+
+# Extract model coefficients for hypothesis generation
+slope = model.coef_[0][0]
+intercept = model.intercept_[0]
+
+# Formulate a symbolic equation based on the model
+hypothesis = Eq(y, slope * x + intercept)
+
+# Solve the equation for a specific value of x (e.g., x = 5)
+solution = solve(hypothesis.subs(x, 5), y)
+
+# Output the hypothesis and solution
+print(f"Generated Hypothesis: {hypothesis}")
+print(f"Solution for x = 5: y = {solution[0]}")
+\end{verbatim}
+Section 2: Knowledge-Guided Learning
+Item 1: Physics-Informed Neural Networks
+[Physics-Informed Neural Networks] \begin{verbatim}
+
+
+import tensorflow as tf
+import numpy as np
+
+# Define the neural network architecture
+class PINN(tf.keras.Model):
+    def __init__(self):
+        super(PINN, self).__init__()
+        self.dense1 = tf.keras.layers.Dense(20, activation='tanh')
+        self.dense2 = tf.keras.layers.Dense(20, activation='tanh')
+        self.dense3 = tf.keras.layers.Dense(1, activation=None)
+
+    def call(self, inputs):
+        x = self.dense1(inputs)
+        x = self.dense2(x)
+        return self.dense3(x)
+
+# Define the physics-informed loss function
+def physics_loss(model, x):
+    with tf.GradientTape() as tape:
+        tape.watch(x)
+        u = model(x)
+    u_x = tape.gradient(u, x)
+    u_xx = tf.gradients(u_x, x)[0]
+    # Example PDE: u_xx + u = 0
+    pde_loss = tf.reduce_mean(tf.square(u_xx + u))
+    return pde_loss
+
+# Generate synthetic data
+x_data = np.linspace(-1, 1, 100).reshape(-1, 1)
+u_data = np.sin(np.pi * x_data)
+
+# Instantiate the model and optimizer
+model = PINN()
+optimizer = tf.keras.optimizers.Adam()
+
+# Training loop
+for epoch in range(1000):
+    with tf.GradientTape() as tape:
+        # Compute the physics loss
+        loss = physics_loss(model, x_data)
+    # Compute gradients and update weights
+    gradients = tape.gradient(loss, model.trainable_variables)
+    optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+    if epoch % 100 == 0:
+        print(f"Epoch {epoch}, Loss: {loss.numpy()}")
+\end{verbatim}
+Chapter 13: Practical Implementation
+Section 1: Software Architecture
+Item 1: Neural-Symbolic Frameworks
+[Neural-Symbolic Frameworks] \begin{verbatim}
+
+
+# Import necessary libraries
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+# Define a simple neural network
+class NeuralNetwork(nn.Module):
+    def __init__(self):
+        super(NeuralNetwork, self).__init__()
+        self.fc1 = nn.Linear(10, 50)  # Input layer to hidden layer
+        self.fc2 = nn.Linear(50, 1)   # Hidden layer to output layer
+
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))  # Apply ReLU activation
+        x = self.fc2(x)              # Output layer
+        return x
+
+# Define a symbolic reasoning function
+def symbolic_reasoning(logic_input):
+    # Example symbolic logic: AND operation
+    return all(logic_input)  # Returns True if all elements are True
+
+# Combine neural and symbolic components
+class NeuralSymbolicFramework(nn.Module):
+    def __init__(self):
+        super(NeuralSymbolicFramework, self).__init__()
+        self.neural_net = NeuralNetwork()
+        
+    def forward(self, x, logic_input):
+        neural_output = self.neural_net(x)  # Neural network output
+        symbolic_output = symbolic_reasoning(logic_input)  # Symbolic reasoning output
+        # Combine outputs (e.g., weighted sum or other logic)
+        combined_output = neural_output * int(symbolic_output)
+        return combined_output
+
+# Example usage
+if __name__ == "__main__":
+    model = NeuralSymbolicFramework()
+    input_data = torch.randn(1, 10)  # Random input data
+    logic_input = [True, True, False]  # Example symbolic input
+    output = model(input_data, logic_input)
+    print("Combined Output:", output.item())
+\end{verbatim}
+Section 2: Development Workflow
+Item 1: Model Development
+[Model Development] \begin{verbatim}
+
+
+# Import necessary libraries
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+# Define a simple neural network model
+class NeuralSymbolicModel(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super(NeuralSymbolicModel, self).__init__()
+        # Define the layers
+        self.fc1 = nn.Linear(input_size, hidden_size)  # Fully connected layer 1
+        self.fc2 = nn.Linear(hidden_size, output_size)  # Fully connected layer 2
+        self.relu = nn.ReLU()  # Activation function
+
+    def forward(self, x):
+        # Forward pass through the network
+        out = self.fc1(x)
+        out = self.relu(out)
+        out = self.fc2(out)
+        return out
+
+# Initialize the model, loss function, and optimizer
+input_size = 10  # Example input size
+hidden_size = 20  # Example hidden layer size
+output_size = 1  # Example output size
+model = NeuralSymbolicModel(input_size, hidden_size, output_size)
+criterion = nn.MSELoss()  # Mean Squared Error Loss
+optimizer = optim.Adam(model.parameters(), lr=0.001)  # Adam optimizer
+
+# Example training loop
+for epoch in range(100):  # Number of epochs
+    # Generate some dummy data
+    inputs = torch.randn(32, input_size)  # Batch of 32 samples
+    targets = torch.randn(32, output_size)  # Corresponding targets
+
+    # Forward pass
+    outputs = model(inputs)
+    loss = criterion(outputs, targets)
+
+    # Backward pass and optimization
+    optimizer.zero_grad()  # Clear gradients
+    loss.backward()  # Compute gradients
+    optimizer.step()  # Update weights
+
+    # Print loss every 10 epochs
+    if (epoch+1) % 10 == 0:
+        print(f'Epoch [{epoch+1}/100], Loss: {loss.item():.4f}')
+\end{verbatim}
+Section 3: Deployment Considerations
+Item 1: Monitoring and Maintenance
+[Monitoring and Maintenance] \begin{verbatim}
+
+
+# Import necessary libraries
+import numpy as np
+import tensorflow as tf
+from sklearn.metrics import accuracy_score
+
+# Load the pre-trained neural-symbolic model
+model = tf.keras.models.load_model('neural_symbolic_model.h5')
+
+# Define a function to monitor model performance
+def monitor_model_performance(test_data, test_labels):
+    """
+    Monitor the performance of the neural-symbolic model on test data.
+    
+    Args:
+        test_data (np.array): Test dataset.
+        test_labels (np.array): True labels for the test dataset.
+    
+    Returns:
+        float: Accuracy of the model on the test data.
+    """
+    # Predict labels using the model
+    predictions = model.predict(test_data)
+    predicted_labels = np.argmax(predictions, axis=1)
+    
+    # Calculate accuracy
+    accuracy = accuracy_score(test_labels, predicted_labels)
+    return accuracy
+
+# Define a function to retrain the model if performance drops
+def retrain_model(train_data, train_labels, validation_data, validation_labels):
+    """
+    Retrain the neural-symbolic model if monitoring detects performance degradation.
+    
+    Args:
+        train_data (np.array): Training dataset.
+        train_labels (np.array): Labels for the training dataset.
+        validation_data (np.array): Validation dataset.
+        validation_labels (np.array): Labels for the validation dataset.
+    """
+    # Compile the model with the same configuration
+    model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', 
+                  metrics=['accuracy'])
+    
+    # Retrain the model
+    model.fit(train_data, train_labels, epochs=10, 
+              validation_data=(validation_data, validation_labels))
+
+# Example usage
+if __name__ == "__main__":
+    # Load test and validation datasets
+    test_data = np.load('test_data.npy')
+    test_labels = np.load('test_labels.npy')
+    validation_data = np.load('validation_data.npy')
+    validation_labels = np.load('validation_labels.npy')
+    
+    # Monitor model performance
+    accuracy = monitor_model_performance(test_data, test_labels)
+    print(f"Model Accuracy: {accuracy:.2f}")
+    
+    # Retrain the model if accuracy drops below a threshold
+    if accuracy < 0.90:
+        print("Model performance degraded. Retraining...")
+        train_data = np.load('train_data.npy')
+        train_labels = np.load('train_labels.npy')
+        retrain_model(train_data, train_labels, validation_data, validation_labels)
+\end{verbatim}
+Chapter 14: Evaluation and Benchmarking
+Section 1: Evaluation Metrics
+Item 1: Learning Efficiency
+[Learning Efficiency] \begin{verbatim}
+
+
+# Import necessary libraries
+import numpy as np
+import tensorflow as tf
+from sklearn.metrics import accuracy_score
+
+# Define a simple neural network model
+def create_model(input_shape, output_shape):
+    model = tf.keras.Sequential([
+        tf.keras.layers.Dense(64, activation='relu', input_shape=input_shape),
+        tf.keras.layers.Dense(64, activation='relu'),
+        tf.keras.layers.Dense(output_shape, activation='softmax')
+    ])
+    return model
+
+# Generate synthetic data for training and testing
+X_train = np.random.rand(1000, 10)  # 1000 samples, 10 features
+y_train = np.random.randint(0, 2, 1000)  # Binary classification labels
+X_test = np.random.rand(200, 10)  # 200 samples, 10 features
+y_test = np.random.randint(0, 2, 200)  # Binary classification labels
+
+# Initialize and compile the model
+model = create_model((10,), 2)
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', 
+              metrics=['accuracy'])
+
+# Train the model
+model.fit(X_train, y_train, epochs=10, batch_size=32, verbose=1)
+
+# Evaluate the model on test data
+y_pred = model.predict(X_test)
+y_pred = np.argmax(y_pred, axis=1)
+accuracy = accuracy_score(y_test, y_pred)
+
+# Print the accuracy as a measure of learning efficiency
+print(f"Test Accuracy: {accuracy:.4f}")
+\end{verbatim}
+Section 2: Benchmark Suites
+Item 1: Real-World Applications
+[Real-World Applications] \begin{verbatim}
+
+
+# Import necessary libraries
+import numpy as np
+import tensorflow as tf
+from sklearn.metrics import accuracy_score
+
+# Define a simple neural-symbolic model
+class NeuralSymbolicModel:
+    def __init__(self):
+        # Initialize neural network layers
+        self.dense1 = tf.keras.layers.Dense(64, activation='relu')
+        self.dense2 = tf.keras.layers.Dense(64, activation='relu')
+        self.output_layer = tf.keras.layers.Dense(10, activation='softmax')
+    
+    def call(self, inputs):
+        # Forward pass through the neural network
+        x = self.dense1(inputs)
+        x = self.dense2(x)
+        return self.output_layer(x)
+
+# Load benchmark dataset (e.g., MNIST)
+(x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+x_train, x_test = x_train / 255.0, x_test / 255.0  # Normalize data
+
+# Instantiate the model
+model = NeuralSymbolicModel()
+
+# Define loss function and optimizer
+loss_fn = tf.keras.losses.SparseCategoricalCrossentropy()
+optimizer = tf.keras.optimizers.Adam()
+
+# Training loop
+for epoch in range(5):  # Number of epochs
+    with tf.GradientTape() as tape:
+        # Forward pass
+        predictions = model.call(x_train)
+        # Compute loss
+        loss = loss_fn(y_train, predictions)
+    # Backward pass
+    gradients = tape.gradient(loss, model.trainable_variables)
+    optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+    # Print loss for monitoring
+    print(f"Epoch {epoch+1}, Loss: {loss.numpy()}")
+
+# Evaluate the model on the test set
+test_predictions = model.call(x_test)
+test_accuracy = accuracy_score(y_test, np.argmax(test_predictions, axis=1))
+print(f"Test Accuracy: {test_accuracy}")
+\end{verbatim}
+Chapter 15: Safety and Reliability
+Section 1: Formal Verification
+Item 1: Runtime Monitoring
+[Runtime Monitoring] \begin{verbatim}
+
+
+# Import necessary libraries
+import time
+import numpy as np
+from sklearn.metrics import accuracy_score
+
+# Define a simple neural network model
+class SimpleNeuralNetwork:
+    def __init__(self):
+        self.weights = np.random.rand(2)
+        self.bias = np.random.rand(1)
+    
+    def predict(self, X):
+        # Linear combination of inputs and weights, plus bias
+        return np.dot(X, self.weights) + self.bias
+
+# Initialize the model
+model = SimpleNeuralNetwork()
+
+# Simulate runtime monitoring
+def runtime_monitoring(model, X_test, y_test, interval=1):
+    """
+    Monitor the model's performance at runtime.
+    
+    Parameters:
+    - model: The neural network model to monitor.
+    - X_test: Test data features.
+    - y_test: Test data labels.
+    - interval: Time interval (in seconds) between monitoring checks.
+    """
+    while True:
+        # Predict using the model
+        predictions = model.predict(X_test)
+        
+        # Calculate accuracy
+        accuracy = accuracy_score(y_test, np.round(predictions))
+        
+        # Log the accuracy
+        print(f"Model Accuracy: {accuracy:.2f}")
+        
+        # Wait for the specified interval before the next check
+        time.sleep(interval)
+
+# Example usage
+if __name__ == "__main__":
+    # Generate some test data
+    X_test = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+    y_test = np.array([0, 1, 1, 0])
+    
+    # Start runtime monitoring
+    runtime_monitoring(model, X_test, y_test)
+\end{verbatim}
+Section 2: Robustness
+Item 1: Adversarial Robustness
+[Adversarial Robustness] \begin{verbatim}
+
+
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import DataLoader, TensorDataset
+import torchvision.transforms as transforms
+from torchvision.datasets import MNIST
+
+# Define a simple neural network model
+class SimpleNN(nn.Module):
+    def __init__(self):
+        super(SimpleNN, self).__init__()
+        self.fc1 = nn.Linear(28*28, 128)
+        self.fc2 = nn.Linear(128, 64)
+        self.fc3 = nn.Linear(64, 10)
+
+    def forward(self, x):
+        x = x.view(-1, 28*28)  # Flatten the input
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        x = self.fc3(x)
+        return x
+
+# Load MNIST dataset
+transform = transforms.Compose([transforms.ToTensor()])
+train_dataset = MNIST(root='./data', train=True, download=True, transform=transform)
+train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
+
+# Initialize model, loss function, and optimizer
+model = SimpleNN()
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+
+# Training loop
+for epoch in range(5):  # Number of epochs
+    for images, labels in train_loader:
+        optimizer.zero_grad()
+        outputs = model(images)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()
+
+# Adversarial attack function using FGSM (Fast Gradient Sign Method)
+def fgsm_attack(image, epsilon, data_grad):
+    sign_data_grad = data_grad.sign()  # Get the sign of the gradient
+    perturbed_image = image + epsilon * sign_data_grad  # Create perturbed image
+    perturbed_image = torch.clamp(perturbed_image, 0, 1)  # Clip to maintain valid pixel range
+    return perturbed_image
+
+# Test the model with adversarial examples
+epsilon = 0.1  # Perturbation magnitude
+model.eval()  # Set model to evaluation mode
+for images, labels in train_loader:
+    images.requires_grad = True
+    outputs = model(images)
+    loss = criterion(outputs, labels)
+    loss.backward()
+    data_grad = images.grad.data
+    perturbed_images = fgsm_attack(images, epsilon, data_grad)
+    outputs_adv = model(perturbed_images)  # Get model predictions on adversarial examples
+\end{verbatim}
