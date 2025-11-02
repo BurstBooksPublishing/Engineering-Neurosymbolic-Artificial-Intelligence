@@ -1,0 +1,2123 @@
+Chapter 1: Foundations of Modern Artificial Intelligence
+Section 1: The Limitations of Current AI Systems
+Item 1: Deep Learning's Successes and Failures
+[Deep Learning's Successes and Failures] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "math"
+)
+
+// Define a simple neural network structure
+type NeuralNetwork struct {
+    weights []float64
+    bias    float64
+}
+
+// Simulate a forward pass in a neural network
+func (nn *NeuralNetwork) forwardPass(inputs []float64) float64 {
+    var output float64
+    for i, input := range inputs {
+        output += input * nn.weights[i] // Weighted sum of inputs
+    }
+    output += nn.bias // Add bias
+    return math.Tanh(output) // Apply activation function (tanh)
+}
+
+// Simulate training a neural network
+func (nn *NeuralNetwork) train(inputs [][]float64, targets []float64, learningRate float64, epochs int) {
+    for epoch := 0; epoch < epochs; epoch++ {
+        for i, input := range inputs {
+            prediction := nn.forwardPass(input)
+            error := targets[i] - prediction // Calculate error
+            for j := range nn.weights {
+                nn.weights[j] += learningRate * error * input[j] // Update weights
+            }
+            nn.bias += learningRate * error // Update bias
+        }
+    }
+}
+
+func main() {
+    // Initialize a simple neural network
+    nn := NeuralNetwork{
+        weights: []float64{0.5, -0.5},
+        bias:    0.1,
+    }
+
+    // Training data
+    inputs := [][]float64{{0, 0}, {0, 1}, {1, 0}, {1, 1}}
+    targets := []float64{0, 1, 1, 0} // XOR problem
+
+    // Train the network
+    nn.train(inputs, targets, 0.1, 1000)
+
+    // Test the network
+    for _, input := range inputs {
+        output := nn.forwardPass(input)
+        fmt.Printf("Input: %v, Output: %.2f\n", input, output)
+    }
+}
+\end{verbatim}
+Item 2: The Need for Reasoning in AI
+[The Need for Reasoning in AI] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+)
+
+// Define a simple symbolic rule for reasoning
+type Rule struct {
+    Condition func() bool
+    Action    func()
+}
+
+// Define a basic knowledge base with symbolic rules
+var knowledgeBase = []Rule{
+    {
+        Condition: func() bool {
+            // Example condition: Check if it's raining
+            return isRaining()
+        },
+        Action: func() {
+            // Example action: Suggest carrying an umbrella
+            fmt.Println("It's raining. You should carry an umbrella.")
+        },
+    },
+    {
+        Condition: func() bool {
+            // Example condition: Check if it's sunny
+            return isSunny()
+        },
+        Action: func() {
+            // Example action: Suggest wearing sunglasses
+            fmt.Println("It's sunny. You should wear sunglasses.")
+        },
+    },
+}
+
+// Simulate environmental conditions
+func isRaining() bool {
+    // Placeholder for actual weather check
+    return true
+}
+
+func isSunny() bool {
+    // Placeholder for actual weather check
+    return false
+}
+
+// Perform reasoning based on the knowledge base
+func reason(knowledgeBase []Rule) {
+    for _, rule := range knowledgeBase {
+        if rule.Condition() {
+            rule.Action()
+        }
+    }
+}
+
+func main() {
+    // Execute the reasoning process
+    reason(knowledgeBase)
+}
+\end{verbatim}
+Section 2: Understanding Intelligence
+Item 1: Learning vs. Reasoning
+[Learning vs. Reasoning] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "math"
+)
+
+// Learning: A function to train a simple neural network model
+func trainModel(data []float64, labels []float64, epochs int) []float64 {
+    weights := []float64{0.5, -0.5} // Initial weights for the model
+    learningRate := 0.01
+
+    for epoch := 0; epoch < epochs; epoch++ {
+        for i, x := range data {
+            prediction := weights[0]*x + weights[1] // Linear model prediction
+            error := labels[i] - prediction         // Calculate error
+            weights[0] += learningRate * error * x  // Update weight 1
+            weights[1] += learningRate * error      // Update weight 2
+        }
+    }
+    return weights
+}
+
+// Reasoning: A function to apply logical rules for decision-making
+func logicalReasoning(input float64) string {
+    if input > 0.5 {
+        return "Positive" // Logical rule for positive classification
+    } else if input < -0.5 {
+        return "Negative" // Logical rule for negative classification
+    }
+    return "Neutral" // Default case for neutral classification
+}
+
+func main() {
+    // Example data for learning
+    data := []float64{1.0, 2.0, 3.0, 4.0}
+    labels := []float64{2.0, 4.0, 6.0, 8.0}
+    epochs := 1000
+
+    // Train the model (Learning)
+    trainedWeights := trainModel(data, labels, epochs)
+    fmt.Println("Trained Weights:", trainedWeights)
+
+    // Apply reasoning to a new input
+    newInput := 2.5
+    prediction := trainedWeights[0]*newInput + trainedWeights[1]
+    result := logicalReasoning(prediction)
+    fmt.Println("Reasoning Result:", result)
+}
+\end{verbatim}
+Chapter 2: Mathematical Foundations
+Section 1: Optimization
+Item 1: Gradient-Based Methods
+[Gradient-Based Methods] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "math"
+)
+
+// Define a simple differentiable function: f(x) = x^2
+func f(x float64) float64 {
+    return math.Pow(x, 2)
+}
+
+// Define the derivative of the function: f'(x) = 2x
+func df(x float64) float64 {
+    return 2 * x
+}
+
+// Gradient Descent function to minimize f(x)
+func gradientDescent(startingPoint, learningRate float64, iterations int) float64 {
+    x := startingPoint
+    for i := 0; i < iterations; i++ {
+        gradient := df(x) // Compute the gradient at current x
+        x = x - learningRate*gradient // Update x using the gradient
+        fmt.Printf("Iteration %d: x = %.4f, f(x) = %.4f\n", i+1, x, f(x))
+    }
+    return x
+}
+
+func main() {
+    startingPoint := 10.0 // Initial guess
+    learningRate := 0.1   // Step size for gradient descent
+    iterations := 50      // Number of iterations
+
+    // Perform gradient descent
+    result := gradientDescent(startingPoint, learningRate, iterations)
+    fmt.Printf("Optimized value of x: %.4f\n", result)
+}
+\end{verbatim}
+Item 2: Constraint Satisfaction
+[Constraint Satisfaction] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+)
+
+// Define a struct to represent a constraint satisfaction problem
+type CSP struct {
+    Variables   []string          // List of variables
+    Domains     map[string][]int  // Domain of each variable
+    Constraints map[string]func(map[string]int) bool // Constraints
+}
+
+// Function to check if the current assignment satisfies all constraints
+func (csp *CSP) isConsistent(assignment map[string]int) bool {
+    for varName, constraint := range csp.Constraints {
+        if !constraint(assignment) {
+            return false
+        }
+    }
+    return true
+}
+
+// Backtracking algorithm to solve the CSP
+func (csp *CSP) backtrack(assignment map[string]int) map[string]int {
+    // If assignment is complete, return it
+    if len(assignment) == len(csp.Variables) {
+        return assignment
+    }
+
+    // Select an unassigned variable
+    var unassignedVar string
+    for _, varName := range csp.Variables {
+        if _, exists := assignment[varName]; !exists {
+            unassignedVar = varName
+            break
+        }
+    }
+
+    // Try each value in the domain of the unassigned variable
+    for _, value := range csp.Domains[unassignedVar] {
+        assignment[unassignedVar] = value
+        if csp.isConsistent(assignment) {
+            result := csp.backtrack(assignment)
+            if result != nil {
+                return result
+            }
+        }
+        delete(assignment, unassignedVar)
+    }
+
+    return nil
+}
+
+func main() {
+    // Define a simple CSP
+    csp := CSP{
+        Variables: []string{"A", "B", "C"},
+        Domains: map[string][]int{
+            "A": {1, 2, 3},
+            "B": {1, 2, 3},
+            "C": {1, 2, 3},
+        },
+        Constraints: map[string]func(map[string]int) bool{
+            "A != B": func(assignment map[string]int) bool {
+                return assignment["A"] != assignment["B"]
+            },
+            "B != C": func(assignment map[string]int) bool {
+                return assignment["B"] != assignment["C"]
+            },
+            "A != C": func(assignment map[string]int) bool {
+                return assignment["A"] != assignment["C"]
+            },
+        },
+    }
+
+    // Solve the CSP
+    solution := csp.backtrack(make(map[string]int))
+    fmt.Println("Solution:", solution)
+}
+\end{verbatim}
+Chapter 3: Knowledge Representation
+Section 1: Neural Knowledge
+Item 1: Distributed Representations
+[Distributed Representations] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "math/rand"
+    "time"
+)
+
+// Define a struct to represent a distributed vector
+type DistributedVector struct {
+    Values []float64
+}
+
+// Function to initialize a distributed vector with random values
+func NewDistributedVector(size int) DistributedVector {
+    rand.Seed(time.Now().UnixNano())
+    values := make([]float64, size)
+    for i := range values {
+        values[i] = rand.NormFloat64() // Randomly initialize values
+    }
+    return DistributedVector{Values: values}
+}
+
+// Function to compute the similarity between two distributed vectors
+func (dv DistributedVector) Similarity(other DistributedVector) float64 {
+    var dotProduct, magnitudeA, magnitudeB float64
+    for i := range dv.Values {
+        dotProduct += dv.Values[i] * other.Values[i]
+        magnitudeA += dv.Values[i] * dv.Values[i]
+        magnitudeB += other.Values[i] * other.Values[i]
+    }
+    magnitudeA = sqrt(magnitudeA)
+    magnitudeB = sqrt(magnitudeB)
+    return dotProduct / (magnitudeA * magnitudeB) // Cosine similarity
+}
+
+// Function to simulate a simple neural operation on distributed vectors
+func NeuralOperation(vectors []DistributedVector) DistributedVector {
+    result := NewDistributedVector(len(vectors[0].Values))
+    for _, vec := range vectors {
+        for i := range result.Values {
+            result.Values[i] += vec.Values[i] // Aggregate values
+        }
+    }
+    return result
+}
+
+func main() {
+    // Create two distributed vectors
+    vecA := NewDistributedVector(10)
+    vecB := NewDistributedVector(10)
+
+    // Compute similarity between the vectors
+    similarity := vecA.Similarity(vecB)
+    fmt.Printf("Similarity: %.2f\n", similarity)
+
+    // Perform a neural operation on the vectors
+    result := NeuralOperation([]DistributedVector{vecA, vecB})
+    fmt.Println("Resulting Vector:", result.Values)
+}
+\end{verbatim}
+Item 2: Embedding Spaces
+[Embedding Spaces] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "math"
+)
+
+// Vector represents a point in the embedding space
+type Vector []float64
+
+// Distance calculates the Euclidean distance between two vectors
+func Distance(v1, v2 Vector) float64 {
+    sum := 0.0
+    for i := range v1 {
+        sum += math.Pow(v1[i]-v2[i], 2)
+    }
+    return math.Sqrt(sum)
+}
+
+// EmbeddingSpace represents a collection of vectors in the embedding space
+type EmbeddingSpace struct {
+    Vectors []Vector
+}
+
+// NearestNeighbor finds the closest vector in the embedding space to a given vector
+func (es *EmbeddingSpace) NearestNeighbor(query Vector) Vector {
+    var nearest Vector
+    minDist := math.MaxFloat64
+
+    for _, v := range es.Vectors {
+        dist := Distance(query, v)
+        if dist < minDist {
+            minDist = dist
+            nearest = v
+        }
+    }
+    return nearest
+}
+
+func main() {
+    // Define an embedding space with sample vectors
+    es := EmbeddingSpace{
+        Vectors: []Vector{
+            {1.0, 2.0, 3.0},
+            {4.0, 5.0, 6.0},
+            {7.0, 8.0, 9.0},
+        },
+    }
+
+    // Query vector to find the nearest neighbor
+    query := Vector{2.0, 3.0, 4.0}
+
+    // Find the nearest neighbor in the embedding space
+    nearest := es.NearestNeighbor(query)
+    fmt.Println("Nearest Neighbor:", nearest)
+}
+\end{verbatim}
+Section 2: Hybrid Knowledge Structures
+Item 1: Neural-Symbolic Integration Patterns
+[Neural-Symbolic Integration Patterns] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "math"
+)
+
+// SymbolicRule represents a symbolic rule in the hybrid system
+type SymbolicRule struct {
+    Condition func(float64) bool
+    Action    func(float64) float64
+}
+
+// NeuralNetwork represents a simple neural network
+type NeuralNetwork struct {
+    Weights []float64
+    Bias    float64
+}
+
+// Predict computes the output of the neural network
+func (nn *NeuralNetwork) Predict(input float64) float64 {
+    return nn.Weights[0]*input + nn.Bias
+}
+
+// HybridSystem integrates neural and symbolic components
+type HybridSystem struct {
+    NeuralNet  NeuralNetwork
+    SymbolicRules []SymbolicRule
+}
+
+// Execute runs the hybrid system, combining neural and symbolic reasoning
+func (hs *HybridSystem) Execute(input float64) float64 {
+    // Step 1: Neural prediction
+    neuralOutput := hs.NeuralNet.Predict(input)
+    
+    // Step 2: Apply symbolic rules
+    for _, rule := range hs.SymbolicRules {
+        if rule.Condition(neuralOutput) {
+            return rule.Action(neuralOutput)
+        }
+    }
+    
+    // Default action if no rule applies
+    return neuralOutput
+}
+
+func main() {
+    // Initialize neural network with simple weights and bias
+    nn := NeuralNetwork{Weights: []float64{0.5}, Bias: 1.0}
+    
+    // Define symbolic rules
+    rules := []SymbolicRule{
+        {
+            Condition: func(x float64) bool { return x > 10.0 },
+            Action:    func(x float64) float64 { return math.Sqrt(x) },
+        },
+        {
+            Condition: func(x float64) bool { return x < 0.0 },
+            Action:    func(x float64) float64 { return 0.0 },
+        },
+    }
+    
+    // Create hybrid system
+    hs := HybridSystem{NeuralNet: nn, SymbolicRules: rules}
+    
+    // Execute the hybrid system with an input
+    input := 15.0
+    output := hs.Execute(input)
+    fmt.Printf("Input: %.2f, Output: %.2f\n", input, output)
+}
+\end{verbatim}
+Chapter 4: Physics Understanding and Emulation
+Section 1: Fundamentals of Physics in AI
+Item 1: Physics-Based Simulations in AI
+[Physics-Based Simulations in AI] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "math"
+)
+
+// Define a struct to represent a physical object
+type Object struct {
+    mass   float64 // Mass of the object
+    pos    float64 // Position of the object
+    vel    float64 // Velocity of the object
+    force  float64 // Force acting on the object
+}
+
+// Function to update the object's state based on physics
+func (o *Object) update(dt float64) {
+    // Calculate acceleration using Newton's second law: F = ma
+    acceleration := o.force / o.mass
+    
+    // Update velocity using the acceleration
+    o.vel += acceleration * dt
+    
+    // Update position using the updated velocity
+    o.pos += o.vel * dt
+}
+
+func main() {
+    // Initialize an object with mass, initial position, and velocity
+    obj := Object{
+        mass: 1.0,  // Mass of 1 kg
+        pos:  0.0,  // Starting at position 0
+        vel:  0.0,  // Starting with zero velocity
+        force: 9.8, // Force due to gravity (9.8 N)
+    }
+
+    // Simulation parameters
+    dt := 0.1 // Time step for the simulation
+    time := 0.0 // Initial time
+
+    // Run the simulation for 10 seconds
+    for time <= 10.0 {
+        // Update the object's state
+        obj.update(dt)
+        
+        // Print the current state of the object
+        fmt.Printf("Time: %.2f s, Position: %.2f m, Velocity: %.2f m/s\n", 
+                   time, obj.pos, obj.vel)
+        
+        // Increment the simulation time
+        time += dt
+    }
+}
+\end{verbatim}
+Section 2: Hybrid Models for Physical Reasoning
+Item 1: Differentiable Physics Engines
+[Differentiable Physics Engines] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "math"
+)
+
+// Define a differentiable physics engine for a simple spring-mass system
+type SpringMassSystem struct {
+    mass     float64 // Mass of the object
+    k        float64 // Spring constant
+    position float64 // Current position of the mass
+    velocity float64 // Current velocity of the mass
+}
+
+// Differentiable update function for the spring-mass system
+func (s *SpringMassSystem) Update(dt float64) {
+    // Calculate acceleration using Hooke's Law: F = -k * x
+    acceleration := (-s.k * s.position) / s.mass
+    
+    // Update velocity using Euler integration
+    s.velocity += acceleration * dt
+    
+    // Update position using Euler integration
+    s.position += s.velocity * dt
+}
+
+// Differentiable loss function to minimize the distance to a target position
+func (s *SpringMassSystem) Loss(targetPosition float64) float64 {
+    // Calculate the squared difference between current and target position
+    return math.Pow(s.position-targetPosition, 2)
+}
+
+func main() {
+    // Initialize a spring-mass system
+    system := SpringMassSystem{
+        mass:     1.0,  // Mass of 1 kg
+        k:        10.0, // Spring constant of 10 N/m
+        position: 0.5,  // Initial position of 0.5 m
+        velocity: 0.0,  // Initial velocity of 0 m/s
+    }
+
+    targetPosition := 0.0 // Target position is 0 m
+    dt := 0.01            // Time step for simulation
+
+    // Simulate the system for 100 steps
+    for i := 0; i < 100; i++ {
+        system.Update(dt)
+        loss := system.Loss(targetPosition)
+        fmt.Printf("Step %d: Position = %.4f, Loss = %.4f\n", i, system.position, loss)
+    }
+}
+\end{verbatim}
+Section 3: Practical Applications
+Item 1: Robotics and Embodied Intelligence with Physical Constraints
+[Robotics and Embodied Intelligence with Physical Constraints] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "math"
+)
+
+// Define a Robot struct to represent the physical robot
+type Robot struct {
+    Mass       float64 // Mass of the robot in kg
+    MaxTorque  float64 // Maximum torque the motors can exert in Nm
+    Position   float64 // Current position of the robot in meters
+    Velocity   float64 // Current velocity of the robot in m/s
+}
+
+// Function to simulate the robot's movement under physical constraints
+func (r *Robot) Move(targetPosition float64, timeStep float64) {
+    // Calculate the distance to the target position
+    distance := targetPosition - r.Position
+
+    // Calculate the required force to reach the target
+    force := distance * r.Mass / (timeStep * timeStep)
+
+    // Apply torque constraints to ensure the robot doesn't exceed its limits
+    if force > r.MaxTorque {
+        force = r.MaxTorque
+    } else if force < -r.MaxTorque {
+        force = -r.MaxTorque
+    }
+
+    // Update the robot's velocity and position based on the applied force
+    acceleration := force / r.Mass
+    r.Velocity += acceleration * timeStep
+    r.Position += r.Velocity * timeStep
+
+    // Print the updated position and velocity
+    fmt.Printf("Position: %.2f m, Velocity: %.2f m/s\n", r.Position, r.Velocity)
+}
+
+func main() {
+    // Initialize a robot with specific physical constraints
+    robot := Robot{
+        Mass:      10.0,  // 10 kg
+        MaxTorque: 50.0,  // 50 Nm
+        Position:  0.0,   // Starting at position 0
+        Velocity:  0.0,   // Starting with zero velocity
+    }
+
+    // Simulate the robot moving to a target position
+    targetPosition := 5.0 // Target position in meters
+    timeStep := 0.1       // Time step in seconds
+
+    for i := 0; i < 10; i++ {
+        robot.Move(targetPosition, timeStep)
+    }
+}
+\end{verbatim}
+Chapter 5: Learning Mechanisms
+Section 1: Statistical Learning
+Item 1: Few-Shot and Zero-Shot Learning
+[Few-Shot and Zero-Shot Learning] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "github.com/sjwhitworth/golearn/base"
+    "github.com/sjwhitworth/golearn/knn"
+    "github.com/sjwhitworth/golearn/evaluation"
+)
+
+func main() {
+    // Load a small dataset for few-shot learning
+    rawData, err := base.ParseCSVToInstances("few_shot_data.csv", true)
+    if err != nil {
+        panic(err)
+    }
+
+    // Initialize a k-Nearest Neighbors classifier
+    cls := knn.NewKnnClassifier("euclidean", "linear", 2)
+
+    // Train the model with the few-shot dataset
+    cls.Fit(rawData)
+
+    // Load a zero-shot dataset (unseen during training)
+    zeroShotData, err := base.ParseCSVToInstances("zero_shot_data.csv", true)
+    if err != nil {
+        panic(err)
+    }
+
+    // Predict using the trained model on zero-shot data
+    predictions, err := cls.Predict(zeroShotData)
+    if err != nil {
+        panic(err)
+    }
+
+    // Evaluate the model's performance on zero-shot data
+    confusionMat, err := evaluation.GetConfusionMatrix(zeroShotData, predictions)
+    if err != nil {
+        panic(err)
+    }
+
+    // Print the evaluation results
+    fmt.Println("Confusion Matrix:")
+    fmt.Println(confusionMat)
+    fmt.Println("Accuracy:", evaluation.GetAccuracy(confusionMat))
+}
+\end{verbatim}
+Section 2: Hybrid Learning Approaches
+Item 1: Neural-Guided Search
+[Neural-Guided Search] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "math/rand"
+    "time"
+)
+
+// Define a neural network structure
+type NeuralNetwork struct {
+    weights []float64
+}
+
+// Simulate a neural network prediction
+func (nn *NeuralNetwork) Predict(input []float64) float64 {
+    var output float64
+    for i, weight := range nn.weights {
+        output += input[i] * weight
+    }
+    return output
+}
+
+// Simulate a neural-guided search process
+func neuralGuidedSearch(nn *NeuralNetwork, inputs [][]float64) []float64 {
+    var bestInput []float64
+    bestScore := -1.0
+
+    // Iterate through possible inputs
+    for _, input := range inputs {
+        // Use the neural network to predict a score
+        score := nn.Predict(input)
+        
+        // Update the best input if the current score is better
+        if score > bestScore {
+            bestScore = score
+            bestInput = input
+        }
+    }
+
+    return bestInput
+}
+
+func main() {
+    // Initialize random seed
+    rand.Seed(time.Now().UnixNano())
+
+    // Create a simple neural network with random weights
+    nn := NeuralNetwork{
+        weights: []float64{rand.Float64(), rand.Float64()},
+    }
+
+    // Define a set of possible inputs
+    inputs := [][]float64{
+        {0.5, 0.8},
+        {0.3, 0.9},
+        {0.7, 0.2},
+    }
+
+    // Perform neural-guided search
+    bestInput := neuralGuidedSearch(&nn, inputs)
+
+    // Output the best input found
+    fmt.Println("Best input:", bestInput)
+}
+\end{verbatim}
+Chapter 6: Reasoning Systems
+Section 1: Neural Reasoning
+Item 1: Attention Mechanisms
+[Attention Mechanisms] \begin{verbatim}
+
+
+// Define a simple attention mechanism in Go
+package main
+
+import (
+    "fmt"
+    "math"
+)
+
+// Softmax function to normalize attention scores
+func softmax(scores []float64) []float64 {
+    max := scores[0]
+    for _, v := range scores {
+        if v > max {
+            max = v
+        }
+    }
+    expSum := 0.0
+    exps := make([]float64, len(scores))
+    for i, v := range scores {
+        exps[i] = math.Exp(v - max) // Subtract max for numerical stability
+        expSum += exps[i]
+    }
+    for i := range exps {
+        exps[i] /= expSum // Normalize to get probabilities
+    }
+    return exps
+}
+
+// Attention function to compute weighted sum of values
+func attention(query []float64, keys [][]float64, values [][]float64) []float64 {
+    scores := make([]float64, len(keys))
+    for i, key := range keys {
+        scores[i] = dotProduct(query, key) // Compute attention score
+    }
+    weights := softmax(scores) // Normalize scores using softmax
+    result := make([]float64, len(values[0]))
+    for i, weight := range weights {
+        for j, v := range values[i] {
+            result[j] += weight * v // Weighted sum of values
+        }
+    }
+    return result
+}
+
+// Dot product helper function
+func dotProduct(a, b []float64) float64 {
+    sum := 0.0
+    for i := range a {
+        sum += a[i] * b[i]
+    }
+    return sum
+}
+
+func main() {
+    // Example query, keys, and values
+    query := []float64{1.0, 0.5}
+    keys := [][]float64{{1.0, 2.0}, {2.0, 3.0}, {3.0, 4.0}}
+    values := [][]float64{{1.0, 2.0}, {2.0, 3.0}, {3.0, 4.0}}
+
+    // Compute attention
+    result := attention(query, keys, values)
+    fmt.Println("Attention Result:", result)
+}
+\end{verbatim}
+Section 2: Hybrid Reasoning
+Item 1: Neural-Symbolic Theorem Proving
+[Neural-Symbolic Theorem Proving] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "math"
+)
+
+// Define a simple neural network layer
+type NeuralLayer struct {
+    weights [][]float64
+    bias    []float64
+}
+
+// Forward pass through the neural layer
+func (nl *NeuralLayer) forward(input []float64) []float64 {
+    output := make([]float64, len(nl.bias))
+    for i := range nl.weights {
+        for j := range nl.weights[i] {
+            output[i] += input[j] * nl.weights[i][j]
+        }
+        output[i] += nl.bias[i]
+        output[i] = sigmoid(output[i]) // Apply activation function
+    }
+    return output
+}
+
+// Sigmoid activation function
+func sigmoid(x float64) float64 {
+    return 1 / (1 + math.Exp(-x))
+}
+
+// Define a symbolic reasoning function
+func symbolicReasoning(input []float64) bool {
+    // Example symbolic rule: if the sum of inputs is greater than 1, return true
+    sum := 0.0
+    for _, val := range input {
+        sum += val
+    }
+    return sum > 1.0
+}
+
+// Neural-Symbolic Theorem Proving function
+func neuralSymbolicTheoremProving(input []float64, nl NeuralLayer) bool {
+    // Step 1: Neural processing
+    neuralOutput := nl.forward(input)
+    
+    // Step 2: Symbolic reasoning
+    result := symbolicReasoning(neuralOutput)
+    
+    return result
+}
+
+func main() {
+    // Example weights and bias for a neural layer
+    weights := [][]float64{{0.5, -0.5}, {0.5, 0.5}}
+    bias := []float64{0.1, -0.1}
+    nl := NeuralLayer{weights: weights, bias: bias}
+    
+    // Example input
+    input := []float64{1.0, 0.5}
+    
+    // Perform Neural-Symbolic Theorem Proving
+    result := neuralSymbolicTheoremProving(input, nl)
+    
+    // Output the result
+    fmt.Println("Theorem proved:", result)
+}
+\end{verbatim}
+Chapter 7: Advanced Neural Architectures
+Section 1: Modern Architecture Design
+Item 1: Transformers and Beyond
+[Transformers and Beyond] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "math"
+)
+
+// Define a simple Transformer model structure
+type Transformer struct {
+    numLayers int
+    numHeads  int
+    hiddenDim int
+}
+
+// Initialize a new Transformer model
+func NewTransformer(numLayers, numHeads, hiddenDim int) *Transformer {
+    return &Transformer{
+        numLayers: numLayers,
+        numHeads:  numHeads,
+        hiddenDim: hiddenDim,
+    }
+}
+
+// Simulate the forward pass of the Transformer
+func (t *Transformer) Forward(input []float64) []float64 {
+    // Apply multi-head self-attention
+    output := t.multiHeadAttention(input)
+    
+    // Apply feed-forward network
+    output = t.feedForwardNetwork(output)
+    
+    return output
+}
+
+// Simulate multi-head self-attention mechanism
+func (t *Transformer) multiHeadAttention(input []float64) []float64 {
+    // Split input into multiple heads
+    heads := make([][]float64, t.numHeads)
+    headSize := len(input) / t.numHeads
+    for i := 0; i < t.numHeads; i++ {
+        heads[i] = input[i*headSize : (i+1)*headSize]
+    }
+    
+    // Apply attention mechanism to each head
+    for i := range heads {
+        heads[i] = t.attention(heads[i])
+    }
+    
+    // Concatenate heads back together
+    output := make([]float64, 0, len(input))
+    for _, head := range heads {
+        output = append(output, head...)
+    }
+    
+    return output
+}
+
+// Simulate attention mechanism for a single head
+func (t *Transformer) attention(head []float64) []float64 {
+    // Compute attention scores (simplified)
+    attentionScores := make([]float64, len(head))
+    for i := range head {
+        attentionScores[i] = math.Exp(head[i]) / sumExp(head)
+    }
+    
+    // Apply attention scores to the head
+    output := make([]float64, len(head))
+    for i := range head {
+        output[i] = head[i] * attentionScores[i]
+    }
+    
+    return output
+}
+
+// Simulate feed-forward network
+func (t *Transformer) feedForwardNetwork(input []float64) []float64 {
+    // Apply a simple linear transformation (simplified)
+    output := make([]float64, len(input))
+    for i := range input {
+        output[i] = input[i] * 2.0 // Example transformation
+    }
+    
+    return output
+}
+
+// Helper function to compute the sum of exponentials
+func sumExp(values []float64) float64 {
+    sum := 0.0
+    for _, v := range values {
+        sum += math.Exp(v)
+    }
+    return sum
+}
+
+func main() {
+    // Initialize a Transformer model
+    transformer := NewTransformer(6, 8, 512)
+    
+    // Simulate an input vector
+    input := make([]float64, 512)
+    for i := range input {
+        input[i] = float64(i) / 512.0
+    }
+    
+    // Perform a forward pass
+    output := transformer.Forward(input)
+    
+    // Print the output
+    fmt.Println("Output:", output)
+}
+\end{verbatim}
+Section 2: Memory and State
+Item 1: Differentiable Neural Computers
+[Differentiable Neural Computers] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "math/rand"
+    "time"
+)
+
+// Define a simple memory structure for the Differentiable Neural Computer (DNC)
+type Memory struct {
+    data [][]float64 // Memory matrix to store information
+    size int         // Size of the memory matrix
+}
+
+// Initialize memory with random values
+func (m *Memory) Initialize(size int) {
+    m.size = size
+    m.data = make([][]float64, size)
+    for i := range m.data {
+        m.data[i] = make([]float64, size)
+        for j := range m.data[i] {
+            m.data[i][j] = rand.Float64() // Random initialization
+        }
+    }
+}
+
+// Read from memory using a soft attention mechanism
+func (m *Memory) Read(attention []float64) []float64 {
+    result := make([]float64, m.size)
+    for i := range m.data {
+        for j := range m.data[i] {
+            result[j] += m.data[i][j] * attention[i] // Weighted sum based on attention
+        }
+    }
+    return result
+}
+
+// Write to memory using a soft attention mechanism
+func (m *Memory) Write(attention []float64, newData []float64) {
+    for i := range m.data {
+        for j := range m.data[i] {
+            m.data[i][j] += attention[i] * newData[j] // Update memory based on attention
+        }
+    }
+}
+
+func main() {
+    rand.Seed(time.Now().UnixNano())
+
+    // Initialize memory with a size of 5
+    memory := Memory{}
+    memory.Initialize(5)
+
+    // Define attention vector (e.g., focus on the first memory location)
+    attention := []float64{1.0, 0.0, 0.0, 0.0, 0.0}
+
+    // Read from memory using the attention vector
+    readResult := memory.Read(attention)
+    fmt.Println("Read Result:", readResult)
+
+    // Define new data to write to memory
+    newData := []float64{0.5, 0.5, 0.5, 0.5, 0.5}
+
+    // Write to memory using the attention vector
+    memory.Write(attention, newData)
+
+    // Read again to see the updated memory
+    updatedReadResult := memory.Read(attention)
+    fmt.Println("Updated Read Result:", updatedReadResult)
+}
+\end{verbatim}
+Chapter 8: Neural-Symbolic Integration
+Section 1: Integration Patterns
+Item 1: Component Integration
+[Component Integration] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "math"
+)
+
+// SymbolicComponent represents a symbolic reasoning module
+type SymbolicComponent struct {
+    rules map[string]func(float64) float64
+}
+
+// NewSymbolicComponent initializes a new symbolic component with predefined rules
+func NewSymbolicComponent() *SymbolicComponent {
+    return &SymbolicComponent{
+        rules: map[string]func(float64) float64{
+            "rule1": func(x float64) float64 { return math.Sin(x) },
+            "rule2": func(x float64) float64 { return math.Log(x) },
+        },
+    }
+}
+
+// ApplyRule applies a symbolic rule to the input
+func (s *SymbolicComponent) ApplyRule(rule string, input float64) float64 {
+    if f, exists := s.rules[rule]; exists {
+        return f(input)
+    }
+    return input
+}
+
+// NeuralComponent represents a neural network module
+type NeuralComponent struct {
+    weights []float64
+}
+
+// NewNeuralComponent initializes a new neural component with random weights
+func NewNeuralComponent() *NeuralComponent {
+    return &NeuralComponent{
+        weights: []float64{0.5, 0.3, 0.2},
+    }
+}
+
+// Predict computes the output of the neural network
+func (n *NeuralComponent) Predict(inputs []float64) float64 {
+    var output float64
+    for i, input := range inputs {
+        output += input * n.weights[i]
+    }
+    return output
+}
+
+// NeuroSymbolicIntegration integrates symbolic and neural components
+func NeuroSymbolicIntegration(symbolic *SymbolicComponent, neural *NeuralComponent, input float64) float64 {
+    // Step 1: Apply symbolic reasoning
+    symbolicOutput := symbolic.ApplyRule("rule1", input)
+    
+    // Step 2: Prepare inputs for neural network
+    neuralInputs := []float64{symbolicOutput, input}
+    
+    // Step 3: Compute neural network prediction
+    neuralOutput := neural.Predict(neuralInputs)
+    
+    // Step 4: Apply another symbolic rule
+    finalOutput := symbolic.ApplyRule("rule2", neuralOutput)
+    
+    return finalOutput
+}
+
+func main() {
+    // Initialize components
+    symbolic := NewSymbolicComponent()
+    neural := NewNeuralComponent()
+    
+    // Input value
+    input := 1.0
+    
+    // Perform neuro-symbolic integration
+    output := NeuroSymbolicIntegration(symbolic, neural, input)
+    
+    // Print the final output
+    fmt.Printf("Final Output: %f\n", output)
+}
+\end{verbatim}
+Section 2: Learning and Reasoning Loop
+Item 1: Neural Perception to Symbolic Knowledge
+[Neural Perception to Symbolic Knowledge] \begin{verbatim}
+
+
+// GO code illustrating Neural Perception to Symbolic Knowledge
+
+package main
+
+import (
+    "fmt"
+    "math"
+)
+
+// NeuralPerception simulates the process of neural perception
+func NeuralPerception(input []float64) []float64 {
+    // Simulate neural network processing (e.g., feature extraction)
+    output := make([]float64, len(input))
+    for i, val := range input {
+        output[i] = math.Tanh(val) // Apply activation function
+    }
+    return output
+}
+
+// SymbolicKnowledge converts neural output to symbolic representation
+func SymbolicKnowledge(neuralOutput []float64) string {
+    // Thresholding to convert continuous values to discrete symbols
+    var symbols string
+    for _, val := range neuralOutput {
+        if val > 0.5 {
+            symbols += "A" // Symbol for high activation
+        } else {
+            symbols += "B" // Symbol for low activation
+        }
+    }
+    return symbols
+}
+
+func main() {
+    // Example input data (e.g., sensory input)
+    input := []float64{0.1, 0.6, 0.3, 0.8}
+
+    // Step 1: Neural Perception
+    neuralOutput := NeuralPerception(input)
+    fmt.Println("Neural Output:", neuralOutput)
+
+    // Step 2: Convert to Symbolic Knowledge
+    symbolicOutput := SymbolicKnowledge(neuralOutput)
+    fmt.Println("Symbolic Output:", symbolicOutput)
+}
+\end{verbatim}
+Section 3: System Architecture
+Item 1: Communication Protocols
+[Communication Protocols] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "net"
+    "time"
+)
+
+// Define a simple protocol for communication between neural and symbolic components
+type Protocol struct {
+    Host    string
+    Port    string
+    Timeout time.Duration
+}
+
+// Initialize the protocol with default values
+func NewProtocol(host, port string, timeout time.Duration) *Protocol {
+    return &Protocol{
+        Host:    host,
+        Port:    port,
+        Timeout: timeout,
+    }
+}
+
+// Establish a connection using the protocol
+func (p *Protocol) Connect() (net.Conn, error) {
+    conn, err := net.DialTimeout("tcp", p.Host+":"+p.Port, p.Timeout)
+    if err != nil {
+        return nil, fmt.Errorf("failed to connect: %v", err)
+    }
+    return conn, nil
+}
+
+// Send a message through the connection
+func (p *Protocol) SendMessage(conn net.Conn, message string) error {
+    _, err := conn.Write([]byte(message))
+    if err != nil {
+        return fmt.Errorf("failed to send message: %v", err)
+    }
+    return nil
+}
+
+// Receive a message from the connection
+func (p *Protocol) ReceiveMessage(conn net.Conn) (string, error) {
+    buffer := make([]byte, 1024)
+    n, err := conn.Read(buffer)
+    if err != nil {
+        return "", fmt.Errorf("failed to receive message: %v", err)
+    }
+    return string(buffer[:n]), nil
+}
+
+func main() {
+    // Initialize the protocol with a host, port, and timeout
+    protocol := NewProtocol("localhost", "8080", 5*time.Second)
+
+    // Establish a connection
+    conn, err := protocol.Connect()
+    if err != nil {
+        fmt.Println("Connection error:", err)
+        return
+    }
+    defer conn.Close()
+
+    // Send a message to the symbolic component
+    message := "Neural component requesting symbolic reasoning."
+    if err := protocol.SendMessage(conn, message); err != nil {
+        fmt.Println("Send error:", err)
+        return
+    }
+
+    // Receive a response from the symbolic component
+    response, err := protocol.ReceiveMessage(conn)
+    if err != nil {
+        fmt.Println("Receive error:", err)
+        return
+    }
+
+    fmt.Println("Received response:", response)
+}
+\end{verbatim}
+Chapter 9: Language Understanding and Generation
+Section 1: Semantic Parsing
+Item 1: Neural Semantic Parsing
+[Neural Semantic Parsing] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "strings"
+)
+
+// Define a struct to represent a semantic parse tree node
+type ParseNode struct {
+    Label    string      // The label of the node (e.g., "ACTION", "OBJECT")
+    Children []*ParseNode // Child nodes in the parse tree
+}
+
+// Function to recursively print the parse tree
+func printParseTree(node *ParseNode, indent string) {
+    fmt.Printf("%s%s\n", indent, node.Label)
+    for _, child := range node.Children {
+        printParseTree(child, indent+"  ")
+    }
+}
+
+// Function to perform neural semantic parsing
+func neuralSemanticParse(sentence string) *ParseNode {
+    // Tokenize the input sentence
+    tokens := strings.Fields(sentence)
+
+    // Initialize the root of the parse tree
+    root := &ParseNode{Label: "SENTENCE"}
+
+    // Example: Simple parsing logic (for illustration purposes)
+    for _, token := range tokens {
+        // Determine the label based on the token
+        var label string
+        switch token {
+        case "open":
+            label = "ACTION"
+        case "close":
+            label = "ACTION"
+        case "door":
+            label = "OBJECT"
+        case "window":
+            label = "OBJECT"
+        default:
+            label = "UNKNOWN"
+        }
+
+        // Add the token as a child node
+        root.Children = append(root.Children, &ParseNode{Label: label + ": " + token})
+    }
+
+    return root
+}
+
+func main() {
+    // Example sentence to parse
+    sentence := "open the door and close the window"
+
+    // Perform neural semantic parsing
+    parseTree := neuralSemanticParse(sentence)
+
+    // Print the resulting parse tree
+    printParseTree(parseTree, "")
+}
+\end{verbatim}
+Section 2: Knowledge-Enhanced Language Models
+Item 1: Faithful Generation
+[Faithful Generation] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "strings"
+)
+
+// FaithfulGeneration represents a function that generates text
+// based on a given knowledge base, ensuring faithfulness to the source.
+func FaithfulGeneration(knowledgeBase map[string]string, query string) string {
+    // Step 1: Parse the query to extract key entities or concepts.
+    keyEntities := extractEntities(query)
+    
+    // Step 2: Retrieve relevant information from the knowledge base.
+    relevantInfo := retrieveInfo(knowledgeBase, keyEntities)
+    
+    // Step 3: Generate a response that is faithful to the retrieved information.
+    response := generateResponse(relevantInfo)
+    
+    return response
+}
+
+// extractEntities identifies key entities or concepts from the query.
+func extractEntities(query string) []string {
+    // Simple tokenization for demonstration purposes.
+    return strings.Fields(query)
+}
+
+// retrieveInfo fetches relevant information from the knowledge base.
+func retrieveInfo(knowledgeBase map[string]string, entities []string) string {
+    var info strings.Builder
+    for _, entity := range entities {
+        if val, ok := knowledgeBase[entity]; ok {
+            info.WriteString(val + " ")
+        }
+    }
+    return info.String()
+}
+
+// generateResponse constructs a coherent response based on the retrieved information.
+func generateResponse(info string) string {
+    return "Based on the knowledge base: " + info
+}
+
+func main() {
+    // Example knowledge base with key-value pairs.
+    knowledgeBase := map[string]string{
+        "Neuro-Symbolic AI": "A hybrid approach combining neural networks and symbolic reasoning.",
+        "Language Understanding": "The ability of a system to comprehend human language.",
+        "Faithful Generation": "Generating text that accurately reflects the source information.",
+    }
+    
+    // Example query.
+    query := "Explain Neuro-Symbolic AI and Faithful Generation"
+    
+    // Generate a faithful response.
+    response := FaithfulGeneration(knowledgeBase, query)
+    fmt.Println(response)
+}
+\end{verbatim}
+Chapter 10: Robotics and Embodied Intelligence
+Section 1: Perception-Action Loops
+Item 1: Sensorimotor Integration
+[ Sensorimotor Integration ] \begin{verbatim}
+
+
+// Sensorimotor Integration in Neuro-Symbolic AI
+package main
+
+import (
+    "fmt"
+    "time"
+)
+
+// Sensor struct represents a simulated sensor
+type Sensor struct {
+    Name  string
+    Value float64
+}
+
+// Actuator struct represents a simulated actuator
+type Actuator struct {
+    Name  string
+    State string
+}
+
+// PerceptionActionLoop simulates the perception-action loop
+func PerceptionActionLoop(sensor Sensor, actuator *Actuator) {
+    // Step 1: Perception - Read sensor data
+    fmt.Printf("Perceiving sensor data from %s: %.2f\n", sensor.Name, sensor.Value)
+
+    // Step 2: Decision Making - Neuro-Symbolic reasoning
+    if sensor.Value > 50.0 {
+        actuator.State = "ON"
+    } else {
+        actuator.State = "OFF"
+    }
+
+    // Step 3: Action - Update actuator state
+    fmt.Printf("Actuator %s is now %s\n", actuator.Name, actuator.State)
+}
+
+func main() {
+    // Initialize sensor and actuator
+    sensor := Sensor{Name: "TemperatureSensor", Value: 75.0}
+    actuator := Actuator{Name: "CoolingFan", State: "OFF"}
+
+    // Simulate continuous perception-action loop
+    for {
+        PerceptionActionLoop(sensor, &actuator)
+        time.Sleep(2 * time.Second) // Simulate delay between loops
+    }
+}
+\end{verbatim}
+Section 2: Task and Motion Planning
+Item 1: Integrated Task-Motion Planning
+[Integrated Task-Motion Planning] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "math"
+)
+
+// Define a struct to represent the robot's state
+type RobotState struct {
+    X, Y, Z float64 // Position in 3D space
+    Theta   float64 // Orientation angle
+}
+
+// Define a struct to represent a task
+type Task struct {
+    GoalX, GoalY, GoalZ float64 // Goal position
+    Description         string  // Task description
+}
+
+// Function to compute the Euclidean distance between two points
+func distance(x1, y1, z1, x2, y2, z2 float64) float64 {
+    return math.Sqrt(math.Pow(x2-x1, 2) + math.Pow(y2-y1, 2) + math.Pow(z2-z1, 2))
+}
+
+// Function to plan a path from the current state to the goal
+func planPath(current RobotState, goal Task) RobotState {
+    // Simple linear interpolation for path planning
+    stepSize := 0.1
+    dx := (goal.GoalX - current.X) * stepSize
+    dy := (goal.GoalY - current.Y) * stepSize
+    dz := (goal.GoalZ - current.Z) * stepSize
+
+    // Update the robot's state
+    current.X += dx
+    current.Y += dy
+    current.Z += dz
+
+    // Update orientation (simplified for illustration)
+    current.Theta = math.Atan2(goal.GoalY-current.Y, goal.GoalX-current.X)
+
+    return current
+}
+
+// Function to execute the task
+func executeTask(current RobotState, goal Task) {
+    fmt.Printf("Executing task: %s\n", goal.Description)
+    for distance(current.X, current.Y, current.Z, goal.GoalX, goal.GoalY, goal.GoalZ) > 0.1 {
+        current = planPath(current, goal)
+        fmt.Printf("Moving to: (%.2f, %.2f, %.2f)\n", current.X, current.Y, current.Z)
+    }
+    fmt.Println("Task completed!")
+}
+
+func main() {
+    // Initialize the robot's starting state
+    robot := RobotState{X: 0, Y: 0, Z: 0, Theta: 0}
+
+    // Define a task
+    task := Task{GoalX: 5, GoalY: 5, GoalZ: 0, Description: "Move to (5, 5, 0)"}
+
+    // Execute the task
+    executeTask(robot, task)
+}
+\end{verbatim}
+Chapter 11: Practical Implementation
+Section 1: Software Architecture
+Item 1: Integration Patterns
+[Integration Patterns] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "log"
+    "math"
+)
+
+// SymbolicReasoner represents a symbolic reasoning component
+type SymbolicReasoner struct {
+    knowledgeBase map[string]bool
+}
+
+// NewSymbolicReasoner initializes a new symbolic reasoner
+func NewSymbolicReasoner() *SymbolicReasoner {
+    return &SymbolicReasoner{
+        knowledgeBase: make(map[string]bool),
+    }
+}
+
+// AddFact adds a new fact to the knowledge base
+func (sr *SymbolicReasoner) AddFact(fact string, value bool) {
+    sr.knowledgeBase[fact] = value
+}
+
+// Infer makes a logical inference based on the knowledge base
+func (sr *SymbolicReasoner) Infer(fact string) bool {
+    value, exists := sr.knowledgeBase[fact]
+    if !exists {
+        log.Printf("Fact '%s' not found in knowledge base", fact)
+        return false
+    }
+    return value
+}
+
+// NeuralNetwork represents a neural network component
+type NeuralNetwork struct {
+    weights []float64
+}
+
+// NewNeuralNetwork initializes a new neural network
+func NewNeuralNetwork(weights []float64) *NeuralNetwork {
+    return &NeuralNetwork{
+        weights: weights,
+    }
+}
+
+// Predict makes a prediction based on input data
+func (nn *NeuralNetwork) Predict(input []float64) float64 {
+    var result float64
+    for i, val := range input {
+        result += val * nn.weights[i]
+    }
+    return math.Tanh(result) // Activation function
+}
+
+// NeuroSymbolicIntegration integrates symbolic reasoning and neural networks
+type NeuroSymbolicIntegration struct {
+    reasoner *SymbolicReasoner
+    network  *NeuralNetwork
+}
+
+// NewNeuroSymbolicIntegration initializes a new integration component
+func NewNeuroSymbolicIntegration(reasoner *SymbolicReasoner, network *NeuralNetwork) *NeuroSymbolicIntegration {
+    return &NeuroSymbolicIntegration{
+        reasoner: reasoner,
+        network:  network,
+    }
+}
+
+// Execute combines symbolic reasoning and neural network predictions
+func (nsi *NeuroSymbolicIntegration) Execute(fact string, input []float64) (bool, float64) {
+    symbolicResult := nsi.reasoner.Infer(fact)
+    neuralResult := nsi.network.Predict(input)
+    return symbolicResult, neuralResult
+}
+
+func main() {
+    // Initialize components
+    reasoner := NewSymbolicReasoner()
+    reasoner.AddFact("is_raining", true)
+    
+    weights := []float64{0.5, -0.5, 0.2}
+    network := NewNeuralNetwork(weights)
+    
+    nsi := NewNeuroSymbolicIntegration(reasoner, network)
+    
+    // Execute integration
+    input := []float64{1.0, 0.5, -0.3}
+    symbolicResult, neuralResult := nsi.Execute("is_raining", input)
+    
+    fmt.Printf("Symbolic Result: %v\n", symbolicResult)
+    fmt.Printf("Neural Result: %.2f\n", neuralResult)
+}
+\end{verbatim}
+Item 2: Performance Optimization
+[Performance Optimization] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "time"
+)
+
+// OptimizeSymbolicReasoning performs efficient symbolic reasoning
+// by caching results and minimizing redundant computations.
+func OptimizeSymbolicReasoning(inputData []int) map[int]int {
+    // Cache to store previously computed results
+    cache := make(map[int]int)
+
+    // Iterate through input data
+    for _, value := range inputData {
+        // Check if result is already in cache
+        if result, exists := cache[value]; exists {
+            fmt.Printf("Cache hit for value %d: %d\n", value, result)
+            continue
+        }
+
+        // Simulate expensive computation
+        result := expensiveComputation(value)
+
+        // Store result in cache for future use
+        cache[value] = result
+        fmt.Printf("Computed and cached result for value %d: %d\n", value, result)
+    }
+
+    return cache
+}
+
+// expensiveComputation simulates a computationally intensive task
+func expensiveComputation(value int) int {
+    // Simulate delay for computation
+    time.Sleep(100 * time.Millisecond)
+    return value * value // Example computation
+}
+
+func main() {
+    // Example input data
+    inputData := []int{1, 2, 3, 2, 4, 1}
+
+    // Perform optimized symbolic reasoning
+    results := OptimizeSymbolicReasoning(inputData)
+
+    // Display final results
+    fmt.Println("Final results:", results)
+}
+\end{verbatim}
+Section 2: Development Workflow
+Item 1: System Integration
+[System Integration] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "log"
+    "net/http"
+    "encoding/json"
+)
+
+// Define a struct to represent a symbolic rule in Neuro-Symbolic AI
+type SymbolicRule struct {
+    ID      string `json:"id"`
+    Condition string `json:"condition"`
+    Action   string `json:"action"`
+}
+
+// Define a struct to represent a neural network prediction
+type NeuralPrediction struct {
+    Input  string  `json:"input"`
+    Output float64 `json:"output"`
+}
+
+// Function to integrate symbolic rules with neural predictions
+func integrateSystem(rules []SymbolicRule, prediction NeuralPrediction) string {
+    // Check if the neural prediction meets any symbolic rule condition
+    for _, rule := range rules {
+        if rule.Condition == prediction.Input && prediction.Output > 0.5 {
+            return rule.Action
+        }
+    }
+    return "No action triggered"
+}
+
+func main() {
+    // Example symbolic rules
+    rules := []SymbolicRule{
+        {ID: "1", Condition: "inputA", Action: "ActionA"},
+        {ID: "2", Condition: "inputB", Action: "ActionB"},
+    }
+
+    // Example neural prediction
+    prediction := NeuralPrediction{Input: "inputA", Output: 0.7}
+
+    // Integrate the system and get the result
+    result := integrateSystem(rules, prediction)
+    fmt.Println("Integration Result:", result)
+
+    // HTTP server to demonstrate integration in a practical workflow
+    http.HandleFunc("/integrate", func(w http.ResponseWriter, r *http.Request) {
+        var pred NeuralPrediction
+        err := json.NewDecoder(r.Body).Decode(&pred)
+        if err != nil {
+            http.Error(w, err.Error(), http.StatusBadRequest)
+            return
+        }
+        result := integrateSystem(rules, pred)
+        json.NewEncoder(w).Encode(map[string]string{"result": result})
+    })
+
+    log.Fatal(http.ListenAndServe(":8080", nil))
+}
+\end{verbatim}
+Section 3: Deployment Considerations
+Item 1: Monitoring and Maintenance
+[Monitoring and Maintenance] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "time"
+    "log"
+    "net/http"
+    "github.com/prometheus/client_golang/prometheus"
+    "github.com/prometheus/client_golang/prometheus/promhttp"
+)
+
+// Define a custom metric for monitoring model performance
+var (
+    modelAccuracy = prometheus.NewGauge(prometheus.GaugeOpts{
+        Name: "neuro_symbolic_ai_model_accuracy",
+        Help: "Current accuracy of the Neuro-Symbolic AI model",
+    })
+)
+
+func init() {
+    // Register the custom metric with Prometheus
+    prometheus.MustRegister(modelAccuracy)
+}
+
+func main() {
+    // Start a goroutine to simulate model accuracy updates
+    go func() {
+        for {
+            // Simulate updating model accuracy (e.g., from a real-time evaluation)
+            accuracy := simulateModelAccuracy()
+            modelAccuracy.Set(accuracy)
+            time.Sleep(10 * time.Second) // Update every 10 seconds
+        }
+    }()
+
+    // Expose the registered metrics via HTTP
+    http.Handle("/metrics", promhttp.Handler())
+    log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+// simulateModelAccuracy simulates the accuracy of the Neuro-Symbolic AI model
+func simulateModelAccuracy() float64 {
+    // Placeholder logic for simulating model accuracy
+    return 0.85 + (0.1 * (time.Now().Unix() % 10) / 10.0)
+}
+\end{verbatim}
+Chapter 12: Evaluation and Benchmarking
+Section 1: Benchmark Suites
+Item 1: Real-World Applications
+[Real-World Applications] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "math"
+)
+
+// NeuroSymbolicAI represents a neuro-symbolic AI model
+type NeuroSymbolicAI struct {
+    SymbolicRules map[string]func(float64) bool
+    NeuralWeights []float64
+}
+
+// Evaluate performs neuro-symbolic reasoning on input data
+func (ns *NeuroSymbolicAI) Evaluate(input float64) bool {
+    // Apply symbolic rules to the input
+    for _, rule := range ns.SymbolicRules {
+        if rule(input) {
+            return true
+        }
+    }
+
+    // Apply neural network weights to the input
+    neuralOutput := 0.0
+    for _, weight := range ns.NeuralWeights {
+        neuralOutput += weight * input
+    }
+
+    // Threshold the neural output
+    return neuralOutput > 0.5
+}
+
+func main() {
+    // Initialize a neuro-symbolic AI model
+    nsAI := NeuroSymbolicAI{
+        SymbolicRules: map[string]func(float64) bool{
+            "rule1": func(x float64) bool { return x > 10 },
+            "rule2": func(x float64) bool { return math.Mod(x, 2) == 0 },
+        },
+        NeuralWeights: []float64{0.1, 0.2, 0.3},
+    }
+
+    // Evaluate the model on a sample input
+    input := 12.0
+    result := nsAI.Evaluate(input)
+    fmt.Printf("Neuro-Symbolic AI Evaluation Result: %v\n", result)
+}
+\end{verbatim}
+Section 2: Analysis Methods
+Item 1: Error Analysis
+[Error Analysis] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "math"
+)
+
+// Define a simple neural network structure
+type NeuralNetwork struct {
+    weights []float64
+    bias    float64
+}
+
+// Predict function for the neural network
+func (nn *NeuralNetwork) Predict(input []float64) float64 {
+    var sum float64
+    for i, weight := range nn.weights {
+        sum += weight * input[i]
+    }
+    return sum + nn.bias
+}
+
+// ErrorAnalysis function to evaluate the performance of the neural network
+func ErrorAnalysis(nn *NeuralNetwork, inputs [][]float64, targets []float64) (float64, []float64) {
+    var totalError float64
+    errors := make([]float64, len(inputs))
+
+    // Calculate the error for each input
+    for i, input := range inputs {
+        prediction := nn.Predict(input)
+        errors[i] = math.Abs(prediction - targets[i])
+        totalError += errors[i]
+    }
+
+    // Calculate the mean absolute error
+    meanError := totalError / float64(len(inputs))
+    return meanError, errors
+}
+
+func main() {
+    // Initialize a simple neural network with predefined weights and bias
+    nn := NeuralNetwork{
+        weights: []float64{0.5, -0.2},
+        bias:    0.1,
+    }
+
+    // Define a set of inputs and corresponding target values
+    inputs := [][]float64{
+        {1.0, 2.0},
+        {2.0, 3.0},
+        {3.0, 4.0},
+    }
+    targets := []float64{1.5, 2.5, 3.5}
+
+    // Perform error analysis
+    meanError, errors := ErrorAnalysis(&nn, inputs, targets)
+
+    // Output the results
+    fmt.Printf("Mean Absolute Error: %.2f\n", meanError)
+    fmt.Printf("Errors for each input: %v\n", errors)
+}
+\end{verbatim}
+Chapter 13: Safety and Reliability
+Section 1: Robustness
+Item 1: Adversarial Robustness
+[Adversarial Robustness] \begin{verbatim}
+
+
+package main
+
+import (
+    "fmt"
+    "math"
+    "gonum.org/v1/gonum/mat"
+)
+
+// AdversarialRobustness demonstrates how to evaluate the robustness of a neural network
+// against adversarial attacks in a neuro-symbolic AI context.
+func AdversarialRobustness() {
+    // Step 1: Define the neural network model (simplified for illustration)
+    model := NewNeuralNetwork()
+
+    // Step 2: Generate a sample input vector (e.g., an image represented as a vector)
+    input := mat.NewVecDense(3, []float64{0.5, 0.2, 0.8})
+
+    // Step 3: Compute the model's prediction on the original input
+    originalOutput := model.Predict(input)
+    fmt.Printf("Original Output: %v\n", originalOutput)
+
+    // Step 4: Generate an adversarial perturbation
+    perturbation := GenerateAdversarialPerturbation(input, model)
+
+    // Step 5: Apply the perturbation to the input to create an adversarial example
+    adversarialInput := AddPerturbation(input, perturbation)
+
+    // Step 6: Compute the model's prediction on the adversarial input
+    adversarialOutput := model.Predict(adversarialInput)
+    fmt.Printf("Adversarial Output: %v\n", adversarialOutput)
+
+    // Step 7: Evaluate the robustness by comparing original and adversarial outputs
+    robustness := EvaluateRobustness(originalOutput, adversarialOutput)
+    fmt.Printf("Robustness Score: %.2f\n", robustness)
+}
+
+// NewNeuralNetwork initializes a simple neural network model.
+func NewNeuralNetwork() *NeuralNetwork {
+    // Simplified neural network with random weights (for illustration)
+    weights := mat.NewDense(3, 3, []float64{
+        0.1, 0.2, 0.3,
+        0.4, 0.5, 0.6,
+        0.7, 0.8, 0.9,
+    })
+    return &NeuralNetwork{weights: weights}
+}
+
+// NeuralNetwork represents a simple neural network model.
+type NeuralNetwork struct {
+    weights *mat.Dense
+}
+
+// Predict computes the output of the neural network for a given input.
+func (nn *NeuralNetwork) Predict(input *mat.VecDense) *mat.VecDense {
+    output := mat.NewVecDense(3, nil)
+    output.MulVec(nn.weights, input)
+    return output
+}
+
+// GenerateAdversarialPerturbation creates a small perturbation to fool the model.
+func GenerateAdversarialPerturbation(input *mat.VecDense, model *NeuralNetwork) *mat.VecDense {
+    // Simplified perturbation generation (e.g., gradient-based attack)
+    perturbation := mat.NewVecDense(3, []float64{0.01, -0.02, 0.03})
+    return perturbation
+}
+
+// AddPerturbation applies the perturbation to the input.
+func AddPerturbation(input, perturbation *mat.VecDense) *mat.VecDense {
+    adversarialInput := mat.NewVecDense(3, nil)
+    adversarialInput.AddVec(input, perturbation)
+    return adversarialInput
+}
+
+// EvaluateRobustness calculates the robustness score based on output differences.
+func EvaluateRobustness(original, adversarial *mat.VecDense) float64 {
+    diff := mat.NewVecDense(3, nil)
+    diff.SubVec(adversarial, original)
+    return math.Sqrt(mat.Dot(diff, diff))
+}
+
+func main() {
+    AdversarialRobustness()
+}
+\end{verbatim}
