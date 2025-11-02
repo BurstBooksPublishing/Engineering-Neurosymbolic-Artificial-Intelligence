@@ -1,0 +1,1 @@
+graduates(Student) :- \+ fails(Student, Course), course(Course).
